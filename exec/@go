@@ -1,0 +1,87 @@
+#!/bin/csh -f
+# To run CAIN
+#   @go  input_file_name
+#    (in the directory cain/in with .i taken off)
+#   @go    (or  @go = )
+#     use the input file defined in the previous run
+#   @go  input_file_name > msg_file_name  (or @go > msg_file_name)
+#     message to the file msg_file_name 
+#
+#   Assume in the "exec" directory
+cd ../
+#   Now in the cain root directory
+set prefix="$cwd"
+####  Retrieve host computer name
+set sysname="unknown"
+if (${?HOST} != 0) then
+  expr $HOST : '^\(....\).*'  > $prefix/exec/sysname
+#    get first 4 characters (Is there a better way?)
+  set sysname="`cat $prefix/exec/sysname`" 
+endif
+#
+set n=1
+set inname=""
+set msgfl=""
+while ($n <= $#argv)
+  if ("$argv[$n]" == ">") then
+    @ n = $n + 1
+    if ($n > $#argv) then
+      echo "Missing redirection"
+      exit 1
+    endif
+    set msgfl="$argv[$n]"
+  else if ("$argv[$n]" == "=") then
+    set inname=""
+  else
+    set inname="$argv[1]"
+    echo  $inname >! $prefix/exec/lastfile
+  endif
+  @ n = $n + 1
+end
+if ("$inname" == "") then
+    set inname="`cat $prefix/exec/lastfile`"
+    if ($status != 0) then
+      echo "Previous job unknown"
+      exit 1
+    endif
+endif
+set infile="$prefix/in/$inname.i"
+if (-e $infile) then
+    if (-z $infile) then
+      echo "input file $infile empty"
+      exit 2
+    else
+      echo "input file = $infile"
+    endif
+else
+    echo "input file $infile does not exist"
+    exit 3
+endif
+cd $prefix/exec
+./@make
+if ($status > 0) then
+    exit 4
+endif
+set outfile="$prefix/out/$inname"
+set outfile2="$prefix/out/$inname.out2"
+set tdfile="$prefix/out/$inname.tdr"
+if ($sysname == "ccjl") then
+  setenv FT08F001 $tdfile
+  setenv FT12F001 $outfile
+  setenv FT13F001 $outfile2
+else if ($sysname == "ahsa" || $sysname == "jlcs" || $sysname == "jlcu") then
+  setenv ftn08 $tdfile
+  setenv ftn12 $outfile
+  setenv ftn13 $outfile2
+else if ($sysname == "acsa") then
+  setenv FORT8 $tdfile
+  setenv FORT12 $outfile
+  setenv FORT13 $outfile2
+endif
+
+if ("$msgfl" == "") then
+  $prefix/exec/cain.exe < $infile
+else
+  $prefix/exec/cain.exe < $infile > $msgfl
+endif
+exit 0

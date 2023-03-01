@@ -1,0 +1,18 @@
+#!/bin/csh -f
+
+set inname="$argv[1]"
+set adname="$argv[2]"
+set infile="../in/$inname.i"
+set outfile="cain242-$inname-$adname.out"
+set outtdr="cain242-$inname-$adname.tdr"
+
+set outdir="../out/$inname-$adname"
+
+./cain.exe <$infile >$outfile
+
+rm -f -r $outdir
+mkdir $outdir
+
+mv fort.8 $outtdr
+
+mv cain242-* $outdir/. 

@@ -1,0 +1,193 @@
+      SUBROUTINE VPHGEN(EE,WMIN,WGT,LOCAL,UPSILN,
+     %        NVPHMAX,NVPH,EVPH,XY,IRTN)
+C  Generate virtual photons
+C  Input
+C   EE        Energy of the parent electron (eV)
+C   WMIN      Minimum energy of virtual photons
+C   WGT       Weight parameter of the photons to be generated.
+C             This parameter controls the number of virtual photons
+C             to be generated (large WGT causes a smaller number).
+C             The real weight to be asigned to the generated photons
+C             is WGT times the weight of the parent electron.
+C   LOCAL     If not zero, local virtual photon, i.e., transverse
+C             extent is ignored (XY=(0,0)).
+C   UPSILN    Field strength parameter. If >0, apply field suppression.
+C   NVPHMAX   Maximum number of virtual photons
+C  Output
+C   NVPH      Number of generated virtual photons
+C   EVPH(i) (i=1,NVPH)  Energy (eV)
+C   XY(j,i) (j=1,2),(i=1,NVPH)  Transverse coordinate of virtual
+C             photons (meter)
+C   IRTN      Return code
+C              0: normal
+C              1000: NVPH exceeded NVPHMAX
+C
+      IMPLICIT NONE
+      INTEGER LOCAL,NVPHMAX,NVPH,IRTN
+      REAL*8 EE,WMIN,WGT,UPSILN,EVPH(NVPHMAX),XY(2,NVPHMAX)
+      REAL*8 C/0.2D0/,P0MAX/0.1D0/
+      REAL*8 RANDCAIN,GFUNC,VINV
+	EXTERNAL RANDCAIN
+      INTEGER NDIV,IDIV
+      REAL*8 YMIN,YLMAX,YLMAX2,HMAX,P0,R1,R2,R3,R4,H,G,H1,RTH1,V,
+     %    Y,X,R,X1,Y1
+      REAL*8 CMPTNWL/3.86159323D-13/,FINSTRC/0.00729735308D0/,
+     %   PI/3.14159 26535 89793 238D0/
+	INCLUDE 'include/ctrlcm.h'
+C
+      YMIN=WMIN/EE
+      NVPH=0
+      IF(YMIN.GE.1D0) GOTO 800
+      YLMAX=-LOG(YMIN)
+      YLMAX2=YLMAX**2
+      HMAX=0.5D0*(YLMAX2+SQRT(YLMAX2**2+YLMAX2))
+C      P0=FINSTRC/PI*HMAX/WGT
+C        The above line replaced. Mar.20.2002
+      P0=FINSTRC/PI*HMAX*WGT
+      IF(P0.GE.P0MAX) THEN
+        NDIV=INT(P0/P0MAX)+1
+        P0=P0/NDIV
+      ELSE
+        NDIV=1
+      ENDIF
+      DO 300 IDIV=1,NDIV
+        R1=RANDCAIN()
+        IF(R1.GE.P0) GOTO 300
+        R1=R1/P0
+        R2=RANDCAIN()
+        H=R2*HMAX
+        G=GFUNC(H)
+        IF(R1.GE.G) GOTO 300
+        H1=H+C
+        RTH1=SQRT(H1)
+        Y=EXP(-H/RTH1)
+        IF(Y.GE.1D0) GOTO 300
+        IF(LOCAL.EQ.0) THEN
+          R3=RANDCAIN()
+          V=R3*2D0*H1*RTH1/(H1+C)*G
+          X=VINV(V)
+          IF(UPSILN.GT.0) THEN
+            IF(X**3.GT.Y/UPSILN) GOTO 300
+          ENDIF
+          R=CMPTNWL*X/Y
+          R4=2*PI*RANDCAIN()
+          X1=R*COS(R4)
+          Y1=R*SIN(R4)
+        ELSE
+          X1=0
+          Y1=0
+        ENDIF
+        NVPH=NVPH+1
+        IF(NVPH.GT.NVPHMAX) GOTO 900
+        EVPH(NVPH)=EE*Y
+        XY(1,NVPH)=X1
+        XY(2,NVPH)=Y1
+ 300  CONTINUE
+ 800  IRTN=0
+      RETURN
+ 900  IRTN=1000
+	write(MSGFL,999) nvphmax,ndiv,idiv
+999   format(' nvphmax,ndiv,idiv=',3i10)
+      RETURN
+      END
+C---------------------------------------------------------------------
+      FUNCTION GFUNC(H)
+      IMPLICIT NONE
+      REAL*8 GFUNC,H
+      INTEGER NH(3)/20,16,20/
+      REAL*8 HH(0:3)/0D0,0.2D0,1.0D0,5.0D0/
+      REAL*8 GG(0:20,3)/
+     % .719577D0,0.719712D0,0.719659D0,0.719468D0,0.719179D0,0.718821D0,
+     % .718418D0,0.717988D0,0.717545D0,0.717098D0,0.716657D0,0.716227D0,
+     % .715814D0,0.715420D0,0.715049D0,0.714701D0,0.714379D0,0.714082D0,
+     % .713811D0,0.713567D0,0.713349D0,
+     % .713349D0,0.712631D0,0.712474D0,0.712784D0,0.713473D0,0.714465D0,
+     % .715696D0,0.717116D0,0.718683D0,0.720366D0,0.722137D0,0.723974D0,
+     % .725860D0,0.727781D0,0.729726D0,0.731685D0,0.733651D0,0.000000D0,
+     % .000000D0,0.000000D0,0.000000D0,
+     % .733651D0,0.741467D0,0.749051D0,0.756291D0,0.763147D0,0.769615D0,
+     % .775706D0,0.781440D0,0.786841D0,0.791930D0,0.796733D0,0.801269D0,
+     % .805559D0,0.809623D0,0.813476D0,0.817135D0,0.820614D0,0.823926D0,
+     % .827082D0,0.830094D0,0.832971D0/
+      INTEGER I,J
+      REAL*8 P,H1,R,YL,YL1,Y
+      REAL*8 C/0.2D0/,CONST/.1159315156584124D0/
+C          CONST=Log(2)-Euler
+C
+      IF(H.LE.HH(3)) THEN
+        IF(H.LE.HH(1)) THEN
+          I=1
+        ELSEIF(H.LE.HH(2)) THEN
+          I=2
+        ELSE
+          I=3
+        ENDIF
+        P=(H-HH(I-1))/(HH(I)-HH(I-1))*NH(I)
+        J=MIN(INT(P),NH(I)-1)
+        P=P-J
+        GFUNC=GG(J,I)*(1-P)+GG(J+1,I)*P
+      ELSE
+        H1=H+C
+        R=SQRT(H1)
+        YL=-H/R
+        YL1=YL-CONST
+        GFUNC=-2*YL1-1
+        IF(H.LE.24D0) THEN
+          Y=EXP(YL)
+          GFUNC=GFUNC+Y**2*(1-YL1)
+        ENDIF
+        GFUNC=(H1+C)/(2D0*H1*R)*GFUNC
+      ENDIF
+      RETURN
+      END
+C--------------------------------------------------------------------------
+      FUNCTION VINV(V)
+      IMPLICIT NONE
+      REAL*8 VINV,V
+      REAL*8 V1/1D0/,V2/4D0/,VLI1/2.2144337865D0/
+      REAL*8 EULER/0.57721 56649 01532 8606D0/
+      INTEGER NV
+      PARAMETER (NV=50)
+      REAL*8 FF1(0:NV)/
+     % .522226D0, .499612D0, .478487D0, .458695D0, .440103D0, .422596D0,
+     % .406075D0, .390455D0, .375661D0, .361625D0, .348290D0, .335604D0,
+     % .323519D0, .311994D0, .300992D0, .290478D0, .280422D0, .270795D0,
+     % .261572D0, .252729D0, .244246D0, .236101D0, .228277D0, .220758D0,
+     % .213526D0, .206569D0, .199872D0, .193422D0, .187209D0, .181221D0,
+     % .175447D0, .169879D0, .164507D0, .159323D0, .154319D0, .149486D0,
+     % .144819D0, .140309D0, .135952D0, .131741D0, .127669D0, .123733D0,
+     % .119925D0, .116243D0, .112680D0, .109233D0, .105898D0, .102669D0,
+     % .099544D0, .096518D0, .093588D0/
+      INTEGER NVLI
+      PARAMETER (NVLI=25)
+      REAL*8 FF2(0:NVLI)/0D0,
+     % .056468D0, .098147D0, .130041D0, .155140D0, .175349D0, .191940D0,
+     % .205783D0, .217498D0, .227532D0, .236219D0, .243809D0, .250496D0,
+     % .256430D0, .261730D0, .266492D0, .270794D0, .274698D0, .278257D0,
+     % .281515D0, .284508D0, .287267D0, .289818D0, .292184D0, .294384D0,
+     % .296435D0/
+      REAL*8 PI/3.14159 26535 89793 238D0/
+      INTEGER I
+      REAL*8 X,P
+C
+      IF(V.GE.V2) THEN
+        X=V+1D0+2D0*EULER
+        VINV=2D0*EXP(-0.5D0*X+(V+3D0)*EXP(-X))
+      ELSEIF(V.GE.V1) THEN
+        P=(V-V1)/(V2-V1)*NV
+        I=MIN(NV-1,INT(P))
+        P=P-I
+        VINV=FF1(I)*(1-P)+FF1(I+1)*P
+      ELSE
+        X=1/LOG(PI/(2D0*V))
+        P=X/VLI1*NVLI
+        I=MIN(NVLI-1,INT(P))
+        P=P-I
+        VINV=0.5D0/X+FF2(I)*(1D0-P)+FF2(I+1)*P
+      ENDIF
+      RETURN
+      END
+
+
+
+        

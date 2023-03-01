@@ -1,0 +1,166 @@
+	SUBROUTINE EVUFNCHAR(FNAME,X,NV,GSTRX,Y,IRTN,IERARG,ERRMSG)
+C  Character-related functons
+C        'Strlen','AtoF','$FtoA','$ItoA','$Substr','Strstr',
+C        '$ToUpper','$ToLower'
+C  IRTN=0  normal
+C       1  warning (ERRMSG)
+C     101  Wrong number of arguments
+C     102  Range of the IERARG-th argument invalid
+C     103  Type (float/char) of the IERARG-th argument mismatch
+C     200  Others. (ERRMSG)
+	USE FLCHTYP
+      IMPLICIT NONE
+      INTEGER NV,IRTN,IERARG
+      TYPE(FLCHTYPE) Y,X(NV)
+      CHARACTER*(*) FNAME,GSTRX,ERRMSG
+	INCLUDE 'include/ctrlcm3.h'
+	INTEGER IOS,NC,N,N1,N2,I,IRTN1
+	CHARACTER(256) TEXT
+	REAL(8) FLOT1
+
+	IF(FNAME.EQ.'Strlen') THEN
+	  IF(X(1)%L.NE.2) THEN
+	    IERARG=1
+	    IRTN=103
+	  ENDIF
+	  Y%X=X(1)%C(2)-X(1)%C(1)+1
+	ELSEIF(FNAME.EQ.'AtoF') THEN
+	  IF(X(1)%L.NE.2) THEN
+	    IERARG=1
+	    IRTN=103
+	  ENDIF
+	  Y%X=FLOT1(GSTRX(X(1)%C(1):X(1)%C(2)),X(1)%C(2)-X(1)%C(1)+1,IRTN)
+	  IF(IRTN.NE.0) GOTO 934
+	ELSEIF(FNAME.EQ.'$FtoA') THEN
+	  IF(X(1)%L.NE.1) THEN
+	    IERARG=1
+	    IRTN=103
+	  ENDIF
+		IF(X(2)%L.NE.2) THEN
+	    IERARG=2
+	    IRTN=103
+	  ENDIF
+	  CALL FMTCHECK(GSTRX(X(2)%C(1):X(2)%C(2)),IRTN1)
+	  IF(IRTN1.EQ.0) THEN
+	    WRITE(TEXT,'('//GSTRX(X(2)%C(1):X(2)%C(2))//')',IOSTAT=IOS)
+     %          X(1)%X
+	  ELSEIF(IRTN1.EQ.1) THEN
+	    WRITE(TEXT,GSTRX(X(2)%C(1):X(2)%C(2)),IOSTAT=IOS)
+     %          X(1)%X
+	  ELSE
+	    GOTO 940
+	  ENDIF
+	  IF(IOS.NE.0) GOTO 940
+	  CALL SPCOFF(TEXT,2,NC)
+	  CALL FLCHSET2(TEXT(1:NC),Y,ERRMSG)
+	  IF(ERRMSG.NE.' ') GOTO 990
+	ELSEIF(FNAME.EQ.'$ItoA') THEN
+	  IF(NV.GE.3) THEN
+	    IRTN=101
+	    RETURN
+	  ENDIF
+	  IF(X(1)%L.NE.1) THEN
+	    IERARG=1
+	    IRTN=103
+	    RETURN
+	  ENDIF
+	  IF(NV.EQ.1) THEN
+	    WRITE(TEXT,'(I)') NINT(X(1)%X)
+	    CALL SPCOFF(TEXT,3,NC)
+	  ELSE
+	    CALL FMTCHECK(GSTRX(X(2)%C(1):X(2)%C(2)),IRTN1)
+	    IF(IRTN1.EQ.0) THEN
+	      WRITE(TEXT,'('//GSTRX(X(2)%C(1):X(2)%C(2))//')',IOSTAT=IOS)
+     %          NINT(X(1)%X)
+	    ELSEIF(IRTN1.EQ.1) THEN
+	      WRITE(TEXT,GSTRX(X(2)%C(1):X(2)%C(2)),IOSTAT=IOS)
+     %          NINT(X(1)%X)
+	    ELSE
+	      GOTO 940
+	    ENDIF
+	    IF(IOS.NE.0) GOTO 940
+	    CALL SPCOFF(TEXT,2,NC)
+	  ENDIF
+	  CALL FLCHSET2(TEXT(1:NC),Y,ERRMSG)
+	  IF(ERRMSG.NE.' ') GOTO 990
+	ELSEIF(FNAME.EQ.'$Substr') THEN
+	  IF(NV.LE.1.OR.NV.GE.4) THEN
+	    IRTN=101
+	    RETURN
+	  ENDIF
+	  IF(X(1)%L.NE.2) THEN
+	    IERARG=1
+	    IRTN=103
+	  ENDIF
+		IF(X(2)%L.NE.1) THEN
+	    IERARG=2
+	    IRTN=103
+	  ENDIF
+	  N=X(1)%C(2)-X(1)%C(1)+1
+	  N1=NINT(X(2)%X)
+	  IF(NV.EQ.2) THEN
+	    N2=N
+	  ELSE
+	    IF(X(3)%L.NE.1) THEN
+	      IERARG=3
+	      IRTN=103
+	    ENDIF
+	    N2=MIN(N,NINT(X(3)%X))
+	  ENDIF
+	  IF(N2.LT.N1.OR.N.LE.0.OR.N1.LE.0) THEN
+	    CALL FLCHSET2('',Y,ERRMSG)
+        ELSE
+	    N1=N1+X(1)%C(1)-1
+	    N2=N2+X(1)%C(1)-1
+	    CALL FLCHSET2(GSTRX(N1:N2),Y,ERRMSG)
+	  ENDIF
+	  IF(ERRMSG.NE.' ') GOTO 990
+	ELSEIF(FNAME.EQ.'Strstr') THEN
+	  DO I=1,2
+	    IF(X(I)%L.NE.2) THEN
+	      IERARG=I
+	      IRTN=103
+	      RETURN
+	    ENDIF
+	  ENDDO
+	  N1=X(1)%C(2)-X(1)%C(1)+1
+	  N2=X(2)%C(2)-X(2)%C(1)+1
+	  N=0
+	  IF(N2.GE.1.AND.N2.LE.N1) THEN
+	    DO I=X(1)%C(1),X(1)%C(1)+N1-N2
+	      IF(GSTRX(X(2)%C(1):X(2)%C(2)).EQ.GSTRX(I:I+N2-1)) THEN
+	        N=I-X(1)%C(1)+1
+	        EXIT
+	      ENDIF
+	    ENDDO
+	  ENDIF
+	  Y%X=N
+	ELSEIF(FNAME.EQ.'$ToUpper') THEN
+	  IF(X(1)%L.NE.2) THEN
+	    IERARG=1
+	    IRTN=103
+	    RETURN
+	  ENDIF
+	  CALL FLCHSET2(GSTRX(X(1)%C(1):X(1)%C(2)),Y,ERRMSG)
+	  CALL TOUPPER(GSTRX(Y%C(1):Y%C(2)))
+	ELSEIF(FNAME.EQ.'$ToLower') THEN
+	  IF(X(1)%L.NE.2) THEN
+	    IERARG=1
+	    IRTN=103
+	    RETURN
+	  ENDIF
+	  CALL FLCHSET2(GSTRX(X(1)%C(1):X(1)%C(2)),Y,ERRMSG)
+	  CALL TOLOWER(GSTRX(Y%C(1):Y%C(2)))
+	ENDIF
+	IRTN=0
+	RETURN
+
+ 934  ERRMSG='Invalid string "'//GSTRX(X(1)%C(1):X(1)%C(2))
+     %  //'" for function AtoF'
+	GOTO 990
+ 940  ERRMSG='Invalid format "'//GSTRX(X(2)%C(1):X(2)%C(2))//
+     %  '" for '//FNAME
+	GOTO 990
+ 990  IRTN=200
+	RETURN
+	END

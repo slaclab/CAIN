@@ -1,0 +1,78 @@
+#!/bin/csh -f
+# Compile changed files only
+#   @make
+# Recompile all files
+#   @make all
+# Assume the current directory is cain240/exec
+cd ../
+echo $cwd
+####  Retrieve the cain root directory name
+set prefix="$cwd"
+echo $prefix
+####  Retrieve host computer name ()
+set sysname="unknown"
+if (${?HOST} != 0) then
+  expr $HOST : '^\(....\).*'  > $prefix/exec/sysname
+#    get first 4 characters (Is there a better way?)
+  set sysname="`cat $prefix/exec/sysname`" 
+endif
+echo "sysname=$sysname"
+
+# Compile and Link option. System dependent.
+#if ($sysname == "acsa" || $sysname == "jlcs" || $sysname == "jlcu") then 
+#  KEK JLCUX1
+    setenv  compiler "gfortran"
+
+#else if ($sysname == "acsa") then
+#  KEK ACSAD
+#    setenv  compiler "f90"
+#    setenv  foption "-C -fixed -O4 -warn argument_checking -non_shared"
+#       -C       array subscript check on.
+#       -fixed   FORTRAN fixed format source code.
+#       -O4      optimization level
+#       -warn argument_checking    subroutine argument check on.
+#    setenv  linkoption "-non_shared"
+#       -non_shared   do not create executable if unresolved symbol found
+#else if ($sysname == "ccjl") then
+#  KEK-Hitachi
+#    setenv compiler "f90"
+#    setenv foption "-O"
+#    setenv linkoption "-L/lib -lmsl2 -lU90"
+#       -lU90   Time
+#else
+#  unknown or other host
+#    setenv compiler "f90"
+#    setenv foption ""
+#    setenv linkoption ""
+#endif
+#
+cd src
+set n=$#argv
+####  Touch .f files
+if ($n >= 1) then
+  if ($argv[1] == 'all') then
+    if ($n >= 2) then
+      echo "all option accepts one operand only"
+      goto abend
+    endif
+    touch *.f
+    foreach  dir(module unix)
+    touch $dir/*.f
+    end
+  endif
+endif
+#
+
+setenv loadname "cain"
+make
+set stt=$status
+if ($stt > 0) then
+  echo "compile/link failed. status=$stt."
+  goto abend  
+endif
+chmod +x $prefix/exec/$loadname.exe
+set CAINstatus=0
+exit 0
+abend:
+set CAINstatus=1
+exit 1

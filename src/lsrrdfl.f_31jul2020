@@ -1,0 +1,781 @@
+	SUBROUTINE LSRRDFL(LSR,IFL,LTDEF,SHIFTTZ,POWMAX,
+     %   MSGLVL,MSGFL,MSGDEST,IRTN)
+C  Read laser profile file
+C  Input
+C    LSR      Laser id number
+C    IFL      File unit number
+C    SHIFTTZ  Coordinate shift in tau and zeta direction
+C    MSGLVL
+C    MSGFL
+C  Output
+C    LTDEF    True if longitudinal/transverse profile is defined in the file
+C    POWMAX   Maximum value of the power density in the file.
+C             (If there is more than one ORDER, max of each is multiplied.)
+C    IRTN
+C
+	USE LASRDATA
+	IMPLICIT NONE
+	INTEGER LSR,IFL,MSGLVL,MSGFL,MSGDEST,IRTN
+	LOGICAL LTDEF(2)
+	REAL*8 SHIFTTZ(2),POWMAX
+	INCLUDE 'include/lasrcm.h'
+	CHARACTER*100 TEXT
+	INTEGER NC,NDIM,NTYPE,ITYPE,IDV(MAXNDIM),ID(MAXNDIM),ND(MAXNDIM),
+     %   DONE(MAXNDIM),DONEPNF(3),LALLOC(3,2),ISGN(MAXNDIM)
+	INTEGER I,J,K,N,N1,IV,I1,ISTAT,NSP,ICODE,NIT
+	REAL*8 X,VMM(2,MAXNDIM),VFAC(MAXNDIM),PNVFAC(3),POWMAX1,TDLDXY(2)
+	LOGICAL STRINGPERM
+	INTEGER CHARACPOS
+	REAL*8 FLOT1
+	
+	CALL CPUTIM('LSRRDFL',1)
+	NTYPE=0
+	NDIM=0
+	LTDEF(1)=.FALSE.
+	LTDEF(2)=.FALSE.
+	POWMAX=1
+100	CALL NXTITM(IFL,TEXT,NC,IRTN)
+	IF(IRTN.LT.0) THEN         !  error
+	  GOTO 904
+	ELSEIF(IRTN.EQ.4) THEN     !  end-of-file
+	  GOTO 400
+	ELSEIF(IRTN.EQ.1) THEN     !  normal string
+	  IF(TEXT(1:NC).EQ.'ORDER') THEN
+	    IF(NTYPE.GE.2) GOTO 910    !  only up to 2 types (long.+trans.)
+	    IF(NTYPE.GE.1) THEN
+	      CALL CHKDEFLSR(LSRDT(NTYPE,LSR),ITYPE,NDIM,DONE,DONEPNF,
+     %        ND,VMM,ISGN,VFAC,PNVFAC,SHIFTTZ,WLLSR(LSR),
+     %        LSRRNG(1,0,LSR),ZETAMAX(LSR),TDL(1:2,LSR),POWMAX1,
+     %        MSGFL,MSGDEST,MSGLVL,IRTN)
+	      IF(IRTN.NE.0) GOTO 914
+	      POWMAX=POWMAX*POWMAX1
+	    ENDIF
+	    NTYPE=NTYPE+1
+	    CALL NXTITM(IFL,TEXT,NC,IRTN)
+	    IF(IRTN.NE.0) GOTO 920
+	    ITYPE=0
+	    DO J=1,MAXTABTYPE
+	      IF(STRINGPERM(TEXT(1:NC),TABTYPE(J)(1:NCTABTYPE(J)),IDV)) 
+     %                      THEN
+	        ITYPE=J
+	        EXIT
+	      ENDIF
+          ENDDO
+          IF(ITYPE.EQ.0) GOTO 920
+	    IF(ITYPE.EQ.TYPEL) THEN
+		    IF(LTDEF(1)) GOTO 960
+	      LTDEF(1)=.TRUE.
+	    ELSEIF(ITYPE.EQ.TYPEXYZ.OR.ITYPE.EQ.TYPERZ
+     %                             .OR.ITYPE.EQ.TYPEXY) THEN
+	      IF(LTDEF(2)) GOTO 960
+	      LTDEF(2)=.TRUE.
+	    ELSEIF(ITYPE.EQ.TYPELXYZ.OR.ITYPE.EQ.TYPELRZ) THEN
+	      IF(LTDEF(1).OR.LTDEF(2)) GOTO 960
+	      LTDEF(1)=.TRUE.
+	      LTDEF(2)=.TRUE.
+	    ELSE
+C               should not come here
+	    ENDIF
+          NDIM=NC
+	    DO I=1,NDIM
+	      VFAC(I)=1
+	      DONE(I)=0
+          ENDDO
+          DO I=1,3    !   P and N and F
+	      DONEPNF(I)=0
+	      PNVFAC(I)=1
+	      LALLOC(I,NTYPE)=0
+          ENDDO
+	    NSP=NDIMTRANS(ITYPE)+1
+	    GOTO 100
+	  ELSEIF(NC.EQ.1) THEN
+	    IF(NTYPE.EQ.0) GOTO 957
+C   Define the range of independent variable
+	    IV=CHARACPOS(TEXT(1:NC),TABTYPE(ITYPE)(1:NCTABTYPE(ITYPE)))
+	    IF(IV.NE.0) THEN  ! character agree with one of the character in ORDER
+	      IF(DONE(IV).NE.0) GOTO 928
+	      DO I=1,3        !  expect 3 numbers to follow (ini, fin, npoint)
+	        CALL NXTITM(IFL,TEXT,NC,IRTN)
+	        IF(IRTN.NE.0) GOTO 932
+	        X=FLOT1(TEXT(1:NC),NC,IRTN)
+	        IF(IRTN.NE.0) GOTO 932
+	        IF(I.LE.2) THEN
+	          VMM(I,IV)=X
+	        ELSE
+	          ND(IV)=NINT(X)
+	        ENDIF
+            ENDDO
+            IF(VMM(1,IV).EQ.VMM(2,IV).OR.ND(IV).LE.1) GOTO 974
+            DONE(IV)=1
+	      ISGN(IV)=1
+	      IF(VMM(2,IV).LT.VMM(1,IV)) ISGN(IV)=-1
+	      GOTO 100
+	    ENDIF
+C   Store the function data
+          IV=CHARACPOS(TEXT(1:NC),'PNF')
+          IF(IV.NE.0) THEN    !  either 'P' or 'N' or 'F'
+	      IF((ITYPE.EQ.TYPEL.OR.ITYPE.EQ.TYPEXY).AND.IV.EQ.2) GOTO 964
+	      IF(ITYPE.NE.TYPEXY.AND.IV.EQ.3) GOTO 967
+	      IF(DONEPNF(IV).NE.0) GOTO 928
+	      N=1
+	      DO I=1,NDIM
+	        IF(DONE(I).EQ.0) GOTO 936
+	        N=N*ND(I)
+            ENDDO     !   N: expected total number of data
+            IF(IV.EQ.1) THEN
+              ALLOCATE(LSRDT(NTYPE,LSR)%PTP(1:N),STAT=ISTAT)
+	        IF(ISTAT.NE.0) GOTO 940
+	        LALLOC(IV,NTYPE)=1
+	      ELSEIF(IV.EQ.1) THEN
+	        ALLOCATE(LSRDT(NTYPE,LSR)%PTPNV(NSP,1:N),STAT=ISTAT)
+	        IF(ISTAT.NE.0) GOTO 940
+	        LALLOC(IV,NTYPE)=1
+	      ELSEIF(IV.EQ.3) THEN
+	        ALLOCATE(LSRDT(NTYPE,LSR)%PTF(1:N),STAT=ISTAT)
+	        IF(ISTAT.NE.0) GOTO 940
+	        LALLOC(IV,NTYPE)=1
+	      ENDIF
+	      ID(IDV(1:NDIM))=0
+	      ID(IDV(1))=-1
+	      DO 320 I=1,N
+	        I1=0
+	        IF(IV.EQ.2) I1=MOD(I-1,NSP)
+	        IF(I1.EQ.0) THEN
+	          DO K=1,NDIM
+	            ID(IDV(K))=ID(IDV(K))+1
+	            IF(ID(IDV(K)).GE.ND(IDV(K))) THEN
+	              IF(K.EQ.NDIM) GOTO 944
+c	print *,' K=',k,' NDIM=',ndim,'  IDV(K)=',idv(k)
+c	print *,' ND(IDV(K))=',ND(IDV(K)),' ID(IDV(K))=',ID(IDV(K))
+c	  K=           2  NDIM=           2   IDV(K)=           2
+c	  ND(IDV(K))=         256  ID(IDV(K))=         256
+	              ID(IDV(K))=0
+	            ELSE
+	              EXIT
+	            ENDIF
+                ENDDO
+              ENDIF
+	        CALL NXTITM(IFL,TEXT,NC,IRTN)
+	        IF(IRTN.NE.0) GOTO 932
+	        X=FLOT1(TEXT(1:NC),NC,IRTN)
+	        IF(IRTN.NE.0) GOTO 932
+	        N1=0
+	        DO K=NDIM,1,-1
+	          IF(ISGN(K).GT.0) THEN
+	            N1=N1*ND(K)+ID(K)
+	          ELSE
+C                  invert the order of storage if interval<0
+	            N1=N1*ND(K)+ND(K)-ID(K)-1
+	          ENDIF
+              ENDDO
+	        IF(IV.EQ.1) THEN
+	          LSRDT(NTYPE,LSR)%PTP(N1+1)=X
+	        ELSEIF(IV.EQ.2) THEN
+	          LSRDT(NTYPE,LSR)%PTPNV(I1+1,N1)=X
+	        ELSEIF(IV.EQ.3) THEN
+	          LSRDT(NTYPE,LSR)%PTF(N1+1)=X
+	        ENDIF
+320         CONTINUE
+            DONEPNF(IV)=1
+            GOTO 100
+	    ENDIF
+	    GOTO 924
+	  ELSEIF(NC.EQ.4.AND.TEXT(2:4).EQ.'FAC') THEN
+	    IF(NTYPE.EQ.0) GOTO 957
+			IF(DONEPNF(1).NE.0.OR.DONEPNF(2).NE.0.OR.DONEPNF(3).NE.0)
+     %            GOTO 970
+	    IV=CHARACPOS(TEXT(1:1),TABTYPE(ITYPE)(1:NCTABTYPE(ITYPE)))
+	    IF(IV.NE.0) THEN
+	      CALL NXTITM(IFL,TEXT,NC,IRTN)
+	      IF(IRTN.NE.0) GOTO 932
+	      X=FLOT1(TEXT(1:NC),NC,IRTN)
+	      IF(IRTN.NE.0) GOTO 932
+	      VFAC(IV)=X*VFAC(IV)
+	      IF(X.LT.0) ISGN(IV)=-ISGN(IV)
+	      GOTO 100
+	    ENDIF
+	    IV=CHARACPOS(TEXT(1:1),'PNF')
+C                IV can be 1(P) or 2(N) or 3(F) or 0 (other nonblank character)
+	    IF(IV.NE.0) THEN
+	      CALL NXTITM(IFL,TEXT,NC,IRTN)
+	      IF(IRTN.NE.0) GOTO 932
+	      X=FLOT1(TEXT(1:NC),NC,IRTN)
+	      IF(IRTN.NE.0) GOTO 932
+	      PNVFAC(IV)=X*PNVFAC(IV)
+	      GOTO 100
+	    ENDIF
+	    GOTO 950
+	  ELSE
+	    GOTO 952
+	  ENDIF
+	ELSE
+	  X=FLOT1(TEXT(1:NC),NC,IRTN)
+	  IF(IRTN.NE.0) GOTO 952
+	  GOTO 954
+	ENDIF
+C              should not come here
+	GOTO 100
+400   CALL CHKDEFLSR(LSRDT(NTYPE,LSR),ITYPE,NDIM,DONE,DONEPNF,ND,VMM,
+     %     ISGN,VFAC,PNVFAC,SHIFTTZ,WLLSR(LSR),LSRRNG(1,0,LSR),
+     %     ZETAMAX(LSR),TDL(1:2,LSR),POWMAX1,MSGFL,MSGDEST,MSGLVL,IRTN)
+	IF(IRTN.NE.0) GOTO 980
+	POWMAX=POWMAX*POWMAX1
+	NLSRFL(LSR)=NTYPE
+	IF(TDL(1,LSR).GT.1D0.OR.TDL(2,LSR).GT.1D0) THEN
+	  DO I=1,NTYPE
+	    ITYPE=LSRDT(I,LSR)%ITYPE
+	    IF(ITYPE.EQ.TYPEXYZ.OR.ITYPE.EQ.TYPERZ.OR.ITYPE.EQ.TYPELXYZ
+     %      .OR.ITYPE.EQ.TYPELRZ) THEN
+C                  TYPEXY does not come here
+	      CALL LSRFLTDL(LSRDT(I,LSR),TDL(1:2,LSR),WLLSR(LSR),TDLDXY,
+     %        NIT,IRTN)
+	      IF(IRTN.NE.0) GOTO 980
+		    IF(MSGLVL.GE.1) THEN
+	        WRITE(MSGFL,420) TDLDXY(1:NIT)
+420           FORMAT(' ---- TDL dilution included. Rms shift= ',
+     %          1P2D12.4,'(m)')
+		      CALL PRTLSRDT(LSRDT(I,LSR),MSGFL,MSGDEST)
+	      ENDIF
+	    ENDIF
+	  ENDDO
+	ENDIF
+	IRTN=0
+	GOTO 990
+
+904	IF(IRTN.EQ.-1) THEN
+	  IRTN=105
+	  WRITE(MSGFL,905) TEXT(1:NC)
+905     FORMAT(' (SUBR.LSRRDFL) too long token ',A)
+      ELSE
+	  IRTN=106
+	  WRITE(MSGFL,906)
+906     FORMAT(' (SUBR.LSRRDFL) unpaired parenthesis.')
+	ENDIF
+	GOTO 980
+910	IRTN=112
+	WRITE(MSGFL,912)
+912   FORMAT(' (SUBR.LSRRDFL) Too many ORDER parameters.')
+	GOTO 980
+914	IRTN=116
+	WRITE(MSGFL,916)
+916   FORMAT(' (SUBR.LSRRDFL) File data insufficient.')
+	GOTO 980
+920	IRTN=122
+	WRITE(MSGFL,922)
+922   FORMAT(' (SUBR.LSRRDFL) Invalid data following ORDER parameter.')
+	GOTO 980
+924	IRTN=126
+	WRITE(MSGFL,926) TEXT(1:NC)
+926   FORMAT(' (SUBR.LSRRDFL) Invalid data "',A,'=" ')
+	GOTO 980
+928	IRTN=130
+	WRITE(MSGFL,930) TEXT(1:NC)
+930   FORMAT(' (SUBR.LSRRDFL) Variable "',A,'" defined twice.')
+	GOTO 980
+932	IRTN=134
+	WRITE(MSGFL,934) TEXT(1:NC)
+934   FORMAT(' (SUBR.LSRRDFL) A numerical data expected at "',A,'"')
+	GOTO 980
+936	IRTN=138
+	WRITE(MSGFL,938) TEXT(1:NC)
+938   FORMAT(' (SUBR.LSRRDFL) "',A,'=" before all variables defined.')
+	GOTO 980
+940	IRTN=142
+	WRITE(MSGFL,942) 8*N
+942   FORMAT(' (SUBR.LSRRDFL) Memory allocation for laser data failed.',
+     %   /,'      ',I10,' bytes needed.')
+	GOTO 980
+944	IRTN=146
+	WRITE(MSGFL,945)
+945   FORMAT(' (SUBR.LSRRDFL) Too many numerical data.')
+      write(msgfl,946) 
+     %   iv,n,i,ndim,(idv(i1),id(idv(i1)),i1=1,k),nd(idv(i1))
+946   format(' IV=',i1,' N=',i8,' I=',i8,' NDIM=',i1,/,
+     %   (' K=',i1,'  IDV(K)=',i4,' ID(IDV(K))=',i4,' ND(IDV(K))=',i4))
+	GOTO 980
+950	IRTN=151
+	WRITE(MSGFL,951) TEXT(1:NC)
+951   FORMAT(' (SUBR.LSRRDFL) Wrong *FAC item "',A,'"')
+	GOTO 980
+952	IRTN=153
+	WRITE(MSGFL,953) TEXT(1:NC)
+953   FORMAT(' (SUBR.LSRRDFL) Wrong character string "',A,'"')
+	GOTO 980
+954	IRTN=155
+	WRITE(MSGFL,955) TEXT(1:NC)
+955   FORMAT(' (SUBR.LSRRDFL) Extra numerical data "',A,'"')
+	GOTO 980
+957	IRTN=158
+	WRITE(MSGFL,958) TEXT(1:NC)
+958   FORMAT(' (SUBR.LSRRDFL) Wrong data "',A,'". ',
+     %     'ORDER must come first.')
+	GOTO 980
+960	IRTN=162
+	WRITE(MSGFL,962)
+962   FORMAT(' (SUBR.LSRRDFL) Two ODDER params inconsistent.')
+	GOTO 980
+964	IRTN=166
+	WRITE(MSGFL,966)
+966   FORMAT(' (SUBR.LSRRDFL) N cannot be defined or ORDER=L or XY.')
+	GOTO 980
+967	IRTN=167
+	WRITE(MSGFL,968)
+968   FORMAT(' (SUBR.LSRRDFL) F cannot defined only for ORDER=XY.')
+	GOTO 980
+970	IRTN=172
+	WRITE(MSGFL,972) TEXT(1:NC)
+972   FORMAT(' (SUBR.LSRRDFL) ',A,'= must be defined before P= and N=',
+     %   ' and F=')
+	GOTO 980
+974	IRTN=176
+	WRITE(MSGFL,976) TABTYPE(ITYPE)(IV:IV)
+976   FORMAT(' (SUBR.LSRRDFL) Invalid variable range for ',A,'.')
+	GOTO 980
+
+980   NLSRFL(LSR)=0
+	IF(NTYPE.GE.1) THEN
+	  DO I=1,NTYPE
+	    IF(LALLOC(1,I).NE.0) DEALLOCATE(LSRDT(I,LSR)%PTP,STAT=ISTAT)
+          IF(LALLOC(2,I).NE.0) DEALLOCATE(LSRDT(I,LSR)%PTPNV,STAT=ISTAT)
+        ENDDO
+	ENDIF
+	
+990	CALL CPUTIM('LSRRDFL',2)
+	RETURN
+	END
+
+	SUBROUTINE FREELSRDT(LSR)
+C  Deallocate the memory for laser data for LSR-th laser
+C   (all if LSR=0)
+	USE LASRDATA
+	IMPLICIT NONE
+	INTEGER LSR
+	INCLUDE 'include/lasrcm.h'
+	INTEGER L,L1,L2,I,ISTAT
+	IF(NLSR.LE.0) RETURN
+	IF(LSR.LT.0.OR.LSR.GT.NLSR) RETURN
+	IF(LSR.EQ.0) THEN
+	  L1=1
+	  L2=NLSR
+	ELSE
+	  L1=LSR
+	  L2=LSR
+	ENDIF
+	DO 200 L=L1,L2
+	  IF(NLSRFL(L).GE.1) THEN
+	    DO 180 I=1,NLSRFL(L)
+	      DEALLOCATE(LSRDT(I,L)%PTP,STAT=ISTAT)
+	      IF(LSRDT(I,L)%FDEFINED)
+     %            DEALLOCATE(LSRDT(I,L)%PTF,STAT=ISTAT)
+	      IF(LSRDT(I,L)%NVDEFINED)
+     %            DEALLOCATE(LSRDT(I,L)%PTPNV,STAT=ISTAT)
+180       CONTINUE
+          NLSRFL(L)=0
+        ENDIF
+200   CONTINUE
+	RETURN
+	END
+
+	SUBROUTINE CHKDEFLSR(LSRDT1,ITYPE,NDIM,DONE,DONEPNF,
+     %    ND,VMM,ISGN,VFAC,PNVFAC,SHIFTTZ,WL,RANGE,ZMAX,TDL,PMAX,
+     %    MSGFL,MSGDEST,MSGLVL,IRTN)
+C  Check the consistensity of laser data already read in
+C  and store the variables into LSRDT1 (type(LASERDATA))
+	USE LASRDATA
+	IMPLICIT NONE
+C	INCLUDE 'include/lasrcm4.h'
+	TYPE(LASERDATA) LSRDT1
+	INTEGER ITYPE,NDIM,DONE(NDIM),DONEPNF(3),ND(NDIM),
+     %   ISGN(NDIM),MSGFL,MSGDEST,MSGLVL,IRTN
+	REAL*8 VMM(2,NDIM),VFAC(NDIM),PNVFAC(3),SHIFTTZ(2),WL,
+     %   RANGE(2,0:3),ZMAX,TDL(2),PMAX
+	INTEGER I,N,K
+	CHARACTER*1 CH
+	
+	DO 200 I=1,NDIM
+	  IF(DONE(I).EQ.0) GOTO 900
+200   CONTINUE
+	IF(DONEPNF(1).EQ.0) GOTO 910
+	IF(ITYPE.EQ.TYPEXY.AND.DONEPNF(3).EQ.0) GOTO 920
+	LSRDT1%ITYPE=ITYPE
+	LSRDT1%NDIM=NDIM
+	LSRDT1%TWISTCOORD=.FALSE.
+	N=1
+	DO I=1,NDIM
+	  IF(ISGN(I).GT.0) THEN
+	    LSRDT1%VALMM(1,I)=VMM(1,I)*VFAC(I)
+	    LSRDT1%VALMM(2,I)=VMM(2,I)*VFAC(I)
+	  ELSE
+	    LSRDT1%VALMM(1,I)=VMM(2,I)*VFAC(I)
+	    LSRDT1%VALMM(2,I)=VMM(1,I)*VFAC(I)
+	  ENDIF
+	  LSRDT1%DVAL(I)
+     %      =ISGN(I)*(VMM(2,I)-VMM(1,I))/(ND(I)-1)*VFAC(I)
+		if(LSRDT1%DVAL(I).lt.0)
+     %        stop 'program error in lsrrdfl.f'
+	  LSRDT1%NVAL(I)=ND(I)
+	  N=N*ND(I)
+	  CH=TABTYPE(ITYPE)(I:I)
+	  IF(CH.EQ.'R') THEN
+	    RANGE(1,1)=-MAX(LSRDT1%VALMM(1,I),LSRDT1%VALMM(2,I))
+	    RANGE(2,1)=+MAX(LSRDT1%VALMM(1,I),LSRDT1%VALMM(2,I))
+	    RANGE(1,2)=RANGE(1,1)
+	    RANGE(2,2)=RANGE(2,1)
+	  ELSE
+	    IF(CH.EQ.'L') THEN
+	      K=0
+	      LSRDT1%VALMM(1,I)=LSRDT1%VALMM(1,I)+SHIFTTZ(1)-SHIFTTZ(2)
+	      LSRDT1%VALMM(2,I)=LSRDT1%VALMM(2,I)+SHIFTTZ(1)-SHIFTTZ(2)
+	    ELSEIF(CH.EQ.'X') THEN
+	      K=1
+	    ELSEIF(CH.EQ.'Y') THEN
+	      K=2
+	    ELSEIF(CH.EQ.'Z') THEN
+	      K=3
+	      LSRDT1%VALMM(1,I)=LSRDT1%VALMM(1,I)+SHIFTTZ(2)
+	      LSRDT1%VALMM(2,I)=LSRDT1%VALMM(2,I)+SHIFTTZ(2)
+	    ENDIF
+	    RANGE(1,K)=MIN(LSRDT1%VALMM(1,I),LSRDT1%VALMM(2,I))
+	    RANGE(2,K)=MAX(LSRDT1%VALMM(1,I),LSRDT1%VALMM(2,I))
+C           Note that RANGE(*,3) is still undefined for ORDER=XY
+C           if not defined before calling this routine.
+	  ENDIF
+      ENDDO
+	LSRDT1%NDATA=N
+	IF(PNVFAC(1).NE.1) THEN
+	  LSRDT1%PTP(1:N)=LSRDT1%PTP(1:N)*PNVFAC(1)
+	ENDIF
+	IF(ITYPE.NE.TYPEL.AND.DONEPNF(2).NE.0.AND.PNVFAC(2).NE.1) THEN
+	  DO K=1,NDIMTRANS(LSRDT1%ITYPE)+1
+	    LSRDT1%PTPNV(K,1:N)=LSRDT1%PTPNV(K,1:N)*PNVFAC(2)
+        ENDDO
+	ENDIF
+      IF(ITYPE.EQ.TYPEXY.AND.PNVFAC(3).NE.1) THEN
+	  LSRDT1%PTF(1:N)=LSRDT1%PTF(1:N)*PNVFAC(3)
+	ENDIF
+	LSRDT1%NVDEFINED=DONEPNF(2).NE.0
+	LSRDT1%FDEFINED=DONEPNF(3).NE.0
+
+	IF(MSGLVL.GE.1) CALL PRTLSRDT(LSRDT1,MSGFL,MSGDEST)
+
+	IF(ITYPE.EQ.TYPEXY) THEN
+C      Convert TYPEXY into TYPEXYZ
+	  IF(ZMAX.LE.0) GOTO 930
+	  CALL LSRPROP(LSRDT1,SHIFTTZ(2),WL,RANGE,ZMAX,TDL,IRTN)
+	  IF(IRTN.NE.0) GOTO 990
+	  IF(MSGLVL.GE.1) THEN
+	    WRITE(MSGFL,400)
+400       FORMAT(' ---- Type XY converted to type XYZ ---')
+		  CALL PRTLSRDT(LSRDT1,MSGFL,MSGDEST)
+	  ENDIF
+	ENDIF
+	PMAX=0
+	DO I=1,LSRDT1%NDATA
+	  PMAX=MAX(PMAX,LSRDT1%PTP(I))
+	ENDDO
+
+	IRTN=0
+	RETURN
+900   IRTN=1
+	WRITE(MSGFL,905)
+905   FORMAT(' Range of a variable undefined.')
+      GOTO 990
+910   IRTN=2
+	WRITE(MSGFL,915)
+915   FORMAT(' Power density missing.')
+	GOTO 990
+920   IRTN=3
+	WRITE(MSGFL,925)
+925   FORMAT(' Phase data missing.')
+	GOTO 990
+930   IRTN=4
+	WRITE(MSGFL,935)
+935   FORMAT(' ZMAX must be defined in the LASER command when the ',/,
+     % ' file data uses ORDER=XY format.')
+	GOTO 990
+990   RETURN
+	END
+	
+	FUNCTION CHARACPOS(C,A)
+	IMPLICIT NONE
+	INTEGER CHARACPOS
+	CHARACTER*1 C
+	CHARACTER*(*) A
+	INTEGER N,I
+	N=LEN(A)
+	CHARACPOS=0
+	IF(N.GE.1) THEN
+	  DO 100 I=1,N
+	    IF(C.EQ.A(I:I)) THEN
+	      CHARACPOS=I
+	      RETURN
+	    ENDIF
+100     CONTINUE
+	ENDIF
+	RETURN
+	END
+
+	FUNCTION STRINGPERM(A,B,ID)
+C   n-th character of A is ID(n)-th character of B.
+	IMPLICIT NONE
+	LOGICAL STRINGPERM
+	CHARACTER*(*) A,B
+	INTEGER ID(*)
+	INTEGER M,N,I,J
+	M=LEN(A)
+	N=LEN(B)
+	STRINGPERM=.FALSE.
+	IF(M.NE.N) RETURN
+	DO 100 I=1,N
+	  ID(I)=0
+100   CONTINUE
+	DO 200 I=1,N
+	  DO 160 J=1,N
+	    IF(A(I:I).EQ.B(J:J)) THEN
+	      IF(ID(I).NE.0) RETURN
+	      ID(I)=J
+	      GOTO 200
+	    ENDIF
+160     CONTINUE
+        RETURN
+200   CONTINUE
+	STRINGPERM=.TRUE.
+	RETURN
+	END
+
+	SUBROUTINE NXTITM(IFL,TEXT,NC,IRTN)
+C   Find the next item in the file IFL and classify it.
+C   IRTN=0 :  normal string TEXT(1:NC)  (alpha_numerical, '+', '-', '.')
+C        1 :  string TEXT(1:NC) followed by '=' (does not include '=')
+C        2 :  string TEXT(1:NC) in pair of parens. (does not include '(',')')
+C        4 :  end-of-file
+C       -1 :  buffer TEXT too short
+C       -2 :  invalid data format
+C                unpaired paren
+C   * Data after '!' to the end of line is ignored.
+C   * Line-feed treated as ' '
+	IMPLICIT NONE
+	INTEGER IFL,NC,IRTN
+	CHARACTER*(*) TEXT
+	INTEGER MAXTOKENLEN
+	PARAMETER (MAXTOKENLEN=100)
+	CHARACTER*(MAXTOKENLEN) TEXT0,TEXT1
+	INTEGER MC,NC0,NC1,TYPE0,TYPE1
+	LOGICAL PEND/.FALSE./,PAREN,COMMENT
+	INTEGER LASTTYPE
+	SAVE PEND,TYPE0,TEXT0,NC0
+
+	MC=LEN(TEXT)
+	NC=0
+	PAREN=.FALSE.
+	COMMENT=.FALSE.
+100	IF(PEND) THEN
+	  PEND=.FALSE.
+	ELSE
+	  CALL NXTTKN(IFL,TEXT0,NC0,TYPE0)
+	ENDIF
+	IF(COMMENT) THEN
+	  IF(TYPE0.EQ.3) COMMENT=.FALSE.
+	  IF(TYPE0.NE.4) GOTO 100
+	ENDIF
+	IF(TYPE0.EQ.1.OR.TYPE0.EQ.3) GOTO 100
+	IF(TYPE0.LT.0.OR.TYPE0.EQ.4) THEN
+	  IRTN=TYPE0
+	  GOTO 900
+	ENDIF
+	NC=MIN(MC,NC0)
+	TEXT=TEXT0(1:NC)
+	IF(MC.LT.NC0) THEN
+	  IRTN=-1
+	  GOTO 900
+	ENDIF
+	IF(TYPE0.EQ.2) THEN
+	  IF(TEXT0(1:NC0).EQ.'!') THEN
+	    COMMENT=.TRUE.
+	    GOTO 100
+	  ELSEIF(TEXT0(1:NC0).EQ.'('.AND..NOT.PAREN) THEN
+	    PAREN=.TRUE.
+	    GOTO 100
+	  ELSEIF(TEXT0(1:NC0).EQ.',') THEN
+	    GOTO 100
+	  ELSE
+	    IRTN=-2
+	    GOTO 900
+	  ENDIF
+	ENDIF
+200	CALL NXTTKN(IFL,TEXT1,NC1,TYPE1)
+	IF(COMMENT) THEN
+	  IF(TYPE1.NE.3.AND.TYPE1.NE.4) GOTO 200
+	ENDIF
+	IF(TYPE1.LT.0) THEN
+	  IRTN=TYPE1
+	  GOTO 900
+	ELSEIF(TYPE1.EQ.1) THEN
+	  GOTO 200
+	ELSEIF(TYPE1.EQ.3) THEN
+	  COMMENT=.FALSE.
+	  GOTO 200
+	ELSEIF(TYPE1.EQ.4) THEN
+	  IF(PAREN) THEN
+	    IRTN=-2
+	  ELSE
+	    IRTN=0
+	    PEND=.TRUE.
+	    TYPE0=TYPE1
+	  ENDIF
+	  GOTO 900
+	ELSEIF(TYPE1.EQ.0) THEN
+	  IF(PAREN) THEN
+	    IRTN=-2
+	  ELSE
+	    IRTN=0
+	    PEND=.TRUE.
+	    TYPE0=TYPE1
+	    TEXT0=TEXT1
+	    NC0=NC1
+	  ENDIF
+	  GOTO 900
+	ELSE
+C          case next token = special character
+        IF(TEXT1(1:NC1).EQ.'!') THEN
+	    COMMENT=.TRUE.
+	    GOTO 200
+	  ELSEIF(PAREN) THEN
+	    IF(TEXT1(1:NC1).EQ.')') THEN
+	      IRTN=2
+	    ELSE
+	      IRTN=-2
+	    ENDIF
+	  ELSE
+	    IF(TEXT1(1:NC1).EQ.'=') THEN
+	      IRTN=1
+	    ELSEIF(TEXT1(1:NC1).EQ.'(') THEN
+	      IRTN=0
+	      PEND=.TRUE.
+	      TYPE0=TYPE1
+	      TEXT0=TEXT1
+	      NC0=NC1
+	    ELSEIF(TEXT1(1:NC1).EQ.',') THEN
+	      IRTN=0
+	    ELSE
+	      IRTN=-2
+	    ENDIF
+	  ENDIF
+	  GOTO 900
+	ENDIF
+	IRTN=-2
+900	IF(NC.GT.0) CALL TOUPPER(TEXT(1:NC))
+	RETURN
+	END
+	    
+	SUBROUTINE NXTTKN(IFL,TOKEN,NC,IRTN)
+C  Definition of a token
+C     (0) alpha-numerical string delimited by non-alpha-nummerical characters
+C         and/or by end-of-file, end-of-record, beginning-of-record.
+C         Here, "alpha-nummerical character" includes '+' and '-' and '.'
+C             TEXT(1:NC) will contain the string
+C     (1) one or more than 1 blanck characters delimited by non-blanck 
+C         characters and/or by end-of-file, end-of-record, beginning-of-record.
+C             TEXT(1:NC) will contain the blanck string
+C     (2) one non-alpha-nummerical and non-blanck  character
+C             TEXT(1:NC) (NC=1) will contain the character
+C     (3) end-of-record
+C     (4) end-of-file
+C  The numbers in () are returned as IRTN
+C  IRTN=-1 if the token is longer than LEN(TOKEN)
+	IMPLICIT NONE
+	INTEGER IFL,NC,IRTN
+	CHARACTER*(*) TOKEN
+	INTEGER TYPE2,TYPE1,MC
+	CHARACTER*1 CH
+	CHARACTER*1 EOR/Z'0A'/,EOF/Z'00'/
+	LOGICAL PEND/.FALSE./
+	CHARACTER*1 LASTCH
+	SAVE PEND,LASTCH
+	
+	MC=LEN(TOKEN)
+	TYPE1=-1
+	NC=0
+100	IF(PEND) THEN
+	  CH=LASTCH
+	  PEND=.FALSE.
+	  IRTN=0
+	ELSE
+	  CALL NXTCHR(IFL,CH,IRTN)
+	  IF(IRTN.EQ.1) THEN
+	    CH=EOR
+	  ELSEIF(IRTN.EQ.2) THEN
+	    CH=EOF
+	  ENDIF
+	ENDIF
+	IF(CH.EQ.EOR) THEN
+	  TYPE2=3
+	ELSEIF(CH.EQ.EOF) THEN
+	  TYPE2=4
+	ELSEIF((CH.GE.'A'.AND.CH.LE.'Z').OR.(CH.GE.'a'.AND.CH.LE.'z').OR.
+     %   (CH.GE.'0'.AND.CH.LE.'9').OR.CH.EQ.'+'.OR.CH.EQ.'-'
+     %    .OR.CH.EQ.'.') THEN
+	  TYPE2=0
+	ELSEIF(CH.EQ.' ') THEN
+	  TYPE2=1
+	ELSE
+	  TYPE2=2
+	ENDIF
+	IF(TYPE1.LT.0) TYPE1=TYPE2
+	IF(TYPE2.NE.TYPE1) THEN
+	  PEND=.TRUE.
+	  LASTCH=CH
+	  IRTN=TYPE1
+	  RETURN
+	ENDIF
+	NC=NC+1
+	IF(NC.GT.MC) THEN
+	  IRTN=-1
+	  RETURN
+	ENDIF
+	TOKEN(NC:NC)=CH
+	IF(TYPE2.GE.2) THEN
+	  IRTN=TYPE2
+	  RETURN
+	ENDIF
+	GOTO 100
+	END
+
+	SUBROUTINE NXTCHR(IFL,CH,IRTN)
+C   Get next character
+C      IRTN=0:  normal,  1: line-feed,  2: end-of-file
+	IMPLICIT NONE
+	INTEGER IFL,IRTN
+	CHARACTER*(1) CH
+	INTEGER READLENGTH
+	PARAMETER (READLENGTH=10)
+C       Number of characters to read in one READ statement.
+C       Line length in the file is arbitrary
+	CHARACTER*(READLENGTH+1) TEXT
+	INTEGER IOS,I
+	LOGICAL EOR/.FALSE./
+	INTEGER NC1/0/,NC2/0/
+	SAVE TEXT,NC1,NC2,EOR
+C       NC2:  number of characters stored in TEXT.
+C       NC1:  number of characters already read.
+C       EOR:  .FALSE. if TEXT still continues to the next read
+	
+100	IF(NC1.GE.NC2) THEN
+	  IF(EOR) THEN
+	    IRTN=1
+	    EOR=.FALSE.
+	    RETURN
+	  ENDIF
+200	  READ(IFL,'(A)',ADVANCE='NO',SIZE=NC2,IOSTAT=IOS,END=400)
+     %            TEXT(1:READLENGTH)
+	  EOR=IOS.LT.0
+	  IF(NC2.LE.0) GOTO 100
+	  NC1=0
+	ENDIF
+	NC1=NC1+1
+	CH=TEXT(NC1:NC1)
+	IRTN=0
+	RETURN
+400	IRTN=2
+	RETURN
+	END

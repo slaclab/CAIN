@@ -1,0 +1,158 @@
+      SUBROUTINE INITLZ(IRTN)
+C      Note that "print *" and write(6)" does not work in this routine
+C      on Windows because console is defined later
+	USE FLCHTYP
+	USE READMOD
+	USE BEAMCM
+	USE BBCOM
+	USE LUMCOM
+	USE MATCHMOD
+	USE LASRDATA
+      IMPLICIT NONE
+      INTEGER IRTN
+      INCLUDE 'include/ctrlcm.h'
+      INCLUDE 'include/ctrlcm2.h'
+      INCLUDE 'include/ctrlcm3.h'
+	INCLUDE 'include/cmdnam.h'
+C      INCLUDE 'include/beamcm.h'
+      INCLUDE 'include/tstpcm.h'
+      INCLUDE 'include/lasrcm.h'
+C      INCLUDE 'include/lumcom.h'
+C      INCLUDE 'include/bbcom.h'
+      INCLUDE 'include/cfqedcm.h'
+      INCLUDE 'include/extfcm.h'
+      INCLUDE 'include/headcm.h'
+C	INCLUDE 'include/readcm.h'
+	INCLUDE 'include/transpcm.h'
+	
+      INTEGER MSPCH
+      PARAMETER (MSPCH=1)
+      CHARACTER*1 SPCH(MSPCH)/'_'/
+      INTEGER I,J,IDUMMY,IDARR
+      CHARACTER*16 NAM1
+	CHARACTER(80) ERR
+C
+      JOBTTL=' '
+      VERSION='CAIN2.42'
+	VERSIONDATE='Jun.27.2011'
+      LRAN11=1
+C       Use random number routine RAN11 (renamed RANDCAIN, in src)
+C       instead of RAND (in src/local).
+C       RAN11 is believed to be system independent so long as the
+C       compiler accepts.
+C       If you want RAND, you need to
+C         change above line as   LRAN11=0
+C         delete  rand.o in src
+C         delete  rand.o in OBJ in src/Makefile
+C         add     rand.o in OBJ in src/local/
+C         re-compile
+C       If LRAN11=1, the integer JRAND is actually used here and in
+C       the subroutine RDSET. The random number sequence is controled
+C       by other common block.
+      CALL JOBDAT(JOBTIM)
+	CALL ALLOCMEM(0,IRTN)
+	DO I=1,MMCMD
+	  DO J=LEN(CMD),1,-1
+	    IF(CMD(I)(J:J).NE.' ') THEN
+			  NCCMD(I)=J
+	      EXIT
+	    ENDIF
+	  ENDDO
+	ENDDO
+C
+      CALL SETCNST
+C
+      DO I=1,MIPAR
+        IPAR(I)=IPAR0(I)
+      ENDDO
+      IF(LRAN11.NE.0) CALL RANINI(JRAND)
+      CALL EVINIT(1,MSPCH,SPCH,MSGFL)
+      RDFL=5
+      ECHO=1
+	IDBGFLG=0
+C-- Reserved parameters
+      DO 160 I=1,MRSVP3
+        CALL EVDEFP(RSVPAR(MRSVP1+MRSVP2+I),RSVP3(I),IRTN)
+        IF(IRTN.NE.0) GOTO 900
+ 160  CONTINUE
+      DO 180 I=1,MRSVP4
+        NAM1=RSVPAR(MRSVP1+MRSVP2+MRSVP3+I)
+	  IF(NAM1(1:1).NE.'$') THEN
+          CALL EVDEFP1(NAM1,0D0,IDRSVP(I),IRTN)
+	  ELSE
+	    CALL EVDEFARR(NAM1,0,0,2,IDUMMY,0D0,IDARR,IRTN,ERR)
+	    IDRSVP(I)=IDARR
+	  ENDIF
+	  IF(IRTN.NE.0) GOTO 900
+        IF(NAM1.EQ.'T') THEN
+          IPTXYS=I
+        ELSEIF(NAM1.EQ.'En') THEN
+          IPEP=I
+        ELSEIF(NAM1.EQ.'Sx') THEN
+          IPSXYS=I
+        ELSEIF(NAM1.EQ.'Xi1') THEN
+          IPX123=I
+        ELSEIF(NAM1.EQ.'Kind') THEN
+          IPKIND=I
+        ELSEIF(NAM1.EQ.'Gen') THEN
+          IPGEN=I
+	  ELSEIF(NAM1.EQ.'Wgt') THEN
+          IPWGT=I
+	  ELSEIF(NAM1.EQ.'Incp') THEN
+          IPINCP=I
+	  ELSEIF(NAM1.EQ.'$PName') THEN
+          IPPNAME=I
+        ELSEIF(NAM1.EQ.'L0') THEN
+          IPL0=I
+        ENDIF
+ 180  CONTINUE
+C-- Predefined parameters which user can change
+      DO 200 I=1,MIPAR
+        CALL EVDEFP(IPARNM(I),DFLOAT(IPAR(I)),IRTN)
+        IF(IRTN.NE.0) GOTO 900
+ 200  CONTINUE
+      DO 220 I=1,MRPAR
+        RPAR(I)=RPAR0(I)
+        CALL EVDEFP(RPARNM(I),RPAR(I),IRTN)
+        IF(IRTN.NE.0) GOTO 900
+ 220  CONTINUE
+C-- Reserved function names
+      DO 240 I=1,MUFN
+        CALL EVDEFF(UFNAME(I),NARGUFN(I),IRTN)
+        IF(IRTN.NE.0) GOTO 900
+ 240  CONTINUE
+C-- Flags
+      DO 260 I=1,MFLAG
+        IFLAG(I)=IFLAG0(I)
+ 260  CONTINUE
+C
+      NP=0
+      NTSTP=0
+      NTSTDT=0
+      IWRNTS=0
+      NLSR=0
+      NPHCP=-1
+      NPHBW=-1
+C      CALL LUMINI(0)   ! moved to lumalloc.f
+      LBMST=0
+      LCOHP=0
+      LEXTF=0
+      LPPINT0=0
+	NSTEPTRANS=-1
+	UNDEF%L=1
+	UNDEF%X=1D60
+	UNDEF%C(1)=1
+	UNDEF%C(2)=0
+	ZERO%L=1
+	ZERO%X=0
+	ZERO%C(1)=1
+	ZERO%C(2)=0
+	IDBLMATCH=0
+C
+      RETURN
+C       Message destination 6 because MSGFL is not yet defined
+ 900  WRITE(6,905)
+ 905  FORMAT(' Something wrong in EVAL initialization.')
+      RETURN
+      END
+

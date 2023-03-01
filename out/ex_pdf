@@ -1,0 +1,16 @@
+#!/bin/sh
+######
+file=$1
+echo $file
+td -d postscr  ./$file.tdr
+#  tdr -v epsl $file.tdr
+# /usr/local/bin/pstops -w0 -h0 1:0L\(287mm,0mm\) $file.ps  > ROTATE.ps
+# /usr/local/bin/ps2pdf -g7920x6120 ROTATE.ps
+pstops -w0 -h0 1:0L\(287mm,0mm\) $file.tdr.ps > ROTATE.ps
+ps2pdf -g7920x6120 ROTATE.ps
+# pstopdf POSTSCRIPT
+mv ROTATE.pdf ./$file.pdf
+#  mv ROTATE.pdf $file.pdf
+rm -f $file.tdr.ps
+rm -f ROTATE.*
+#########

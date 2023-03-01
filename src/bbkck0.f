@@ -1,0 +1,70 @@
+      SUBROUTINE BBKCK0(NP,XY,FXY,NX,NY,DX,DY,XYMIN,MMX,MMY,
+     %   PHI,DPHI,IFLG)
+      IMPLICIT NONE
+      INTEGER NP,NX,NY,MMX,MMY,IFLG(NP)
+      REAL*8 XY(2,NP),FXY(2,NP),DX,DY,XYMIN(2),
+     %  PHI(MMX*MMY),DPHI(3,MMX*MMY)
+      INTEGER N,IX,IY,IP11,IP21,IP12,IP22
+      REAL*8 X1,Y1,PX,PY
+      REAL*8 A1X,A2X,B1X,B2X,B12X,S1X,S2X,T1X,T2X,S1XD,S2XD,T1XD,T2XD,
+     %       A1Y,A2Y,B1Y,B2Y,B12Y,S1Y,S2Y,T1Y,T2Y,S1YD,S2YD,T1YD,T2YD
+C
+      DO 500 N=1,NP
+        IF(IFLG(N).NE.0) GOTO 500
+        X1=(XY(1,N)-XYMIN(1))/DX
+        Y1=(XY(2,N)-XYMIN(2))/DY
+        IX=MAX(1,MIN(NX-1,NINT(X1)))
+        IY=MAX(1,MIN(NY-1,NINT(Y1)))
+        PX=X1-IX
+        PY=Y1-IY
+        A1X=2D0*(1D0+PX)
+        A2X=2D0*(1D0-PX)
+        A1Y=2D0*(1D0+PY)
+        A2Y=2D0*(1D0-PY)
+        B1X=PX-0.5D0
+        B2X=PX+0.5D0
+        B1Y=PY-0.5D0
+        B2Y=PY+0.5D0
+        B12X=B1X*B2X
+        B12Y=B1Y*B2Y
+        S1X=B1X*B12X
+        S2X=B2X*B12X
+        S1Y=B1Y*B12Y
+        S2Y=B2Y*B12Y
+        T1X=A1X*B1X**2
+        T2X=A2X*B2X**2
+        T1Y=A1Y*B1Y**2
+        T2Y=A2Y*B2Y**2        
+        S1XD=B12X+2D0*PX*B1X
+        S2XD=B12X+2D0*PX*B2X
+        S1YD=B12Y+2D0*PY*B1Y
+        S2YD=B12Y+2D0*PY*B2Y
+        T1XD=2D0*B1X*(A1X+B1X)
+        T2XD=2D0*B2X*(A2X-B2X)
+        T1YD=2D0*B1Y*(A1Y+B1Y)
+        T2YD=2D0*B2Y*(A2Y-B2Y)
+        IP11=IX+MMX*(IY-1)
+        IP21=IP11+1
+        IP12=IP11+MMX
+        IP22=IP12+1
+        FXY(1,N)=(
+     %     T1XD*(T1Y*PHI(IP11)+T2Y*PHI(IP12))
+     %    +T2XD*(T1Y*PHI(IP21)+T2Y*PHI(IP22))
+     %    +S1XD*(T1Y*DPHI(1,IP11)+T2Y*DPHI(1,IP12))
+     %    +S2XD*(T1Y*DPHI(1,IP21)+T2Y*DPHI(1,IP22))
+     %    +T1XD*(S1Y*DPHI(2,IP11)+S2Y*DPHI(2,IP12))
+     %    +T2XD*(S1Y*DPHI(2,IP21)+S2Y*DPHI(2,IP22))
+     %    +S1XD*(S1Y*DPHI(3,IP11)+S2Y*DPHI(3,IP12))
+     %    +S2XD*(S1Y*DPHI(3,IP21)+S2Y*DPHI(3,IP22)))/DX
+        FXY(2,N)=(
+     %     (T1X*PHI(IP11)+T2X*PHI(IP21))*T1YD
+     %    +(T1X*PHI(IP12)+T2X*PHI(IP22))*T2YD
+     %    +(S1X*DPHI(1,IP11)+S2X*DPHI(1,IP21))*T1YD
+     %    +(S1X*DPHI(1,IP12)+S2X*DPHI(1,IP22))*T2YD
+     %    +(T1X*DPHI(2,IP11)+T2X*DPHI(2,IP21))*S1YD
+     %    +(T1X*DPHI(2,IP12)+T2X*DPHI(2,IP22))*S2YD
+     %    +(S1X*DPHI(3,IP11)+S2X*DPHI(3,IP21))*S1YD
+     %    +(S1X*DPHI(3,IP12)+S2X*DPHI(3,IP22))*S2YD)/DY
+ 500  CONTINUE
+      RETURN
+      END

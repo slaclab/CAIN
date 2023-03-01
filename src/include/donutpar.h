@@ -1,0 +1,4 @@
+	REAL*8 FL,A,B,SIG0,AK,AB1,Z,R
+	COMMON/DONUTCOM/FL,A,B,SIG0,AK,AB1,Z,R
+C  AB1=A/B-1
+C  AK=2*pi/(wavelength)

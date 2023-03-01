@@ -1,0 +1,26 @@
+C  When changing this common block, don't forget to modify
+C   subroutine COPYBM in control/basic/copybm.f
+C   subroutine ADDONE on control/basic/addone.f
+	MODULE BEAMCM
+	IMPLICIT NONE
+      INTEGER MP,MPNEW,MVPH,NP,NVPH
+	  INTEGER, ALLOCATABLE::
+     %   KIND(:),GEN(:),LOST(:),ISBIN(:),IADRS(:,:),IADRSV(:),
+     %   LBBFIN(:),IWORK(:),IDVPH(:)
+      REAL*8, ALLOCATABLE :: WGT(:),TXYS(:,:),EP(:,:),SPIN(:,:),
+     %    FLD(:,:,:),WORK(:),
+     %    EPVPH(:,:),WGTVPH(:),TXYVPH(:,:)
+
+      CHARACTER*4, ALLOCATABLE:: PNAME(:)
+
+C      INTEGER KIND(MP),LOST(MP),GEN(MP),ISBIN(MP),IADRS(2,MP),IADRSV(MVPH),
+C     %   LBBFIN(MP),IWORK(MP),IDVPH(MVPH),NP,NVPH
+C      REAL*8 WGT(MP),TXYS(0:3,MP),EP(0:3,MP),SPIN(3,MP),
+C     %    FLD(3,2,MP),WORK(2*MP),WORK1(MP,2),WORK2(2,MP),
+C     %    EPVPH(0:3,MVPH),WGTVPH(MVPH),TXYVPH(0:3,MVPH)
+C      EQUIVALENCE (WORK(1),WORK1(1,1),WORK2(1,1))
+C      COMMON/BEAMCM/WGT,TXYS,EP,SPIN,FLD,WORK,EPVPH,WGTVPH,TXYVPH,
+C     %   KIND,GEN,ISBIN,IADRS,IADRSV,LBBFIN,IDVPH,NP,NVPH,IWORK
+C      CHARACTER*4 PNAME(MP)
+C      COMMON/BEAMCM2/PNAME
+	END MODULE BEAMCM

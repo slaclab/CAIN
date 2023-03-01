@@ -1,0 +1,53 @@
+Modification for the non-linear Compton scattering
+
+2020.12.27   By Tim Barklow (SLAC)
+
+NEW FILE:
+
+src/lsrqedbh.f                Linear QED Bethe-Heitler e- gamma_laser -> e- e+ e-  using virtual photons
+
+MODIFIED FILES:
+
+src/include/nlbwcm.h          PARAMETER (MMY=200,MMPH=10,MMXI=200,MMQ=410)
+src/include/nllsrcm.h         PARAMETER (MW=197000000)
+src/include/nlcpcm.h          PARAMETER (MMY=200,MMPhi=100,MMPH=10,MMXI=200,MMLM=200)
+src/include/nlbwcm.h          PARAMETER (MMY=200,MMPH=10,MMXI=200,MMQ=410)
+src/include/lasrcm.h          add   ..BH.. variables for lsrqedbh.f
+
+src/module/evlmod.f           INTEGER, PARAMETER:: MLOAD=5000
+
+src/Makefile                  add obj/readmod.o  &  obj/lsrqedbh.o
+src/vphgen.f                  fix divide by zero bug
+src/addone.f                  add additional print in case of out-of-bound array index
+src/bmfile.f                  print irtn1 in case of error return from addtstp or addone
+src/nlbwst.f                  add additional print in case of out-of-bound array index
+src/nlcpst.f                  add additional print in case of out-of-bound array index
+src/rdlasr.f                  fix print problems for keV laser photon energies
+src/initlz.f                  mods to support lsrqedbh.f
+src/rdclr.f                   mods to support lsrqedbh.f
+src/endpsh.f                  add CALL LSRQEDBH(T1,IRTN)
+src/rdlqed.f                  mods to support lsrqedbh.f
+src/vphbfl.f                  mods to support lsrqedbh.f
+src/plhist.f                  disable 2nd largest bin feature
+src/evufnchar.f               gfortran compilation: WRITE(TEXT,'(I)') -> WRITE(TEXT,'(I12)')
+src/transport.f               gfortran compilation: WRITE(MAGNAM,'(I)') -> WRITE(MAGNAM,'(I12)')
+src/lsrrdfl.f                 gfortran compilation issue with CHARACTER*1 EOR/Z'0A'/,EOF/Z'00'/
+src/deint.f                   gfortran compilation LCONV -> LCONV(NF)
+
+
+
+2021.4.22   By Toshiaki Tauchi (KEK)
+(1) In this case, the logarithm is used for x > 10.0 with xmax/xmin = 1.0D5.  
+src/nlcpgn00.f_zn_v2
+src/nlcpt0.f_zn_v2
+(2) for a case of logarithmic vertical scale
+src/lumpit0.f_08apr2021
+
+2021.3.11   By Toshiaki Tauchi (KEK)
+ to generate the non-linear Compton scattering by using the z_n variable which works even with NY=20.   Actually following three routines are modified, which are 
+src/nlcpst0.f 
+src/nlcpgen00.f
+src/nlcpcm.h
+
+
+

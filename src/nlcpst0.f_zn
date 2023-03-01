@@ -1,0 +1,130 @@
+      SUBROUTINE NLCPST0(MY,MPH,MXI,MLM,YY,XISQ,LM,
+     %   BES,FF,FINT,FALL,FALLMX,WGTCP)
+C  Create table for nonlinear Compton (circular pol)
+C  FF(1,*), FF(2,*) correspond to D1s, D2s in Tsai's paper
+C  divided by (8*Xi**2).
+      IMPLICIT NONE
+      INTEGER MY,MPH,MXI,MLM
+      REAL*8 YY(0:MY),XISQ(0:MXI),LM(0:MLM),
+     %   BES(3,MPH,0:MY,0:MXI),
+     %   FF(2,MPH,0:MY,0:MXI,0:MLM),FINT(2,MPH,0:MY,0:MXI,0:MLM),
+     %   FALL(2,0:MXI,0:MLM),FALLMX(2),WGTCP(0:MY)
+      INTEGER I,J,K,L,N
+      REAL*8 BJ,DBJ,DY,C,VMAX,V,Z,Z1,FF1,FF2
+	REAL*8 YMAX,YN,BESS1,BESS2,BESS3,LVMAX
+C
+	CALL CPUTIM('NLCPST0',1)
+      DY=1D0/MY
+CCC
+CC      print *,'MPH=',MPH
+CC	print *,'MXI=',MXI,' XISQ=',(XISQ(j),J=0,MXI)
+CC	print *,'MLM=',MLM,' LM=',(LM(L),L=0,MLM)
+CC      print *,'MY=',MY,' YY=',(YY(I),I=0,MY)
+CCC
+       DO 200 N=1,MPH
+        DO 210 J=0,MXI
+          DO 220 L=0,MLM
+            VMAX=N*LM(L)/(1D0+XISQ(J))
+		    YMAX=VMAX/(1D0+VMAX)
+		    LVMAX=LOG(1D0+VMAX)
+CC	print *,'***N,J,L=',N,J,L,' VMAX=',VMAX,' YMAX=',YMAX,' LVMAX=',LVMAX,
+CC     %	' LM=',LM(L),' XISQ=',XISQ(J)
+CC
+      IF( LM(L).NE.0) THEN
+CC    
+            DO 230 I=0,MY 
+		YN=1D0-EXP(-LVMAX*YY(I))
+CDBG		print *,'! I,J=',I,J,' YN=',YN,' YY=',YY(I),' LVMAX=',LVMAX
+CDBG     		print *,'1:N,J,L,I=',N,J,L,I,' 1-YN =',1D0-YN,
+CDBG     %     	' VMAX=',VMAX,' XISQ,YMAX=',XISQ(J),YMAX
+            IF(YN.GT.YMAX) THEN
+            print *,' SQRT()=',YN/YMAX*(1-YN/YMAX)*(1-YMAX)/(1-YN)**2
+     % 	,' YN/YMAX=',YN/YMAX,' 1/(1-YN) =',1/(1-YN)
+            YN=YMAX
+		ENDIF
+		Z=SQRT(4D0*N*N*XISQ(J)/(1D0+XISQ(J))*YN/YMAX
+     %      		*(1D0-YN/YMAX)*(1D0-YMAX)/(1D0-YN)**2)
+CC		
+		CALL BESJDJ(N,Z,BJ,DBJ)
+            BESS1=BJ**2		
+            IF(Z.NE.0) THEN
+              BESS2=2*(DBJ**2-(1D0-(N/Z)**2)*BJ**2)
+              BESS3=4D0*N/Z*BJ*DBJ
+            ELSE
+              IF(N.EQ.1) THEN
+                BESS2=1
+                BESS3=1
+              ELSE
+                BESS2=0
+                BESS3=0
+              ENDIF
+            ENDIF
+		BES(1,N,I,J)=BESS1
+		BES(2,N,I,J)=BESS2
+		BES(3,N,I,J)=BESS3
+C    BESS1=J(n)**2
+C    BESS2=J(n-1)**2+J(n+1)**2-2*J(n)**2
+C    BESS3=J(n-1)**2-J(n+1)**2
+CC
+              C=WGTCP(I)*LVMAX*EXP(-LVMAX*YY(I))/4D0
+              FF1=BESS2*(1D0-YN + 1D0/(1D0-YN))
+              IF(XISQ(J).NE.0) THEN
+                FF1=FF1-BESS1*4D0/XISQ(J)
+              ELSEIF(N.EQ.1) THEN
+                FF1=FF1-4D0*YN/YMAX*(1D0-YN/YMAX)*(1D0-YMAX)/(1D0-YN)**2
+		  ELSE
+                FF1=0D0  
+              ENDIF
+              FF2=(-1D0+YN+1D0/(1D0-YN))*( 1D0- 2D0*YN/YMAX
+     %        *(1D0-YMAX)/(1D0-YN) )*BESS3
+CDBG       print *,'FF1=',C*FF1,' FF2=',C*FF2,' N,I,J,L=',N,I,J,L,' 1-YN=',1D0-YN
+CDBG     % ,' YMAX=',YMAX,' C=',C
+CC     
+		  FF(1,N,I,J,L)=C*FF1
+              FF(2,N,I,J,L)=C*FF2
+CC
+ 230        CONTINUE
+CC
+      ELSE
+CC	
+	  DO 231 I=0,MY
+	   FF(1,N,I,J,L)=0D0
+	   FF(2,N,I,J,L)=0D0
+231     CONTINUE	  
+CC
+CC
+      ENDIF
+CC 
+ 220      CONTINUE
+ 210    CONTINUE
+ 200  CONTINUE
+CC
+      DO 500 N=1,MPH
+        DO 480 J=0,MXI
+          DO 460 L=0,MLM
+            DO 440 K=1,2
+              FINT(K,N,0,J,L)=0
+              DO 420 I=1,MY
+                FINT(K,N,I,J,L)=FINT(K,N,I-1,J,L)
+     %               +0.5D0*DY*(FF(K,N,I-1,J,L)+FF(K,N,I,J,L))
+ 420          CONTINUE
+ 440        CONTINUE
+ 460      CONTINUE
+ 480    CONTINUE
+ 500  CONTINUE
+      FALLMX(1)=0
+      FALLMX(2)=0
+      DO 600 J=0,MXI
+        DO 580 L=0,MLM
+          DO 560 K=1,2
+            FALL(K,J,L)=0
+            DO 540 N=1,MPH
+              FALL(K,J,L)=FALL(K,J,L)+FINT(K,N,MY,J,L)
+ 540        CONTINUE
+            FALLMX(K)=MAX(FALLMX(K),ABS(FALL(K,J,L)))
+ 560      CONTINUE
+ 580    CONTINUE
+ 600  CONTINUE
+	CALL CPUTIM('NLCPST0',2)
+      RETURN
+      END
