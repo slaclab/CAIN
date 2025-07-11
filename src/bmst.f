@@ -13,9 +13,10 @@ C      INCLUDE 'include/beamcm.h'
      %     UPSILN,PROB
       INTEGER I2(3)/2,3,1/,I3(3)/3,1,2/
       INTEGER MPMXBS
-      PARAMETER (MPMXBS=10)
-      REAL*8 PMXDAT(3,MPMXBS)
-      SAVE PMXDAT
+      PARAMETER (MPMXBS=100000000)
+c      PARAMETER (MPMXBS=10)
+c      REAL*8 PMXDAT(3,MPMXBS)
+c      SAVE PMXDAT
 C
       CALL CPUTIM('BMST',1)
       NP0=NP
@@ -52,16 +53,16 @@ C
         CALL BMSTGN(EP(0,N),TXYS(0,N),FT1,T1,PMAXBS,WENHBS,
      %    LEL,LEGEN,LPH,
      %    EPPH,TXYSPH,WGTPH,ISPIN1,EV,SPIN(1,N),STOKES,
-     %    UPSILN,PROB,IRTN)
+     %    UPSILN,PROB,IRTN,n,kind(n),isbin(n),fld(1:3,1,n))
         IF(IRTN.GE.1000) GOTO 900
         PMMBS=MAX(PMMBS,PROB)
         IF(IRTN.GE.100) THEN
           NPMXBS=NPMXBS+1
-          IF(NPMXBS.LE.MPMXBS) THEN
-            PMXDAT(1,NPMXBS)=EP(0,N)
-            PMXDAT(2,NPMXBS)=UPSILN
-            PMXDAT(3,NPMXBS)=PROB
-          ENDIF
+c          IF(NPMXBS.LE.MPMXBS) THEN
+c            PMXDAT(1,NPMXBS)=EP(0,N)
+c            PMXDAT(2,NPMXBS)=UPSILN
+c           PMXDAT(3,NPMXBS)=PROB
+c          ENDIF
           IF(NPMXBS.GE.MPMXBS) GOTO 910
         ENDIF
         IF(LPH.GE.2) THEN
@@ -102,18 +103,19 @@ C         change the basis vector for Stokes parameter
       CALL CPUTIM('BMST',2)
       RETURN
  900  IRTN=1000
-      WRITE(MSGFL,905) EP(0,N),UPSILN,PROB
+      WRITE(MSGFL,905) n,kind(n),ep(3,n),EP(0,N),UPSILN,PROB
  905  FORMAT(' (SUBR.BMST) Radiation probability in one time step',
      %  ' exceeds unity.',/,
+     %  '   n=',i10,' kind= ',i3,'   pz=',1PD10.3,'eV',  
      %  '   En=',1PD9.3,'eV,  Upsilon=',1PD9.3,'  Prob=',1PD9.3)
       RETURN
  910  IRTN=1001
       WRITE(MSGFL,912) PMAXBS
  912  FORMAT(' (SUBR.BMST) Radiation probability in one time step',
-     %  ' exceeds PMAX=',0PF6.4,' too many times.',/,
-     %  5X,'    En(eV)     Upsilon     Prob   ')
-      WRITE(MSGFL,914) ((PMXDAT(I,J),I=1,3),J=1,MPMXBS)
- 914  FORMAT(5X,1PD12.3,1PD12.3,0PF10.5)
+     %  ' exceeds PMAX=',0PF6.4,' too many times.')
+c     %  5X,'    En(eV)     Upsilon     Prob   ')
+c      WRITE(MSGFL,914) ((PMXDAT(I,J),I=1,3),J=1,MPMXBS)
+c 914  FORMAT(5X,1PD12.3,1PD12.3,0PF10.5)
       RETURN
  990  IRTN=1002
       RETURN

@@ -10,6 +10,7 @@ C      INCLUDE 'include/bbcom.h'
       REAL*8 WGTL(2),XYR(2,2)
       REAL*8 OUTMAX/0.04D0/
 C     
+      CALL CPUTIM('BBMESH',1)
       DO 200 L=1,2
         BBFLG(L)=0
  200  CONTINUE
@@ -53,8 +54,10 @@ C           Now BBFLG: whether the bb-field is needed or not.
  280  CONTINUE
  300  CONTINUE
       IRTN=0
+      CALL CPUTIM('BBMESH',2)
       RETURN
 C     
  900  IRTN=1
+      CALL CPUTIM('BBMESH',2)
       RETURN
       END

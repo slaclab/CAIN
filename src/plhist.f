@@ -121,13 +121,15 @@ C
 	  FMIN=1D60
 	  DO I=1,NBN
 	    IF(PBIN(I).NE.0) THEN
-	      FBIN(I)=FBIN(I)/PBIN(I)
-	      ERRF(I)=SQRT(MAX(0D0,ERRF(I)/PBIN(I)-FBIN(I)**2))
+c 	      FBIN(I)=FBIN(I)/PBIN(I)               turn off averaging over bin  
+c	      ERRF(I)=SQRT(MAX(0D0,ERRF(I)/PBIN(I)-FBIN(I)**2))
+	      FBIN(I)=FBIN(I)
+	      ERRF(I)=SQRT(MAX(0D0,ERRF(I)-FBIN(I)**2))
 	      ERRP(I)=SQRT(ERRP(I))
 	      FMAX=MAX(FMAX,FBIN(I))
 	      FMIN=MIN(FMIN,FBIN(I))
 	    ELSE
-	      FBIN(I)=UNDEF%X
+c	      FBIN(I)=UNDEF%X
 	    ENDIF
 	  ENDDO
 	  IF(LOGHV(2).GT.0.AND.FMIN.LE.0) GOTO 950
@@ -196,9 +198,9 @@ c   disable 2nd largest feature T.Barklow 03aug2020           FMAX=FMAX2
  360  FORMAT(' TITLE ',0P2F7.3,' SIZE 1.3 ',2H'',/,
      % ' MORE ',1H','# of macro particles',1H',/,
      % ' TITLE ',0P2F7.3,' SIZE 1.3 ',2H'',/,
-     % ' MORE ',1H',' in bin range ',I6,1H',/,
+     % ' MORE ',1H',' in bin range ',I12,1H',/,
      % ' TITLE ',0P2F7.3,' SIZE 1.3 ',2H'',/,
-     % ' MORE ',1H',' out of range ',I6,1H',/,
+     % ' MORE ',1H',' out of range ',I12,1H',/,
      % ' TITLE ',0P2F7.3,' SIZE 1.3 ',2H'',/,
      % ' MORE ',1H','# of real  particles',1H',/,
      % ' TITLE ',0P2F7.3,' SIZE 1.3 ',2H'',/,

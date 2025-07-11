@@ -169,6 +169,7 @@ C         COSTH2=1+p/omega*cos(theta)
       RETURN
  900  IRTN=1000
       IF(MSGFL.GE.1) THEN
+         print *, " icbwgn np= ", np, " npmax= ", np
         WRITE(MSGFL,910)
  910    FORMAT(' (SUBR.ICBWGN) Too many pairs created in one step.')
       ENDIF

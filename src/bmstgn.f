@@ -1,6 +1,7 @@
       SUBROUTINE BMSTGN(EP,TXYS,FT,T1,PMAX,WENH,
      %    LEL,LEGEN,LPH,
-     %    EPPH,TXYSPH,WGTPH,ISPIN,EV,SPIN,STOKES,UPSILN,PROB,IRTN)
+     %     EPPH,TXYSPH,WGTPH,JSPIN,EV,SPIN,STOKES,UPSILN,PROB,IRTN,
+     %           n,kindn,isbinn,fld)
 C  Generate beamstrahlung photon.
 C    Angle distribution is not computed.
 C  Input:
@@ -9,13 +10,13 @@ C    TXYS   Electron coordinate (m)
 C    FT     Magnitude of the transverse component of Lorentz
 C           force in eV/m
 C    T1     End time
-C    ISPIN  Flag for polarization
+C    JSPIN  Flag for polarization
 C    EV     EV(*,1)  unit vector along transverse acceleration
 C                    (transverse component of Lorentz force)
 C           EV(*,3)  unit vector along the 3-momentum of
 C                    initial electron.
 C           EV(*,2)  = EV(*,3) x EV(*,1)
-C           EV is needed only when ISPIN is on.
+C           EV is needed only when JSPIN is on.
 C    SPIN   Initial electron polarization
 C    PMAX   Maximum probability per one step.
 C    WENH   Event rate enhancement factor.
@@ -38,7 +39,7 @@ C           The photon generation, if stored, is always
 C           (initial electron generation)+1.
 C    EPPH   Energy-momentum of the photon
 C    TXYSPH Coordinate of the photon
-C    STOKES Stokes parameter of the photon (when ISPIN>0)
+C    STOKES Stokes parameter of the photon (when JSPIN>0)
 C           with respect to the basis EV.
 C    WGTPH  weight of the final photon (to be multiplied to the
 C           initial electron weight.
@@ -50,12 +51,15 @@ C          If this is too large, there is a statistical problem.
 C    IRTN   Return code.
 C           0: normal
 C           100:  Probability exceeds PMAX but calculation done
-C           1000:  Probability exceeds 1. No calculation.
+C           200:  Probability exceeds 1. but calculation done
+C           1000:  Probability exceeds 1. No calculation. (disabled 14nov2021)
       IMPLICIT NONE
-      INTEGER LEL,LEGEN,LPH,ISPIN,IRTN
+      INTEGER LEL,LEGEN,LPH,JSPIN,IRTN,n,kindn,isbinn
       REAL*8 EP(0:3),TXYS(0:3),FT,T1,PMAX,WENH,
      %   EPPH(0:3),TXYSPH(0:3),WGTPH,EV(3,3),SPIN(3),STOKES(3),
-     %   UPSILN,PROB
+     %   UPSILN,PROB,fld(3)
+      include 'include/ctrlcm.h'
+      include 'include/pushcm.h'
       REAL*8 CONST1/1.297210720417891D-02/,
      %       CONST2/9.67287708690521D0/,CONST3/0.01053281803D0/
 C         CONST1=(Fine structure constant)*CONST2/[Sqrt(3)*Pi]
@@ -75,6 +79,8 @@ C         CONST3=5/(2*sqrt(3))*(Fine structure constant)
       INTEGER NPMAX/0/
       REAL*8 PMXDAT(3,MPMAX)
       SAVE NPMAX,PMXDAT
+      integer n62/0/
+      save n62
 C
       IRTN=0
       LEL=0
@@ -87,10 +93,31 @@ C
       XI=1.5D0*UPSILN
       FU0=(1+XI/2D0)**(1D0/3D0)
       PROB0=CONST1*DT*FT1/FU0
+      if(mod(n62,2000000).eq.0.or.prob0.ge.1d0) then
+          write(msgfl,101)
+     &      n,kindn,it,isbinn,
+     &          ep(3),ep(0), dt,sqrt(txys(1)**2+txys(2)**2),
+     &         txys(1), txys(2), upsiln,
+     &         ft1,fu0,fld(1:2),prob0
+ 101  format(' b2 n= ',i10,' kind(n)= ',i10,' it,is= ',i5,i3,
+     &         ' pz= ',1pd10.3, ' En= ',1pd10.3, ' dt= ',1pd10.3,
+     &         ' r= ', 1pd10.3,
+     &         ' x= ', 1pd10.3, ' y= ', 1pd10.3,
+     &         ' ups= ',1pd10.3,
+     &         ' ft1= ',1pd10.3,' fu0= ',1pd10.3,
+     &         ' fld= ',2(1pe11.3),
+     &         ' prob0= ', 1pd10.3)
+       endif
+      n62=n62+1
       IF(WENH.GT.1) PROB0=PROB0*WENH
       PROB=0.80*PROB0
-      IF(PROB0.GE.1D0) GOTO 900
-      IF(PROB.GT.PMAX) IRTN=100
+c     timb 14nov2021      IF(PROB0.GE.1D0) GOTO 900
+      if(prob0.gt.1d0) then
+         irtn=200
+      elseif(prob.gt.pmax) then
+         irtn=100
+      endif
+c      IF(PROB.GT.PMAX) IRTN=100
       P1=RANDCAIN()
       IF(P1.GE.PROB0) GOTO 300
       Y=RANDCAIN()
@@ -100,9 +127,9 @@ C
       X=XI*Y3/XDEN
       X1=1-X
       Z=X/(XI*X1)
-      CALL BMSTFN(Z,G,ISPIN)
+      CALL BMSTFN(Z,G,JSPIN)
       G00=G(1)+X**2/X1*G(2)
-      IF(ISPIN.GE.1) THEN
+      IF(JSPIN.GE.1) THEN
         S2=SPIN(1)*EV(1,2)+SPIN(2)*EV(2,2)+SPIN(3)*EV(3,2)
         G0=G00-S2*X*G(3)
       ELSE
@@ -152,7 +179,7 @@ C     of electron trajectory before emission.
 C     Change of electron TXYS not taken into account.
  220    CONTINUE
       ENDIF
-      IF(ISPIN.GE.1) THEN
+      IF(JSPIN.GE.1) THEN
         S3=SPIN(1)*EV(1,3)+SPIN(2)*EV(2,3)+SPIN(3)*EV(3,3)
         IF(LPH.EQ.2) THEN
           S1=SPIN(1)*EV(1,1)+SPIN(2)*EV(2,1)+SPIN(3)*EV(3,1)
@@ -179,7 +206,7 @@ C     Change of electron TXYS not taken into account.
 C           When LEL=0, still go this way.
 C  Rejected case
 C     change of polarization vector for non-radiated case
- 300  IF(ISPIN.NE.0) THEN
+ 300  IF(JSPIN.NE.0) THEN
         S2=SPIN(1)*EV(1,2)+SPIN(2)*EV(2,2)+SPIN(3)*EV(3,2)
         FU0=1-CONST3*FT1*DT*FRADU0(UPSILN)
         FUSP=CONST3*FT1*DT*FRADSP(UPSILN)

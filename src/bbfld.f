@@ -7,6 +7,7 @@
 C      INCLUDE 'include/beamcm.h'
 C      INCLUDE 'include/bbcom.h'
       INCLUDE 'include/ctrlcm.h'
+      include 'include/pushcm.h'
       INTEGER I
       INTEGER NCALL/0/
 C
@@ -15,14 +16,21 @@ C
       CALL BBMESH(T,IS,IRTN)
       IF(IRTN.NE.0) GOTO 1000
 C       (IRTN=1: bb-field need not be calculated)
-      CALL BBBIN(T,IS)
+c      write(msgfl,103) it,is,ss(1),ss(2),0.5*sum(ss),t
+ 103  format(' bbfld about to call bbbin  it,is= ',i5,i3
+     &    ' ss= ',2(1pd11.3),' <ss>= ',(1pd11.3),' t= ',(1pd11.3))
+      CALL BBBIN(T,IS,ss)
       CALL BBFKER(NXY,BBDXY,XYMIN,NMOM,LBBEL,BBR00,BBEL,BBU00,IRTN)
       IF(IRTN.NE.0) GOTO 900
       CALL BBFPSN(NXY(1),NXY(2),BBQ)
+c      print *, " bbfld nbbpl= ",nbbpl,
+c     &            " ss= ",ss," t= ",t
       IF(NBBPL.GE.1) THEN
         DO 220 I=1,NBBPL
           IF(SBBPL(I).GE.SS(1).AND.SBBPL(I).LT.SS(2)) THEN
-            CALL PLBBFL(T,SS,IS)
+c             print *, " bbfld i= ",i," sbbpl(i)= ",sbbpl(i),
+c     &            " ss= ",ss," t= ",t
+             CALL PLBBFL(T,SS,IS)
             GOTO 400
           ENDIF
  220    CONTINUE

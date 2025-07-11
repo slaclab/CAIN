@@ -73,7 +73,9 @@ C          LBBF=LBBFIN(N)
           DO 300 K=1,2
             KIN=K+1
             CALL ADDONE(0,KIN,IGEN,'    ',IS1,WGT1,
-     %         TXYSEP(0,K),EPEP(0,K),SPINEP(1,K),LBBF,FLD1,IRTN)
+     %           TXYSEP(0,K),EPEP(0,K),SPINEP(1,K),LBBF,FLD1,IRTN)
+            print *, " cohpar np= ",np," kin= ",kin,
+     &           " epep(0,k)= ",epep(0,k)," epep(3,k)= ",epep(3,k)
             IF(IRTN.NE.0) GOTO 990
  300      CONTINUE
         ENDIF
@@ -95,9 +97,10 @@ C          LBBF=LBBFIN(N)
       IRTN=0
       GOTO 1000
  900  IRTN=1000
-      WRITE(MSGFL,905)
+      WRITE(MSGFL,905) prob,pmaxco
  905  FORMAT(' (SUBR.COHPAR) Algorithm of coherent pair ',
-     %  'generation wrong.',/,'    Call the programmer')
+     %     'generation wrong.',/,'    Call the programmer',
+     %   ' prob,pmaxco= ',2(1pe11.3))
       GOTO 1000
  990  IRTN=1001
       GOTO 1000

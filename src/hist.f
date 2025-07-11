@@ -18,7 +18,7 @@ C
       YH=XYW(2,2)-1.0
       UNITF=1
       NEX=0
-      IF(LOGHV(2).LE.0) THEN
+c      IF(LOGHV(2).LE.0) THEN
         FM=MAX(ABS(XYMM(1,2)),ABS(XYMM(2,2)))
         NEX=LOG10(FM)
         IF(ABS(NEX).GE.3) THEN
@@ -26,7 +26,7 @@ C
         ELSE
           NEX=0
         ENDIF
-      ENDIF
+c      ENDIF
       IF(LNEW.GE.1) THEN
         WRITE(FILE,200)
  200    FORMAT(' NEWFRAME; SET FONT DUPLEX')
@@ -83,10 +83,12 @@ C
       WRITE(FILE,400) PATTRN(MOD(LM-1,MLMODE)+1)      
  400  FORMAT(' SET PATTERN ',A)
       IF(LERR.EQ.0) THEN
+         print *, " hist point 001 "
         WRITE(FILE,410) (XLGSCL(LOGHV(1),XBIN(I-1),XBIN(I)),
      %    FBIN(I)/UNITF,I=1,NBN)
  410    FORMAT(2(1PD11.4,D12.4,';'))
       ELSE
+         print *, " hist point 002 "
         WRITE(FILE,420) (XLGSCL(LOGHV(1),XBIN(I-1),XBIN(I)),
      %    FBIN(I)/UNITF,ERR(I)/UNITF,I=1,NBN)
  420    FORMAT(2(1PD11.4,2D12.4,';'))

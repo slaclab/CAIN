@@ -81,7 +81,26 @@ C      REAL*8  E4,GA4,RHO4(3),RHO41,RHO42,RHO43,RHO44,RHO45(3)
       REAL*8  COSAP,SINAP
       REAL*8  DT1,C10,C11,WB,FB(3),EX(3),N3EX,FBP
       REAL*8  UVD1(3),COSBD,SINBD,PHI3,COSBD2,SINBD2
+      REAL*8  bet,sigfb,sigfb0,sigfb00,omb2,brb,lnbr
+      REAL*8  rrx,xx,rejden,rejnum,rejfac,omx2,pnew
+      REAL*8  f3xi,f11xi,f22xi,f33xi,pnewav,cxwyav
+      REAL*8  xnewav,xxwyav
+      REAL*8  rejfmx/-1.d40/
  
+      REAL*8  xnewsm/0./
+      REAL*8  pnewsm/0./
+      INTEGER npnew/0/
+      INTEGER npaccp/0/
+c      REAL*8  w2min/62.5d9/
+      REAL*8  w2min/62.27d9/
+
+      REAL*8  cxwysm/0./
+      REAL*8  xxwysm/0./
+      INTEGER ncxwy/0/
+
+      
+      REAL*8  M2TOFB/1.d43/
+      REAL*8  M2TOMB/1.d31/
       REAL*8  M/0.510999062D+6/
       REAL*8  RE/2.81794092D-15/
       REAL*8  PI/3.14159265D0/
@@ -92,8 +111,58 @@ C     C00=4*PI*(RE**2)/(CV*EL)OA
 C***************************** 1 to 2 *********************************
       Z0=N1(1)*N2(1)+N1(2)*N2(2)+N1(3)*N2(3)
       S0=2*W1*W2*(1-Z0)
-C--
+C--   
       IF (4*M**2.GT.S0) GOTO 900
+      bet=sqrt(1.-4.*M**2/S0)
+      omb2=1.-bet**2
+      brb=(1.+bet)/(1.-bet)
+      lnbr=log(brb)
+c23456789012345678901234567890123456789012345678901234567890123456789012
+c       10        20        30        40        50        60        70      
+      sigfb=m2tofb*0.25*pi*re**2*bet*omb2*(
+     %   4.*lnbr*(1.-pp1(2)*pp2(2))-4.*bet*(1-3.*pp1(2)*pp2(2))
+     %  +4.*omb2*lnbr*(1.-(pp1(3)+pp2(3))+pp1(1)*pp2(1)+pp1(3)*pp2(3))
+     %     -2.*omb2**2*(2.*bet/omb2+lnbr)
+     %    *(1.-(pp1(3)+pp2(3))+pp1(3)*pp2(3))
+     %     +8.*bet*(pp1(1)*pp2(1)+pp1(3)*pp2(3)))
+      sigfb0=m2tofb*0.25*pi*re**2*bet*omb2*(4.*(lnbr-bet)
+     %  +4.*omb2*lnbr
+     %  -2.*omb2**2*(2.*bet/omb2+lnbr))
+      sigfb00=m2tofb*0.5*pi*re**2*omb2*(
+     %   (3.-bet**4)*lnbr-2.*bet*(2.-bet**2))
+c     print *, " pp1= ", pp1," pp2= ",pp2
+c     write(msgfl,211) " w1,w2,bet,sigfb,sigfb0,sigfb00= ",
+c    &   w1,w2,bet,sigfb,sigfb0,sigfb00
+c 211  format(1x,a,6(1p,d14.6))
+      pnew=sigfb/m2tofb*pd*dt/cv/el/w1
+c     write(msgfl,223) " lnbwgn s0, pnew= ", s0,pnew
+c 223  format(1x,a,2d14.6)
+      rrx=randcain()
+      xx=(brb**(2.*rrx-1.)-1.)/(brb**(2.*rrx-1.)+1.)
+      omx2=1.-xx**2
+      rejden=8./omx2
+      f0=2.*(1.+xx**2)/omx2+4.*omb2/omx2-4.*omb2**2/omx2*2
+      f3=4.*omb2**2/omx2**2-4.*omb2/omx2
+      f11=4.*omb2/omx2-2.
+      f22=2.*(1.+xx**2)/omx2-4.*omb2*(1+xx**2)/omx2**2
+      f33=4.*omb2/omx2-4.*omb2**2/omx2**2-2.
+      f3xi=f3*(pp1(3)+pp2(3))
+      f11xi=f11*pp1(1)*pp2(1)
+      f22xi=f22*pp1(2)*pp2(2)
+      f33xi=f33*pp1(3)*pp2(3)
+      rejnum=f0+f3xi+f11xi-f22xi+f33xi
+      rejfac=rejnum/rejden
+      if(rejfac.gt.rejfmx) then
+         rejfmx=rejfac
+      endif
+c     print *, " xx= ",xx," f0= ",f0," f11= ",f11,
+c    %     " f22= ",f22," f33= ",f33
+c     print *, " xx= ",xx," f0= ",f0," f11xi= ",f11xi,
+c    %     " f22xi= ",f22xi," f33xi= ",f33xi
+c     print *, " rrx,xx= ", rrx,xx
+c     print *, " xx= ",xx," rejnum= ",rejnum,
+c    %   " rejden= ",rejden," rejfac= ",rejfac," rejfmx= ",rejfmx
+      
 C--
       IF(MSG.GE.3) PRINT *,'Z0,S0=',Z0,S0
 C***************************** 3 to 5 *********************************
@@ -246,7 +315,43 @@ C**************************** 15 to 16 ********************************
       WY=WY0*X*(1+X)*X1/4
      %   *(-CZ*EXP(CZ*Z)/((EXP(CZ)-1)*(1+EXP(CZ*Z)))-Y*CZ*EXP(CZ*Z)
      %    /(1+EXP(CZ*Z)))
+      IF(MSG.GE.3) PRINT *,'SM,UM,COSTH1,D=',SM,UM,COSTH1,D
+      IF(MSG.GE.3) PRINT *,'F0,F3,F11,F22,F33=',F0,F3,F11,F22,F33
+      IF(MSG.GE.3) PRINT *,'WY0=',WY0
+      IF(MSG.GE.2) PRINT *,'WY,COSTH,SINTH,E=',WY,COSTH,SINTH,E
+      IF(MSG.GE.2) PRINT *,'c*wy= ',c*wy
+c      if(npnew .eq. 0) then
+c         write(msgfl,843) " w2min= ",w2min
+c 843     format(1x,a,d14.6)
+c      endif
+      if(w2.gt.w2min) then
+         npnew=npnew+1
+c         xnewsm=xnewsm+pnew*w1/pd/dt
+         xnewsm=xnewsm+pnew/pd/dt*cv*el*w1*m2tomb
+         xnewav=xnewsm/npnew
+         pnewsm=pnewsm+pnew
+         pnewav=pnewsm/npnew
+         ncxwy=ncxwy+1
+c         xxwysm=xxwysm+c*wy*w1/pd/dt
+         xxwysm=xxwysm+c*wy/pd/dt*cv*el*w1*m2tomb
+         xxwyav=xxwysm/ncxwy
+         cxwysm=cxwysm+c*wy
+         cxwyav=cxwysm/ncxwy
+c         write(msgfl,852)
+c     %        " s0,w2,npnew,pnew,pnewav= ",
+c     %     s0,w2,npnew,pnew,pnewav,
+c     %    " ncxwy,cxwy,cxwyav= ", ncxwy,c*wy,cxwyav
+c         write(msgfl,852)
+c     %        " s0,w2,npnew,xnew,xnewav(mb)= ",
+c     %     s0,w2,npnew,pnew*w1/pd/dt,xnewav,
+c     %    " ncxwy,xxwy,xxwyav= ", ncxwy,c*wy*w1/pd/dt,xxwyav
+c 852  format(1x,a,2d14.6,i8,2d14.6,3x,a,i8,2d14.6)
+      endif
       IF (P.GE.C*WY) GOTO 800
+      if(w2.gt.w2min) then
+         npaccp=npaccp+1
+         print *, " lnwbgn npnew,npaccp= ", npnew,npaccp
+      endif
       IF (LINK1.EQ.0) THEN
          VR1=GA/(GA+1)*(GA*VR+1)
          DO 70 I=1,3
@@ -255,10 +360,10 @@ C**************************** 15 to 16 ********************************
       ENDIF
       SINTH=2*SQRT(Y*(1-Y))
       E=W         
-      IF(MSG.GE.3) PRINT *,'SM,UM,COSTH1,D=',SM,UM,COSTH1,D
-      IF(MSG.GE.3) PRINT *,'F0,F3,F11,F22,F33=',F0,F3,F11,F22,F33
-      IF(MSG.GE.3) PRINT *,'WY0=',WY0
-      IF(MSG.GE.2) PRINT *,'WY,COSTH,SINTH,E=',WY,COSTH,SINTH,E
+      IF(MSG.GE.3) PRINT *,'ACC SM,UM,COSTH1,D=',SM,UM,COSTH1,D
+      IF(MSG.GE.3) PRINT *,'ACC F0,F3,F11,F22,F33=',F0,F3,F11,F22,F33
+      IF(MSG.GE.3) PRINT *,'ACC WY0=',WY0
+      IF(MSG.GE.2) PRINT *,'ACC WY,COSTH,SINTH,E=',WY,COSTH,SINTH,E
 C******************************* 17 ***********************************
       DO 80 I=1,3
          P1(I)=SQRT(W**2-M**2)*(N11(I)*COSTH

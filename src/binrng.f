@@ -29,6 +29,7 @@ C
       PARAMETER (MEX=5)
       REAL*8 OUT(MEX,2,2)
 C
+      CALL CPUTIM('BINRNG',1)
       DO 200 L=1,NL
         WGTL(L)=0
         DO 180 IXY=1,2
@@ -131,6 +132,7 @@ C
           XYR(IXY,L)=XYMM(2,IXY)-XYMM(1,IXY)
  550    CONTINUE
  560  CONTINUE
+      CALL CPUTIM('BINRNG',2)
       RETURN
       END
 

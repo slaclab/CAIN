@@ -107,7 +107,7 @@ C           else scalar character string of ID=-PL(3,IP)
         X(PL(2,IP))%L=1
 	  X(PL(2,IP))%X=VPAR(PL(3,IP))
 	ELSE
-	  CALL EVARRGET(-PL(3,IP),0,0,X(PL(2,IP)),ERR1)
+	  CALL EVARRGET(-PL(3,IP),0,IND,X(PL(2,IP)),ERR1)
 	  IF(ERR1.NE.' ') GOTO 950
 	  CALL FLCHSET2(GSTR(X(PL(2,IP))%C(1):X(PL(2,IP))%C(2)),
      %    X(PL(2,IP)),ERR1)

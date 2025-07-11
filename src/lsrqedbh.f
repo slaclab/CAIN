@@ -68,6 +68,7 @@ C       vphbfl LR=2: left-going virtual photon, negative z (s) direction
 	    IF(EPVPH(3,IV).LT.0) LR=2
 	    IF(LRLSR(LSR).EQ.LR) CYCLE
 	    N2=IDVPH(IV)
+	    IF(LOST(N2).NE.0) CYCLE
 	    IF(T1.LE.TXYVPH(0,IV)) CYCLE
 	    T2=TXYVPH(0,IV)
 	    NDIV=1

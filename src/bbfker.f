@@ -149,6 +149,8 @@ C
       IRTN=0
       GOTO 1000
  900  IRTN=1000
+      print *, " bbfker nxy0(1)= ", nxy0(1), " mmx= ", mmx,
+     &       " nxy0(2)= ", nxy0(2), " mmy= ", mmy    
       GOTO 1000
  920  IRTN=1001
       GOTO 1000

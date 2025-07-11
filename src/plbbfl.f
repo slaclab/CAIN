@@ -24,6 +24,8 @@ C
       PARAMETER (MBUF=1000)
       REAL*8 XX(MBUF),YY(MBUF)
       REAL*8 PI/3.14159 26535 89793 238D0/
+      real*8 sc(2)/0.2,1.0/
+      save sc
 C
       CALL CPUTIM('PLBBFL',1)
       XL0=XL00+0.01
@@ -38,9 +40,11 @@ C    (Must not be larger than 2.0 because of the work area size BBWORK)
         NNXY(IXY)=NXY(IXY)+2*NDXY(IXY)
         FAC(IXY)=DFLOAT(NNXY(IXY))/NXY(IXY)
  140  CONTINUE
+      print *, " plbbfl write 160 iflbpl= ",iflbpl
       WRITE(IFLBPL,160)
  160  FORMAT(' NEWFRAME; SET FONT DUPLEX')
       CALL TDHEAD(IFLBPL)
+      print *, " plbbfl write 200 iflbpl= ",iflbpl
       WRITE(IFLBPL,200) T,(SS(2)+SS(1))/2,(SS(2)-SS(1))/2,
      %  XL0+1.0,YH0+0.65,XL0+8.0,YH0+0.6,
      %  T,(SS(2)+SS(1))/2,(SS(2)-SS(1))/2
@@ -71,9 +75,10 @@ C        window for mesh region
           XYC(IXY)=XYMIN(IXY,L)+XYW
           XYMM1(1,IXY)=(XYC(IXY)-XYW)/UNIT
           XYMM1(2,IXY)=(XYC(IXY)+XYW)/UNIT
-          XYMM(1,IXY)=(XYC(IXY)-XYW*FAC(IXY))/UNIT
-          XYMM(2,IXY)=(XYC(IXY)+XYW*FAC(IXY))/UNIT
+          XYMM(1,IXY)=sc(l)*(XYC(IXY)-XYW*FAC(IXY))/UNIT
+          XYMM(2,IXY)=sc(l)*(XYC(IXY)+XYW*FAC(IXY))/UNIT
  210    CONTINUE
+        print *, " plbbfl write 220 iflbpl= ",iflbpl
         WRITE(IFLBPL,220) LLRR(L),XL,XH,YL,YH,
      %     ((XYMM(I,IXY),I=1,2),IXY=1,2),
      %     XL+0.5,YH0+0.3,LLRR(L),XL-0.4,(YL+YH)/2
@@ -129,6 +134,7 @@ C-- Electric Field
         XH1=(XL+XH)/2+XB1*NXY(1)/2
         YL1=(YL+YH)/2-YB1*NXY(2)/2
         YH1=(YL+YH)/2+YB1*NXY(2)/2
+        print *, " plbbfl write 420 iflbpl= ",iflbpl
         WRITE(IFLBPL,420) XL,XH,YL,YH,
      %     ((XYMM(I,IXY),I=1,2),IXY=1,2),
      %     (XL+XH)/2,YL-0.4,
@@ -175,6 +181,7 @@ C-- Electric Field
         IF(LBBEL.NE.0) THEN
           NN=100
           DTH=2*PI/NN
+          print *, " plbbfl write 260 iflbpl= ",iflbpl," lbbel= ",lbbel
           WRITE(IFLBPL,260) ((XYC(1)+BBR00(L)*COS(I*DTH))/UNIT,
      %         (XYC(2)+BBR00(L)*SIN(I*DTH))/UNIT,I=0,NN)
           WRITE(IFLBPL,JFMT) PATTRN(8)
@@ -236,6 +243,7 @@ C--------------------------------------------------------------------
       INTEGER NFV,LFV(MFV)
       REAL*8 FV(MFV)
 C
+      print *, " plbbfl2 write 300 iflbpl= ",iflbpl
       WRITE(IFLBPL,300)
  300  FORMAT('(  Frame of mesh region)')
       WRITE(IFLBPL,310) XYMM1(1,1),XYMM1(1,2),
@@ -248,6 +256,7 @@ C
       ELSE
         TEXT='Electric Field'
       ENDIF
+      print *, " plbbfl2 write 320 iflbpl= ",iflbpl," text= ",text
       WRITE(IFLBPL,320) TEXT,XL1,XH1,YL1,YH1,
      %     ((XYMM(I,IXY),I=1,2),IXY=1,2)
  320  FORMAT('(',A,')',/,
@@ -279,6 +288,7 @@ C
         TEXT(1:NC)='V/m'
         TEXT(NC+1:2*NC)='   '
       ENDIF
+      print *, " plbbfl2 write 400 iflbpl= ",iflbpl
       WRITE(IFLBPL,400) XH-3.5,YH+0.15,DF1,
      %     TEXT(1:NC),TEXT(NC+1:2*NC)
  400  FORMAT(' TITLE ',2F7.3,' SIZE 1.4 ',2H'',/,

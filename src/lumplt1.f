@@ -80,19 +80,24 @@ C
         IF(IRTN1.NE.0.OR.XC%L.NE.1) GOTO 940
 	  FF(I)=XC%X
         FMAX=MAX(FMAX,FF(I))
-        FMIN=MIN(FMIN,FF(I))
+        if(ff(i).gt.0.) FMIN=MIN(FMIN,FF(I))
  300  CONTINUE
       IF(FMAX.EQ.0.AND.FMIN.EQ.0) GOTO 930
-      FMAX=MAX(FMAX,1.05*FMAX)
-      FMIN=MIN(FMIN,1.05*FMIN)
-      IF(FMIN.GT.0.AND.LOGV.NE.0) FMIN=0
+      if(logv.eq.0) then
+         FMAX=MAX(FMAX,1.05*FMAX)
+         FMIN=MIN(FMIN,FMIN/1.05)
+      else
+         FMAX=MAX(FMAX,1.5*FMAX)
+         FMIN=MIN(FMIN,FMIN/1.5)
+      endif
+c      IF(FMIN.GT.0.AND.LOGV.NE.0) FMIN=0
       IF(FMAX.LT.0) FMAX=0
       IF(VMM(1).NE.UNDEF%X) FMIN=VMM(1)
       IF(VMM(2).NE.UNDEF%X) FMAX=VMM(2)
-      IF(LOGV.NE.0.AND.FMIN.LE.0) THEN
-        IF(FMAX.LE.0) GOTO 920
-        FMIN=FMAX/1D3
-      ENDIF
+c      IF(LOGV.NE.0.AND.FMIN.LE.0) THEN
+c        IF(FMAX.LE.0) GOTO 920
+c        FMIN=FMAX/1D3
+c      ENDIF
       XYMM(1,1)=BIN(0)
       XYMM(2,1)=BIN(NBN)
       XYMM(1,2)=FMIN
@@ -115,6 +120,7 @@ C
       XH=XYW(2,1)-0.2
       YL=XYW(1,2)+1.5
       YH=XYW(2,2)-1.0
+      print *, " lumplt1 point 001"
       CALL HIST(FILE,NEW,LM,ICOLOR,NBN,BIN,FF,0,DUMMY,XYW,XYMM,LOGHV,
      %   TTL,NC)
       WRITE(FILE,400) XH+0.2,YL,LUNITX(IUNITX)

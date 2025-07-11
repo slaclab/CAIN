@@ -14,6 +14,7 @@ C      INCLUDE 'include/beamcm.h'
       INCLUDE 'include/lumcom2.h'
 C      INCLUDE 'include/bbcom.h'
       INCLUDE 'include/cfqedcm.h'
+      include 'include/pushcm.h'
       INTEGER NS,IS,N,I,L
       REAL*8 THALF,SS(2),SMM(2)
       REAL*8 CPRFAC/0.7D0/
@@ -27,26 +28,32 @@ C-----
         CALL CPRSBM(CPRFAC)
         GOTO 200
       ENDIF
+      call chk0wgt(1.)
       DO 240 N=1,NP
         LBBFIN(N)=0
         ISBIN(N)=0
         DO 220 I=1,3
           FLD(I,1,N)=0
           FLD(I,2,N)=0
- 220    CONTINUE
+ 220   CONTINUE
  240  CONTINUE
 C----- External field
       IF(LEXTF.GE.1) CALL EXTFLD(T1)
 C----- Laser Interaction -----
       IF(NLSR.GE.1) THEN
 c	  CALL LSRQED(T1,IRTN)
-	CALL LSRQEDBH(T1,IRTN)
-        IF(IRTN.NE.0) GOTO 990
-        CALL LSRQEDCP(T1,IRTN)
-        IF(IRTN.NE.0) GOTO 990
-	CALL LSRQEDBW(T1,IRTN)
-        IF(IRTN.NE.0) GOTO 990
+         call chk0wgt(1.1)
+         CALL LSRQEDBH(T1,IRTN)
+         call chk0wgt(1.2)
+         IF(IRTN.NE.0) GOTO 990
+         CALL LSRQEDCP(T1,IRTN)
+         call chk0wgt(1.3)
+         IF(IRTN.NE.0) GOTO 990
+         CALL LSRQEDBW(T1,IRTN)
+         call chk0wgt(1.4)
+         IF(IRTN.NE.0) GOTO 990
       ENDIF
+      call chk0wgt(2.)
 C----- S-slice -----
 C     Luminosity, beam-beam, and incoherent interaction must be
 C   in S-slice loop. The only constraint on the order of
@@ -61,12 +68,15 @@ C   interaction must come after beam-beam.
       IF(NLUM.LE.0.AND.BBON.LE.0) GOTO 440
       IF(DSLUM.LE.0) GOTO 920
       CALL SMESH1(THALF,DSLUM,SMM,NS,EMAX,IRTN)
+      call chk0wgt(3.)
+      print *, " endpsh dslum,ns=", dslum,ns
       IF(IRTN.NE.0) GOTO 440
       DO 400 IS=1,NS
         SS(1)=SMM(1)+(IS-1)*(SMM(2)-SMM(1))/NS
         SS(2)=SS(1)+(SMM(2)-SMM(1))/NS
 C----- Beam-Beam Interaction -----
         IF(BBON.EQ.1) THEN
+c          print *, " endpsh about to call bbfld is= ", is
           CALL BBFLD(THALF,IS,SS,IRTN)
           IF(IRTN.GE.10) GOTO 990
 C            IRTN=1: no bb-field
@@ -86,20 +96,28 @@ C----- Luminosity integration & incoherent pair -----
           ENDIF
         ENDIF
  400  CONTINUE
+       call chk0wgt(4.)
 C----- Beamstrahlung and Coherent Pair -----
 C        These must come after beam-beam because the beam field
 C        is needed. But they can be outside S-slice loop because
 C        the field strength at each particle has been stored.
  440  IF(LBMST.GE.1) THEN
+c        print *, " endpsh before bmst np= ",np
         CALL BMST(T1,IRTN)
+        call chk0wgt(5.)
+c        print *, " endpsh after  bmst np= ",np
         IF(IRTN.NE.0) GOTO 990
       ENDIF
       IF(LCOHP.GE.1) THEN
+c        print *, " endpsh before cohpar np= ",np
         CALL COHPAR(T1,IRTN)
+        call chk0wgt(6.)
+c        print *, " endpsh after  cohpar np= ",np
         IF(IRTN.NE.0) GOTO 990
       ENDIF
 C-----  -----
  500  CALL DRIFT1(T1,1,0,ISPIN)
+      call chk0wgt(7.)
       NBBPL=0
       GOTO 800
 C------ Final step of push loop
@@ -124,9 +142,11 @@ C------ Final step of push loop
  650    FORMAT(10X,A,T35,1PD11.4)
       ENDIF
       IF(LPPINT0.GE.1) CALL VPHDBG(2,0D0,0D0,0D0,0D0,0D0)
+      call chk0wgt(8.)
 C        temporarily inserted for debug
 C--------------------------------------
  800  CALL DELLOS
+      call chk0wgt(9.)
       IRTN=0
       RETURN
 C

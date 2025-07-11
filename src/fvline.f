@@ -61,45 +61,70 @@ C  HENCE, <0,IY,1> AND <IX,0,2> HAVE NO CORRESPONDING LINE SEGMENT.
       GOTO 110
   100 IF(IC.NE.1) GOTO 920
   110 NP=0
-      DO 120 IY=0,NY
+      DO 122 IY=0,NY
       LP1=FVLIN1(F(1,0,IY),IC,IR,CO,SI).GE.FV1
       DO 120 IX=1,NX
       LP0=LP1
       LP1=FVLIN1(F(1,IX,IY),IC,IR,CO,SI).GE.FV1
-  120 LP(IX,IY,1)=LP1.NEQV.LP0
-      DO 140 IX=0,NX
+      LP(IX,IY,1)=LP1.NEQV.LP0
+ 120  CONTINUE
+ 122  CONTINUE
+      DO 142 IX=0,NX
       LP1=FVLIN1(F(1,IX,0),IC,IR,CO,SI).GE.FV1
       DO 140 IY=1,NY
       LP0=LP1
       LP1=FVLIN1(F(1,IX,IY),IC,IR,CO,SI).GE.FV1
-  140 LP(IX,IY,2)=LP1.NEQV.LP0
+      LP(IX,IY,2)=LP1.NEQV.LP0
+ 140  CONTINUE
+ 142  CONTINUE
 C
       DO 200 IX=1,NX
-  200 IF(LP(IX, 0,1)) CALL TRACE(IX, 0,1,2,F,IC,MX,NX,NY,FV1,IR,
-     %    CO,SI,X,Y,ID,MP,NP,LP,IRTN)
-      IF(IRTN.NE.0) GOTO 900
+         IF(LP(IX, 0,1)) THEN
+            CALL TRACE(IX, 0,1,2,F,IC,MX,NX,NY,FV1,IR,
+     %           CO,SI,X,Y,ID,MP,NP,LP,IRTN)
+            IF(IRTN.NE.0) GOTO 900
+         ENDIF
+c       print *, " fvline point 001 ix,irtn= ",ix,irtn
+ 200  CONTINUE
       DO 210 IY=1,NY
-  210 IF(LP(NX,IY,2)) CALL TRACE(NX,IY,2,3,F,IC,MX,NX,NY,FV1,IR,
-     %    CO,SI,X,Y,ID,MP,NP,LP,IRTN)
-      IF(IRTN.NE.0) GOTO 900
+         IF(LP(NX,IY,2)) THEN
+            CALL TRACE(NX,IY,2,3,F,IC,MX,NX,NY,FV1,IR,
+     %           CO,SI,X,Y,ID,MP,NP,LP,IRTN)
+c            print *, " fvline point 002 iy,irtn= ",iy,irtn
+            IF(IRTN.NE.0) GOTO 900
+         ENDIF
+ 210  CONTINUE
       DO 220 IX=NX,1,-1
-  220 IF(LP(IX,NY,1)) CALL TRACE(IX,NY,1,4,F,IC,MX,NX,NY,FV1,IR,
-     %    CO,SI,X,Y,ID,MP,NP,LP,IRTN)
-      IF(IRTN.NE.0) GOTO 900
+         IF(LP(IX,NY,1)) THEN
+            CALL TRACE(IX,NY,1,4,F,IC,MX,NX,NY,FV1,IR,
+     %           CO,SI,X,Y,ID,MP,NP,LP,IRTN)
+c            print *, " fvline point 003 ix,irtn= ",ix,irtn
+            IF(IRTN.NE.0) GOTO 900
+         ENDIF
+ 220  CONTINUE
       DO 230 IY=NY,1,-1
-  230 IF(LP( 0,IY,2)) CALL TRACE( 0,IY,2,1,F,IC,MX,NX,NY,FV1,IR,
-     %    CO,SI,X,Y,ID,MP,NP,LP,IRTN)
-      IF(IRTN.NE.0) GOTO 900
-      DO 240 IY=1,NY-1
+         IF(LP( 0,IY,2)) THEN
+            CALL TRACE( 0,IY,2,1,F,IC,MX,NX,NY,FV1,IR,
+     %           CO,SI,X,Y,ID,MP,NP,LP,IRTN)
+c            print *, " fvline point 004 iy,irtn= ",iy,irtn
+            IF(IRTN.NE.0) GOTO 900
+         ENDIF
+ 230  CONTINUE
+      DO 242 IY=1,NY-1
       DO 240 IX=1,NX
-  240 IF(LP(IX,IY,1)) CALL TRACE(IX,IY,1,2,F,IC,MX,NX,NY,FV1,IR,
-     %    CO,SI,X,Y,ID,MP,NP,LP,IRTN)
-      IF(IRTN.NE.0) GOTO 900
+         IF(LP(IX,IY,1)) THEN
+            CALL TRACE(IX,IY,1,2,F,IC,MX,NX,NY,FV1,IR,
+     %           CO,SI,X,Y,ID,MP,NP,LP,IRTN)
+c            print *, " fvline point 005 ix,iy,irtn= ",ix,iy,irtn
+            IF(IRTN.NE.0) GOTO 900
+         ENDIF
+ 240  CONTINUE
+ 242  CONTINUE
       IER=0
       RETURN
-  900 WRITE(MSG,910) NX,NY,MP,NP
+  900 WRITE(MSG,910) IRTN,NX,NY,MP,NP
   910 FORMAT(' (SUBR.FVLINE) BUFFER INSUFFICIENT.',/,
-     %    '    NX,NY,MP,NP=',4I5)
+     %    '    IRTN,NX,NY,MP,NP=',i5,4I12)
       GOTO 990
   920 WRITE(MSG,930) IC
   930 FORMAT(' (SUBR.FVLINE) INPUT ERROR. IC MUST BE 1 OR 2.',

@@ -1,0 +1,154 @@
+!  ILC  Gamma-Gamma Collider Conversion point
+!  Takes 24 sec on DEC workstation at KEK
+ HEADER  'XCC G-G Higgs Factory xxxxxxxx;    G G;';
+ ALLOCATE MP=360000000, MVPH=1600000, MLUMMESH=256, ;
+!SET Rand=7627499;
+!SET Rand=9885452;
+!SET Rand=4819832;
+!SET Rand=6528341;
+!SET Rand=9605844;
+SET Rand=12303083;
+ SET   photon=1, electron=2, positron=3, ntcut=2.5, pushcut=1.07,
+   mm=1D-3, micron=1D-6, nm=1D-9, mu0=4*Pi*1D-7, mrad=1D-3,
+sige=0.001,
+sigesep=0.005,
+ee=190D9,  gamma=ee/Emass,
+eesep=10.0D9,  gammasep=eesep/Emass,
+sigzsep=3.0*micron,
+ansep=2.00D10,
+an=0.63D10,
+sigz=2.0*micron,
+!sigz=10*micron, 
+!sigz=30*micron, 
+dcp=4*sigz,  ! dcp=CP-to-IP distance
+betax=0.003*mm,
+betay=0.003*mm,
+alphax=dcp/betax,
+alphay=dcp/betay,
+emitx=120.0*nm/gamma,
+emity=120.0*nm/gamma,
+emitxsep=120.0*nm*40./gammasep,
+emitysep=120.0*nm/40./gammasep,
+nbunch=75, reprate=120,
+!
+sigxsep=Sqrt(emitxsep*betax), sigysep=Sqrt(emitysep*betay), 
+sigx=Sqrt(emitx*betax), sigy=Sqrt(emity*betay), 
+sigxp=sigx/betax,  sigyp=sigy/betay,
+slopex=0.000, slopey=0.000,
+bdipole=0.0,
+emax=1.01*ee, wmax=2*emax,
+offy=0.00*sigy,
+!
+bfieldext=5,
+ifldbe=0,
+rzfsgm=0.05,
+ibealt=-1,
+wenhbeam=1.0,
+wenhpair=1.0,
+wenhpp=1.0,
+pmaxbeam=0.8,
+pmaxpair=0.80,
+outputip=0,
+smeshval=sigz/3,
+Smesh=smeshval,
+thfieldext=0.,
+xnumber=3022.686,
+laserwl=1.900745923e-17*ee/xnumber,
+lambar=laserwl/(2*Pi), omegal=Hbarc/lambar,
+incpair=1,
+cfbeamstr=1,
+egamma=0,
+cfpair=1,
+pushexternal=1,
+eplotmax=1000.,
+eplotmin=0.,
+plotincp=-1,
+!pulseE=0.65,
+!pulseE=0.72,
+!pulseE=0.72,
+!pulseE=1.31,
+!pulseE=1.75,
+!pulseE=1.,
+!pulseE=2.18,
+!pulseE=5.12,
+!pulseE=1.332,
+!pulseE=5.,
+!pulseE=140.4,
+!pulseE=7.2,
+!agamma=3.77*nm,
+!agamma=25.15*nm,
+!agamma=37.69*nm,
+!agamma=43.52*nm*Sqrt(1000./xnumber),
+!agamma=75.378*nm,
+!agamma=33*nm,
+nstepip=50,
+d1=1,
+d2=1,
+agammax=21.21*nm,
+agammay=21.21*nm,
+rlx=4*Pi*agammax^2/laserwl/d1,
+rly=4*Pi*agammay^2/laserwl/d2,
+sigt=sigz,
+pulseE=2.0*0.72,
+nsigbb=2,
+nsigsep=2,
+noffxshadow=1.0,
+offt=2*nsigbb*(sigzsep+sigz)+2.*0.75*pushcut*(sigt+sigz),
+thr=0.002/2,
+thl=0.002/2,
+sud=dcp-0.5*offt,
+gu=-sud*(thr+thl),
+sigxdefl=sigx*Sqrt(1.+sud^2/betax^2),
+sigxsepdefl=sigxsep*Sqrt(1.+sud^2/betax^2),
+sigydefl=sigy*Sqrt(1.+sud^2/betay^2),
+sigysepdefl=sigysep*Sqrt(1.+sud^2/betay^2),
+capsigx=Sqrt(sigxdefl^2+sigxsepdefl^2),
+!capsigx=Sqrt(sigxdefl^2+sigxsep^2),
+capsigxdefl=Sqrt(2.*sigxsep^2),
+!capsigxdefl=Sqrt(2.*sigxsepdefl^2),
+deltar=0.00,
+deltal=0.00,
+suq=350D-2,
+gr=suq*thr-deltar,
+gl=suq*thl-deltal,
+yy=(gu+gl+gr)/(sud+suq),
+alphasep=2.,
+   betasep=gl+gr-suq*yy,
+xisep=1.+sud/suq,
+   psisep=(thl+gr/suq)*sud,
+etasep=psisep/xisep,
+lambdasep=betasep/alphasep,
+gammaone=1.D9/Emass,
+kksep=2.*Reclass*ansep/xisep/gammaone,
+qqsep=2.*sud*Reclass*ansep/xisep/gammasep/alphasep,
+dorigin=-66.0*nm,
+theta=dorigin/sud*gamma/gammaone,
+bbsep=etasep+lambdasep-kksep/theta,
+   ccsep=etasep*lambdasep+qqsep-kksep*lambdasep/theta;
+ FLAG OFF ECHO;
+PRINT gammaone, FORMAT=(' gammaone = ', d14.6,'  ');
+PRINT Reclass, FORMAT=(' Reclass = ', d14.6,' m ');
+PRINT an, FORMAT=(' an = ', d14.6,'  ');
+PRINT offt, FORMAT=(' offt = ', d14.6,'  ');
+PRINT thr, FORMAT=(' thr = ', d14.6,'  ');
+PRINT thl, FORMAT=(' thl = ', d14.6,'  ');
+PRINT sud, FORMAT=(' sud = ', d14.6,'  ');
+PRINT gu, FORMAT=(' gu = ', d14.6,'  ');
+PRINT deltar, FORMAT=(' deltar = ', d14.6,'  ');
+PRINT deltal, FORMAT=(' deltal = ', d14.6,'  ');
+PRINT suq, FORMAT=(' suq = ', d14.6,'  ');
+PRINT gr, FORMAT=(' gr = ', d14.6,'  ');
+PRINT gl, FORMAT=(' gl = ', d14.6,'  ');
+PRINT yy, FORMAT=(' yy = ', d14.6,'  ');
+PRINT alphasep, FORMAT=(' alphasep = ', d14.6,'  ');
+PRINT betasep, FORMAT=(' betasep = ', d14.6,'  ');
+PRINT xisep, FORMAT=(' xisep = ', d14.6,'  ');
+PRINT psisep, FORMAT=(' psisep = ', d14.6,'  ');
+PRINT etasep, FORMAT=(' etasep = ', d14.6,'  ');
+PRINT lambdasep, FORMAT=(' lambdasep = ', d14.6,'  ');
+PRINT kksep, FORMAT=(' kksep = ', d14.6,'  ');
+PRINT qqsep, FORMAT=(' qqsep = ', d14.6,'  ');
+PRINT dorigin, FORMAT=(' dorigin = ', d14.6,'  ');
+PRINT theta, FORMAT=(' theta = ', d14.6,'  ');
+PRINT bbsep, FORMAT=(' bbsep = ', d14.6,'  ');
+PRINT ccsep, FORMAT=(' ccsep = ', d14.6,'

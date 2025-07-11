@@ -255,8 +255,11 @@ C    afterwards.
             FILE=98
 	      FILENAME=FILENAME1
 	      NCFN=NCFN1
+c              print *, " rdplot file= ",file," filename= ",filename
             CALL OPENFL(FILE,FILENAME(1:NCFN),'UNKNOWN',IOP(IPAPPEND),
      %          NC,IRTN1)
+c            print *, " rdplot file= ",file," filename= ",filename,
+c     &          " irtn1= ",irtn1       
             IF(IRTN1.NE.0) GOTO 982
 	    ELSE
 	      FILE=FILE1
@@ -473,7 +476,8 @@ C- Beam-beam field
       NBBPL=NBBPL1
       IFLBPL=FILE
       IRTN=0
-      GOTO 1000
+c     GOTO 1000
+      return
 C- Beamline optics
  700  IF(NCBLNAM.LE.0) GOTO 970
 	IF(PAR(IDINTP).NE.UNDEF) THEN

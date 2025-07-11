@@ -45,6 +45,18 @@ C          1000: Prob > PMAX
      %   CHI,PROB
       REAL*8 CMPTNWL/3.86159323D-13/,EMASS/0.51099906D6/
       INTEGER K,I
+      real*8 chlsum/0./
+      save chlsum
+      real*8 chlnsum/0./
+      save chlnsum
+      integer nchl/0/
+      save nchl
+      real*8 chrsum/0./
+      save chrsum
+      real*8 chrnsum/0./
+      save chrnsum
+      integer nchr/0/
+      save nchr
       REAL*8 FT1,XPAIR(2),DT1
       REAL*8 RANDCAIN
 	EXTERNAL RANDCAIN
@@ -56,6 +68,21 @@ C
       IF(DT.LE.0) RETURN
       FT1=FT/EMASS
       CHI=CMPTNWL*(EPPH(0)/EMASS)*FT1
+      if(epph(3).lt.0.) then
+        chlsum=chlsum+chi
+        chlnsum=chlnsum+1.e9*chi/epph(0)
+        nchl=nchl+1
+c        if(mod(nchl,100000).eq.1) print *,
+c     %     " subroutine cohpgn  epph,chl,avgchl,avgchln= ",
+c     %       epph(0)/1.e9,chi,chlsum/nchl,chlnsum/nchl
+      else
+        chrsum=chrsum+chi
+        chrnsum=chrnsum+1.e9*chi/epph(0)
+        nchr=nchr+1
+c        if(mod(nchr,100000).eq.1) print *,
+c     %     " subroutine cohpgn  epph,chr,avgchr,avgchrn= ",
+c     %     epph(0)/1.e9,chi,chrsum/nchr,chrnsum/nchr
+      endif
       CALL CPRND2(DT,EPPH(0),CHI,XPAIR,ISPIN,EV,STOKES,SPINEP,
      %       WENH,PROB,LPH,LPAIR)
       IF(PROB.GE.PMAX) THEN

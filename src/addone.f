@@ -27,6 +27,10 @@ C
       ISBIN(N1)=ISB
       WGT(N1)=WT
       LBBFIN(N1)=LBBF
+c      write(msgfl,49) np,kin,gn,pnam,isb,wt,ep1(0),ep1(3)
+c 49   format(' addone np=',i8,' kin= ',i3,' gn= ',i8,
+c     &     ' pnam= ',a4,' isb= ',i4,' wt= ',(1pd11.3),
+c     &     ' ep(0)= ',(1pd11.3),' ep(3)= ',(1pd11.3)) 
       DO 200 I=0,3
         TXYS(I,N1)=TXY(I)
         EP(I,N1)=EP1(I)

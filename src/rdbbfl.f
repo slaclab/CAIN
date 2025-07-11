@@ -6,11 +6,13 @@
       INTEGER LN(2,3),NCHAR(*),IRTN
       CHARACTER*(*) LINE(*)
       INTEGER MOP
-      PARAMETER (MOP=9)
+      PARAMETER (MOP=12)
       CHARACTER*16 OP(MOP)/'BEAMSTRAHLUNG','PAIR',
-     %   'NX','NY','R','PSIZE','WX','WXMAX','NMOM'/
-      INTEGER NFF(MOP)/0,0,1,1,1,1,2,2,1/
+     %     'NX','NY','R','PSIZE','WX','WXMAX','NMOM',
+     %     'FLDBE','ZFSGM','BEALT'/
+      INTEGER NFF(MOP)/0,0,1,1,1,1,2,2,1,1,1,1/
       INTEGER IDNX,IDNY,IDR,IDPSIZ,IDWX,IDWXM,IDNMOM
+      INTEGER IDFLDBE,IDZFSGM,IDBEALT
       INCLUDE 'include/ctrlcm.h'
 C      INCLUDE 'include/readcm.h'
 C      INCLUDE 'include/bbcom.h'
@@ -33,6 +35,9 @@ C
         IF(OP(I).EQ.'WX') IDWX=ID(I)
         IF(OP(I).EQ.'WXMAX') IDWXM=ID(I)
         IF(OP(I).EQ.'NMOM') IDNMOM=ID(I)
+        IF(OP(I).EQ.'FLDBE') IDFLDBE=ID(I)
+        IF(OP(I).EQ.'ZFSGM') IDZFSGM=ID(I)
+        IF(OP(I).EQ.'BEALT') IDBEALT=ID(I)
  180  CONTINUE
       DO 190 I=1,J-1
         PAR(I)=UNDEF
@@ -87,6 +92,21 @@ C
       ELSE
         NMOM=NINT(PAR(IDNMOM)%X)
         NMOM=MIN(NMOM,20)
+      ENDIF
+      IF(PAR(IDFLDBE).EQ.UNDEF) THEN
+        FLDBE=0
+      ELSE
+        FLDBE=NINT(PAR(IDFLDBE)%X)
+      ENDIF
+      IF(PAR(IDZFSGM).EQ.UNDEF) THEN
+        ZFSGM=0
+      ELSE
+        ZFSGM=PAR(IDZFSGM)%X
+      ENDIF
+      IF(PAR(IDBEALT).EQ.UNDEF) THEN
+        BEALT=0
+      ELSE
+        BEALT=NINT(PAR(IDBEALT)%X)
       ENDIF
       BBON=1
       IRTN=0

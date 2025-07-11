@@ -11,11 +11,13 @@ C******************** TRACE ********************************************
 	INCLUDE 'include/ctrlcm.h'
 C
       NP=NP+1
+c      print *, " trace point 001 irtn= ",irtn
       IF(NP.GT.MP) GOTO 900
       IX1=IX
       IY1=IY
       KXY1=KXY
       KD1=KD
+c      print *, " trace point 002 irtn= ",irtn
       F1=FVLIN1(F(1,IX1,IY1),IC,IR,CO,SI)
       IF(KXY1.EQ.2) THEN
         X(NP)=IX1
@@ -35,6 +37,7 @@ C
   220 CONTINUE
       GOTO 920
   240 NP=NP+1
+c      print *, " trace point 003 irtn= ",irtn
       IF(NP.GT.MP) GOTO 900
       IEDGE=0
       F1=FVLIN1(F(1,IX1,IY1),IC,IR,CO,SI)
@@ -49,24 +52,31 @@ C
         IF(IY1.EQ.0) IEDGE=1
         IF(IY1.EQ.NY) IEDGE=3
       ENDIF
+c      print *, " trace point 004 irtn= ",irtn
       ID(NP)=0
       LP(IX1,IY1,KXY1)=.FALSE.
       IF(IEDGE.NE.0) THEN
         ID(NP)=-IEDGE
         GOTO 320
       ENDIF
+c      print *, " trace point 005 irtn= ",irtn
       IF(IX1.EQ.IX.AND.IY1.EQ.IY.AND.KXY1.EQ.KXY) THEN
         ID(NP)=-5
         GOTO 320
       ENDIF
+c      print *, " trace point 006 irtn= ",irtn
       KD1=MOD(KD1+2,4)+1
       GOTO 200
   320 LP(IX,IY,KXY)=.FALSE.
+c      print *, " trace point 007 irtn= ",irtn
       IRTN=0
       RETURN
-  900 NP=NP-1
+  900 CONTINUE
+c      print *, " trace point 008 irtn= ",irtn
+      NP=NP-1
       LP(IX,IY,KXY)=.FALSE.
       IRTN=1
+      print *, " trace np= ",np," mp= ",mp
       RETURN
   920 WRITE(MSGFL,930)
   930 FORMAT(' (SUBR.TRACE) PROGRAM ERROR.')

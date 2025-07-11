@@ -19,7 +19,7 @@ C  Len(TEXT)>=100 for safety
 	  NC1=NC+11
         TEXT(NC+1:NC1)='LEFT-going,'
       ELSEIF(LR(1).NE.0.AND.LR(2).NE.0) THEN
-	  NC=NC+11
+	  NC1=NC+11
         TEXT(NC+1:NC1)='RIGHT+LEFT,'
 	ELSE
 	  NC1=0

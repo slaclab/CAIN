@@ -342,7 +342,7 @@ C----------------------------------------------------------------------
       REAL*8 EG1(0:3),EG2(0:3),HEL1,HEL2,TXYS1(0:3),TXYS2(0:3),
      %     WGT,ENH,EMIN,VOL,DT
       INTEGER NPRMAX
-      PARAMETER (NPRMAX=100)
+      PARAMETER (NPRMAX=640000)
       INTEGER I,N,NPR,KN,KIN
       REAL*8 EP1(0:3,NPRMAX,2),TXY(0:3)
       INTEGER LBBF1/0/

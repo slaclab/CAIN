@@ -1,0 +1,5 @@
+33,34c33
+< LUMINOSITY  KIND=(photon,photon), W=(124.5d9,125.5d9,250), HELICITY,
+< !LUMINOSITY  KIND=(photon,photon), W=(wlow*lambda/(lambda+1),wee*lambda/(lambda+1),5*wnbin), HELICITY,
+---
+> LUMINOSITY  KIND=(photon,photon), W=(wlow*lambda/(lambda+1),wee*lambda/(lambda+1),5*wnbin), HELICITY,

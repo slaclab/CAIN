@@ -431,7 +431,7 @@ C
       WRITE(MSGFL,120) WLBAR*2*PI,OMEGA,POWMAX,XIMAX,
      %  (TXYS(I),I=0,3),((EV(I,J),I=1,3),J=1,3)
  120  FORMAT(
-     % T5,'Wavelength',T40,1pd10.3,' micron',/,
+     % T5,'Wavelength',T40,1pd10.3,' m',/,
      % T5,'Photon energy',T40,1pd10.3,' eV',/,
      % T5,'Peak power density',T40,1PD10.3,' Watt/m**2',/,
      % T5,'Maximum Xi parameter',T40,0PF10.5,/,

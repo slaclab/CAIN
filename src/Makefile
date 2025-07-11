@@ -1,9 +1,7 @@
 #
 EXEC= ../exec/cain.exe
- FC=gfortran
-# FC=/usr/local/gfortran/bin/gfortran
-# FOPT= -ffixed-line-length-80 -I./module -Jmodule
-FOPT=-I./module  -ffixed-line-length-80 -g  -fbounds-check  -fbacktrace -ffpe-trap=invalid,zero,overflow -finit-local-zero
+FC=gfortran
+FOPT= -ffixed-line-length-80 -I./module -Jmodule
 # Create and search for *.mod files in src/module/
 # Note that all INCLUDE statements use relative path.
 LOPT=
@@ -14,8 +12,8 @@ OBJS=  obj/arraymod.o obj/bbcom.o obj/bbpkcm.o obj/beamcm.o obj/beamln.o \
    obj/allocmem.o obj/altrue.o obj/anome.o obj/apsoff.o obj/arrayind.o \
    obj/arraystr.o obj/asinh.o obj/atanh.o obj/bballoc.o obj/bbbin.o \
    obj/bbcoul.o obj/bbctab.o obj/bbdphi.o obj/bbellp.o obj/bbfker.o \
-   obj/bbfld.o obj/bbfpsn.o obj/bbharm.o obj/bbkck.o obj/bbkck0.o \
-   obj/bbkick.o obj/bbkick0.o obj/bbkkmm.o obj/bbmesh.o obj/bbout.o \
+   obj/bbfld.o obj/bbfpsn.o obj/bbharm.o obj/bekck.o obj/bbkck.o obj/bbkck0.o \
+   obj/bbkick0.o obj/bbkkmm.o obj/bbmesh.o obj/bbout.o obj/wofz.o \
    obj/bbphi.o obj/bbqmom.o obj/bbxpnd.o obj/beamalloc.o obj/besjdj.o \
    obj/besk.o obj/binrng.o obj/bk13.o obj/bk23.o obj/bki13.o obj/bki53.o \
    obj/blalloc.o obj/blgeom.o obj/blkrec.o obj/blkrhs.o obj/blkrhs0.o \
@@ -75,7 +73,11 @@ OBJS=  obj/arraymod.o obj/bbcom.o obj/bbpkcm.o obj/beamcm.o obj/beamln.o \
    obj/toupper.o obj/trace.o obj/transport.o obj/trapz2.o obj/tstpst.o \
    obj/typttl.o obj/unit8.o obj/vphbfl.o obj/vphgen.o obj/vphoton.o \
    obj/wcohp.o obj/wrbeam.o obj/wrfmtfc.o obj/zfft.o obj/zfft2.o \
-   obj/zffta.o obj/zfftb.o obj/closefiles.o obj/deffiles.o
+   obj/zffta.o obj/zfftb.o obj/closefiles.o obj/deffiles.o \
+   obj/dogleg.o obj/dpmpar.o obj/enorm.o obj/fdjac1.o obj/hybrd.o \
+   obj/qform.o obj/qrfac.o obj/r1mpyq.o obj/r1updt.o \
+   obj/fcnemxy.o obj/fcnllmg.o obj/zemxy.o obj/calemxy.o \
+   obj/multiga.o obj/initsig.o obj/chk0wgt.o
 all : $(EXEC)
 
 $(EXEC): $(OBJS)
@@ -159,9 +161,6 @@ obj/bbkck.o : bbkck.f obj/bbpkcm.o
 	$(FC) -c -o obj/bbkck.o $(FOPT) bbkck.f
 obj/bbkck0.o : bbkck0.f
 	$(FC) -c -o obj/bbkck0.o $(FOPT) bbkck0.f
-obj/bbkick.o : bbkick.f obj/beamcm.o obj/bbcom.o include/ctrlcm.h \
-   include/cfqedcm.h include/cnstcm.h
-	$(FC) -c -o obj/bbkick.o $(FOPT) bbkick.f
 obj/bbkick0.o : bbkick0.f include/cnstcm.h
 	$(FC) -c -o obj/bbkick0.o $(FOPT) bbkick0.f
 obj/bbkkmm.o : bbkkmm.f
@@ -178,6 +177,8 @@ obj/bbxpnd.o : bbxpnd.f obj/bbpkcm.o
 	$(FC) -c -o obj/bbxpnd.o $(FOPT) bbxpnd.f
 obj/beamalloc.o : beamalloc.f obj/beamcm.o include/ctrlcm.h
 	$(FC) -c -o obj/beamalloc.o $(FOPT) beamalloc.f
+obj/bekck.o : bekck.f obj/wofz.o
+	$(FC) -c -o obj/bekck.o $(FOPT) bekck.f
 obj/besjdj.o : besjdj.f include/ctrlcm.h
 	$(FC) -c -o obj/besjdj.o $(FOPT) besjdj.f
 obj/besk.o : besk.f include/ctrlcm.h
@@ -857,6 +858,8 @@ obj/vphoton.o : vphoton.f include/cnstcm.h
 	$(FC) -c -o obj/vphoton.o $(FOPT) vphoton.f
 obj/wcohp.o : wcohp.f include/ctrlcm.h
 	$(FC) -c -o obj/wcohp.o $(FOPT) wcohp.f
+obj/wofz.o : wofz.f
+	$(FC) -c -o obj/wofz.o $(FOPT) wofz.f
 obj/wrbeam.o : wrbeam.f obj/flchtyp.o obj/beamcm.o include/ctrlcm.h \
    include/bmfmt.h
 	$(FC) -c -o obj/wrbeam.o $(FOPT) wrbeam.f
@@ -874,6 +877,38 @@ obj/closefiles.o : unix/closefiles.f
 	$(FC) -c -o obj/closefiles.o $(FOPT) unix/closefiles.f
 obj/deffiles.o : unix/deffiles.f
 	$(FC) -c -o obj/deffiles.o $(FOPT) unix/deffiles.f
+obj/dogleg.o : minpack/dogleg.f
+	$(FC) -c -o obj/dogleg.o $(FOPT) minpack/dogleg.f
+obj/dpmpar.o : minpack/dpmpar.f
+	$(FC) -c -o obj/dpmpar.o $(FOPT) minpack/dpmpar.f
+obj/enorm.o : minpack/enorm.f
+	$(FC) -c -o obj/enorm.o $(FOPT) minpack/enorm.f
+obj/fdjac1.o : minpack/fdjac1.f
+	$(FC) -c -o obj/fdjac1.o $(FOPT) minpack/fdjac1.f
+obj/hybrd.o : minpack/hybrd.f
+	$(FC) -c -o obj/hybrd.o $(FOPT) minpack/hybrd.f
+obj/qform.o : minpack/qform.f
+	$(FC) -c -o obj/qform.o $(FOPT) minpack/qform.f
+obj/qrfac.o : minpack/qrfac.f
+	$(FC) -c -o obj/qrfac.o $(FOPT) minpack/qrfac.f
+obj/r1mpyq.o : minpack/r1mpyq.f
+	$(FC) -c -o obj/r1mpyq.o $(FOPT) minpack/r1mpyq.f
+obj/r1updt.o : minpack/r1updt.f
+	$(FC) -c -o obj/r1updt.o $(FOPT) minpack/r1updt.f
+obj/fcnemxy.o : fcnemxy.f
+	$(FC) -c -o obj/fcnemxy.o $(FOPT) fcnemxy.f
+obj/fcnllmg.o : fcnllmg.f
+	$(FC) -c -o obj/fcnllmg.o $(FOPT) fcnllmg.f
+obj/zemxy.o : zemxy.f
+	$(FC) -c -o obj/zemxy.o $(FOPT) zemxy.f
+obj/calemxy.o : calemxy.f
+	$(FC) -c -o obj/calemxy.o $(FOPT) calemxy.f
+obj/multiga.o : multiga.f
+	$(FC) -c -o obj/multiga.o $(FOPT) multiga.f
+obj/initsig.o : initsig.f
+	$(FC) -c -o obj/initsig.o $(FOPT) initsig.f
+obj/chk0wgt.o : chk0wgt.f
+	$(FC) -c -o obj/chk0wgt.o $(FOPT) chk0wgt.f
 
 cleanobj :
 	rm -f obj/*.o

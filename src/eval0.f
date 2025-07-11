@@ -174,7 +174,7 @@ C             character allowed for variables (incl. numbers)
 	    NARG(L)=ARR(ID)%RANK
 	  ELSEIF(TYP1.EQ.E_CHAR) THEN
 	    IF(ARR(ID)%RANK.EQ.0) THEN
-            CALL EVARRGET(ID,0,0,X(N(L),L),ERR)
+            CALL EVARRGET(ID,0,INTXX,X(N(L),L),ERR)
 	      IF(ERR.NE.' ') GOTO 980
 	      CALL FLCHSET2(GSTR(X(N(L),L)%C(1):X(N(L),L)%C(2)),X(N(L),L),
      %            ERR)

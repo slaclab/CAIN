@@ -76,8 +76,10 @@ CC******************************************************************CC
       REAL*8  RHO(3),RHO1,RHO2,RHO3,RHO4,RHO5(3)
  
       REAL*8  C10,C20
+      REAL*8  appl,appl1,ppl12av,s0,x0,probav,xrobav
  
 C***************************************
+      REAL*8  M2TOMB/1.d31/
       REAL*8  M/0.510999062D+6/
       REAL*8  RE/2.81794092D-15/
       REAL*8  PI/3.141592653589793238D0/
@@ -86,6 +88,18 @@ C***************************************
       REAL*8  C00/2.0775063D-18/
 C            C00=4*PI*(RE**2)/(CV*EL)
 C***************************************
+
+c     REAL*8  w3min/62.5d9/
+      REAL*8  w3min/62.27d9/
+c     REAL*8  w3min/42.5d9/
+      REAL*8  applmx/-1.d40/
+      REAL*8  appl1mx/-1.d40/
+      REAL*8  ppl12sm/0./
+      INTEGER nppl12/0/
+      REAL*8  probsm/0./
+      REAL*8  xrobsm/0./
+      INTEGER nprob/0/
+      
       L=0
       IRTN=0
       C0=C00*PD*DT/W
@@ -104,6 +118,8 @@ C***************************************
       DO 10 I=1,3
          V(I)=P1(I)/E1
  10   CONTINUE
+      s0=m**2+2.*e1*w*(1.-n(1)*v(1)-n(2)*v(2)-n(3)*v(3))
+      x0=s0/m**2-1.
       IF(MSG.GE.2) WRITE(MSGFL,920) 'V=',V
       GA=E1/M
       VR=((N(1)-V(1))**2+(N(2)-V(2))**2+(N(3)-V(3))**2+1/(GA**2))/2
@@ -156,6 +172,8 @@ C--
         WINT=WINT0
       ENDIF
       PROB=C*WINT
+c     write (msgfl,823) " s0,x0,e1,prob= ",s0,x0,e1,prob
+c 823  format(1x,a,4d14.6)
       IF(P.GE.PROB) GOTO 800
 C**************************************
  21   Z=LX*RANDCAIN()
@@ -415,6 +433,36 @@ CCCC        UVB2(I)=CD1(I)*SINAPD+CD2(I)*COSAPD
       PP3(1)=COSBD2*PP2(1)-SINBD2*PP2(3)
       PP3(2)=PP2(2)
       PP3(3)=SINBD2*PP2(1)+COSBD2*PP2(3)
+      if(nppl12 .eq. 0) then
+         write(msgfl,843) " w3min= ",w3min
+ 843     format(1x,a,d14.6)
+      endif
+      if(w3.gt.w3min) then
+         nprob=nprob+1
+         probsm=probsm+prob
+         probav=probsm/nprob
+c         xrobsm=xrobsm+prob*w/pd/dt
+         xrobsm=xrobsm+prob/pd/dt*cv*el*w*m2tomb
+         xrobav=xrobsm/nprob
+         ppl12sm=ppl12sm+ppl1(2)
+         nppl12=nppl12+1
+         ppl12av=ppl12sm/nppl12
+         appl=sqrt(ppl(1)**2+ppl(2)**2+ppl(3)**2)
+         appl1=sqrt(ppl1(1)**2+ppl1(2)**2+ppl1(3)**2)
+         if(appl.gt.applmx) then
+            applmx=appl
+         endif
+         if(appl1.gt.appl1mx) then
+            appl1mx=appl1
+         endif
+         write(msgfl,852) " w3,costh,applmx=",
+     %    w3,costh,applmx,
+     %    " ppl1(2),appl1,appl1mx= ", ppl1(2),appl1,appl1mx,
+c     %    " nppl12,ppl12sm,ppl12av= ", nppl12,ppl12sm,ppl12av
+     %        " ppl12av,probav,xrobav(mb)= ",
+     %    ppl12av,probav,xrobav
+ 852  format(1x,a,3d14.6,3x,a,3d14.6,3x,a,3d14.6)
+      endif
  
       IF(MSG.GE.2) WRITE(MSGFL,910) 'PP2=',PP2(1),PP2(2),PP2(3)
       IF(MSG.GE.2) WRITE(MSGFL,910) 'COSBD.SINBD=',COSBD,SINBD

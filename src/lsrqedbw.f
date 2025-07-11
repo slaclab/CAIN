@@ -14,7 +14,8 @@ C      INCLUDE 'include/beamcm.h'
      %   OMG,ABSPE,ABSPP,PMAXBW1,PMAX1,PDMAX
       REAL*8 RANDCAIN
 	EXTERNAL RANDCAIN
-      INTEGER I,NPH1
+	INTEGER I,NPH1
+	INTEGER EMSG
 	INTEGER NDBG/0/
 	SAVE NDBG
 
@@ -71,10 +72,22 @@ C        Note that NP can change when calling ADDONE.
             GVEC(1,1)=1
             GVEC(2,2)=1
             IF(EP(3,N).LT.0) GVEC(2,2)=-1
+c	    if(ep(0,n).gt.62.6e9.or.abs(spin(2,n)).gt.1.05) then
+c	    print *, " omg= ", omg, " ev(:,3)= ", ev(:,3),
+c     %         " stksls(:,lsr)= ", stksls(:,lsr)
+c            print *, " ev(:,1)= ", ev(:,1), " ev(:,2)= ", ev(:,2)
+c	    print *, " ep(0,n)= ", ep(0,n), " gvec(:,3)= ", gvec(:,3),
+c     %         " spin(:,n)= ", spin(:,n)
+c            print *, " gvec(:,1)= ", gvec(:,1), " gvec(:,2)= ", gvec(:,2)
+c	    emsg=10000
+c	    else
+c	    emsg=0
+c	    endif
             CALL LNBWGN(OMG,EV(1,3),STKSLS(1,LSR),
      %        EV(1,1),EV(1,2),EP(0,N),GVEC(1,3),SPIN(1,N),
      %        GVEC(1,1),GVEC(1,2),PD,DT,ISPIN,
      %        NPH1,PE2(1),PP2(1),SPE2,SPP2,0)
+c     %        NPH1,PE2(1),PP2(1),SPE2,SPP2,emsg)
             IF(NPH1.GE.1) THEN
               PE2(0)=SQRT(MASS(2)**2+PE2(1)**2+PE2(2)**2+PE2(3)**2)
               PP2(0)=SQRT(MASS(2)**2+PP2(1)**2+PP2(2)**2+PP2(3)**2)
