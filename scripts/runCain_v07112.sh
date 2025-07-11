@@ -5,7 +5,7 @@ set -e    # exit script on first error
 echo $1
 
 
-cd $CA
+
 
 if [ $# == 0 ]; then
     DOBATCH=INTERACTIVE
