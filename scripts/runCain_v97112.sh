@@ -16,7 +16,7 @@ fi
 
 
 
-vid=v07112 ; comptonid=BW_BH_NPH3_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
+vid=v97112 ; comptonid=BW_BH_NPH3_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^bfieldext=.*/bfieldext=5,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
 sed -i 's/^outputip=.*/outputip=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^wenhbeam=.*/wenhbeam=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
@@ -74,4 +74,4 @@ sed -i 's/^nbunch=.*/nbunch=121, reprate=120,/' out/"$jobdir"/Higgs4CP_"$jobdir"
 sed -i 's/^d\([1,2]\)=.*/d\1=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^egamma=.*/egamma=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^BEAM LEFT.*/BEAM LEFT, AN=1.00000*an,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-if [ $DOBATCH == "BATCH" ]; then sbatch -A atlas:usatlas ./scripts/sbatch_batch.sh ./scripts/runRandCain_2D_logEcmRange.sh "$vid" "$comptonid"; else nohup ./scripts/runRandCain_2D_logEcmRange.sh "$vid" BW_BH_NPH3_x1000_po0p90_lpc+ > /dev/null 2>&1 & fi
+if [ $DOBATCH == "BATCH" ]; then sbatch -A atlas:usatlas ./scripts/sbatch_batch.sh ./scripts/runRandCain_2D_logEcmRange.sh "$vid" "$comptonid"; else nohup ./scripts/runRandCain_example_logEcmRange.sh "$vid" BW_BH_NPH3_x1000_po0p90_lpc+ > /dev/null 2>&1 & fi
