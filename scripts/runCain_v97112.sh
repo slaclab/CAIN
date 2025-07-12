@@ -49,7 +49,7 @@ sed -i 's!^emitysep=.*!emitysep=120.0*nm/40./gammasep,!' out/"$jobdir"/Higgs4CP_
 sed -i 's/^cfbeamstr=.*/cfbeamstr=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^cfpair=.*/cfpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^incpair=.*/incpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^nstepip=.*/nstepip=400,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^nstepip=.*/nstepip=100,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^pushexternal=.*/pushexternal=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's!^ *thr=.*!thr=0.002/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's!^ *thl=.*!thl=0.002/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
