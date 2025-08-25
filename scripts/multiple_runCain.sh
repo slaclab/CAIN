@@ -37129,7 +37129,194 @@ fi
 
 
 
-vid=v08050 ; comptonid=BW_BH_NPH3_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
+#vid=v08050 ; comptonid=BW_BH_NPH3_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^bfieldext=.*/bfieldext=4,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^outputip=.*/outputip=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^wenhbeam=.*/wenhbeam=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wenhpair=.*/wenhpair=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wenhpp=.*/wenhpp=1.00,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's!^smeshval=.*!smeshval=sigz/3,!' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^offy=.*/offy=0.00*sigy,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^ifldbe=.*/ifldbe=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^ibealt=.*/ibealt=-1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wscaler=.*/wscaler=10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wscalel=.*/wscalel=10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^bdipole=.*/bdipole=0.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^eplotmax=.*/eplotmax=1000.,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^eplotmin=.*/eplotmin=0.,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^plotincp=.*/plotincp=-1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^nsigbb=.*/nsigbb=2,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^ansep=.*/ansep=2.00D10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's!^eesep=.*!eesep=10.0D9,  gammasep=eesep/Emass,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^sigzsep=.*/sigzsep=3.0*micron,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^dorigin=.*/dorigin=-66.0*nm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^xnumber.*,/xnumber=4.83,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^dcp.*,/dcp=2.6*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^an=.*/an=4.D9,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^betax=.*/betax=1.5*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^betay=.*/betay=0.3*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emitx=.*!emitx=2500.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emity=.*!emity=30.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emitxsep=.*!emitxsep=120.0*nm*40./gammasep,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emitysep=.*!emitysep=120.0*nm/40./gammasep,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^cfbeamstr=.*/cfbeamstr=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^cfpair=.*/cfpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^incpair=.*/incpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^nstepip=.*/nstepip=40,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^pushexternal=.*/pushexternal=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *thr=.*!thr=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *thl=.*!thl=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *deltar=.*!deltar=0.00,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *deltal=.*!deltal=0.00,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *crabon=.*!crabon=1,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthloff=.*!laserthloff=0.056,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthroff=.*!laserthroff=0.056,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthl=.*!laserthl=1.0*thr+laserthloff,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthr=.*!laserthr=1.0*thl+laserthroff,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^ *SET.*spinleft=.*; !/SET MsgLevel=1000000,spinleft=0.9; !/'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/MVPH=.*, ML/MVPH=1600000, ML/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/NP=.*, AN/NP=64000, AN/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ee=.*!ee=250.D9,  gamma=ee/Emass,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^pulseE=.*!pulseE=9,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^agammax=.*!agammax=7150.*nm,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^agammay=.*!agammay=7150.*nm,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^ *sigt=.*/sigt=0.45*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^sige=.*/sige=0.0005,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^sigz=.*/sigz=0.05*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^nbunch=.*/nbunch=2820, reprate=5,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^d\([1,2]\)=.*/d\1=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^egamma=.*/egamma=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#if [ $DOBATCH == "BATCH" ]; then sbatch -A atlas:usatlas ./scripts/sbatch_batch.sh ./scripts/runRandCain_2D_logEcmRange.sh "$vid" "$comptonid"; else nohup ./scripts/runRandCain_2D_logEcmRange.sh "$vid" BW_BH_NPH3_x1000_po0p90_lpc+ > /dev/null 2>&1 & fi
+
+
+
+
+
+#vid=v08051 ; comptonid=BW_BH_NPH3_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^bfieldext=.*/bfieldext=4,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^outputip=.*/outputip=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^wenhbeam=.*/wenhbeam=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wenhpair=.*/wenhpair=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wenhpp=.*/wenhpp=1.00,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's!^smeshval=.*!smeshval=sigz/3,!' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^offy=.*/offy=0.00*sigy,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^ifldbe=.*/ifldbe=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^ibealt=.*/ibealt=-1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wscaler=.*/wscaler=10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wscalel=.*/wscalel=10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^bdipole=.*/bdipole=0.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^eplotmax=.*/eplotmax=1000.,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^eplotmin=.*/eplotmin=0.,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^plotincp=.*/plotincp=-1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^nsigbb=.*/nsigbb=2,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^ansep=.*/ansep=2.00D10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's!^eesep=.*!eesep=10.0D9,  gammasep=eesep/Emass,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^sigzsep=.*/sigzsep=3.0*micron,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^dorigin=.*/dorigin=-66.0*nm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^xnumber.*,/xnumber=4.83,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^dcp.*,/dcp=2.6*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^an=.*/an=4.D9,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^betax=.*/betax=1.5*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^betay=.*/betay=0.3*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emitx=.*!emitx=2500.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emity=.*!emity=30.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emitxsep=.*!emitxsep=120.0*nm*40./gammasep,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emitysep=.*!emitysep=120.0*nm/40./gammasep,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^cfbeamstr=.*/cfbeamstr=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^cfpair=.*/cfpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^incpair=.*/incpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^nstepip=.*/nstepip=400,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^pushexternal=.*/pushexternal=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *thr=.*!thr=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *thl=.*!thl=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *deltar=.*!deltar=0.00,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *deltal=.*!deltal=0.00,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *crabon=.*!crabon=1,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthloff=.*!laserthloff=0.056,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthroff=.*!laserthroff=0.056,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthl=.*!laserthl=1.0*thr+laserthloff,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthr=.*!laserthr=1.0*thl+laserthroff,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^ *SET.*spinleft=.*; !/SET MsgLevel=1000000,spinleft=0.9; !/'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/MVPH=.*, ML/MVPH=1600000, ML/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/NP=.*, AN/NP=64000, AN/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ee=.*!ee=250.D9,  gamma=ee/Emass,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^pulseE=.*!pulseE=9,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^agammax=.*!agammax=7150.*nm,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^agammay=.*!agammay=7150.*nm,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^ *sigt=.*/sigt=0.45*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^sige=.*/sige=0.0005,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^sigz=.*/sigz=0.05*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^nbunch=.*/nbunch=2820, reprate=5,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^d\([1,2]\)=.*/d\1=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^egamma=.*/egamma=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#if [ $DOBATCH == "BATCH" ]; then sbatch -A atlas:usatlas ./scripts/sbatch_batch.sh ./scripts/runRandCain_2D_logEcmRange.sh "$vid" "$comptonid"; else nohup ./scripts/runRandCain_2D_logEcmRange.sh "$vid" BW_BH_NPH3_x1000_po0p90_lpc+ > /dev/null 2>&1 & fi
+
+
+
+
+
+#vid=v08052 ; comptonid=BW_BH_NPH3_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^bfieldext=.*/bfieldext=4,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^outputip=.*/outputip=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^wenhbeam=.*/wenhbeam=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wenhpair=.*/wenhpair=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wenhpp=.*/wenhpp=1.00,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's!^smeshval=.*!smeshval=sigz/3,!' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^offy=.*/offy=0.00*sigy,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^ifldbe=.*/ifldbe=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^ibealt=.*/ibealt=-1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wscaler=.*/wscaler=10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^wscalel=.*/wscalel=10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^bdipole=.*/bdipole=0.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^eplotmax=.*/eplotmax=1000.,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^eplotmin=.*/eplotmin=0.,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^plotincp=.*/plotincp=-1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^nsigbb=.*/nsigbb=2,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^ansep=.*/ansep=2.00D10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's!^eesep=.*!eesep=10.0D9,  gammasep=eesep/Emass,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^sigzsep=.*/sigzsep=3.0*micron,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^dorigin=.*/dorigin=-66.0*nm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+#sed -i 's/^xnumber.*,/xnumber=4.83,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^dcp.*,/dcp=2.6*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^an=.*/an=4.D9,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^betax=.*/betax=1.5*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^betay=.*/betay=0.3*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emitx=.*!emitx=2500.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emity=.*!emity=30.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emitxsep=.*!emitxsep=120.0*nm*40./gammasep,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^emitysep=.*!emitysep=120.0*nm/40./gammasep,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^cfbeamstr=.*/cfbeamstr=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^cfpair=.*/cfpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^incpair=.*/incpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^nstepip=.*/nstepip=4000,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^pushexternal=.*/pushexternal=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *thr=.*!thr=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *thl=.*!thl=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *deltar=.*!deltar=0.00,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *deltal=.*!deltal=0.00,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *crabon=.*!crabon=1,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthloff=.*!laserthloff=0.056,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthroff=.*!laserthroff=0.056,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthl=.*!laserthl=1.0*thr+laserthloff,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ *laserthr=.*!laserthr=1.0*thl+laserthroff,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^ *SET.*spinleft=.*; !/SET MsgLevel=1000000,spinleft=0.9; !/'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/MVPH=.*, ML/MVPH=1600000, ML/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/NP=.*, AN/NP=64000, AN/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^ee=.*!ee=250.D9,  gamma=ee/Emass,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^pulseE=.*!pulseE=9,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^agammax=.*!agammax=7150.*nm,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's!^agammay=.*!agammay=7150.*nm,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^ *sigt=.*/sigt=0.45*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^sige=.*/sige=0.0005,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^sigz=.*/sigz=0.05*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^nbunch=.*/nbunch=2820, reprate=5,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^d\([1,2]\)=.*/d\1=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#sed -i 's/^egamma=.*/egamma=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+#if [ $DOBATCH == "BATCH" ]; then sbatch -A atlas:usatlas ./scripts/sbatch_batch.sh ./scripts/runRandCain_2D_logEcmRange.sh "$vid" "$comptonid"; else nohup ./scripts/runRandCain_2D_logEcmRange.sh "$vid" BW_BH_NPH3_x1000_po0p90_lpc+ > /dev/null 2>&1 & fi
+
+
+
+vid=v08053 ; comptonid=BW_BH_NPH0_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^bfieldext=.*/bfieldext=4,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^outputip=.*/outputip=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^wenhbeam=.*/wenhbeam=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
@@ -37152,70 +37339,7 @@ sed -i 's/^sigzsep=.*/sigzsep=3.0*micron,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^dorigin=.*/dorigin=-66.0*nm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
 sed -i 's/^xnumber.*,/xnumber=4.83,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^dcp.*,/dcp=2.6*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^an=.*/an=4.D9/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^betax=.*/betax=1.5*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^betay=.*/betay=0.3*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^emitx=.*!emitx=2500.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^emity=.*!emity=30.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^emitxsep=.*!emitxsep=120.0*nm*40./gammasep,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^emitysep=.*!emitysep=120.0*nm/40./gammasep,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^cfbeamstr=.*/cfbeamstr=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^cfpair=.*/cfpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^incpair=.*/incpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^nstepip=.*/nstepip=40,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^pushexternal=.*/pushexternal=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^ *thr=.*!thr=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^ *thl=.*!thl=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^ *deltar=.*!deltar=0.00,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^ *deltal=.*!deltal=0.00,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^ *crabon=.*!crabon=1,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^ *laserthloff=.*!laserthloff=0.056,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^ *laserthroff=.*!laserthroff=0.056,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^ *laserthl=.*!laserthl=1.0*thr+laserthloff,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^ *laserthr=.*!laserthr=1.0*thl+laserthroff,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^ *SET.*spinleft=.*; !/SET MsgLevel=1000000,spinleft=0.9; !/'  out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/MVPH=.*, ML/MVPH=1600000, ML/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/NP=.*, AN/NP=64000, AN/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^ee=.*!ee=250.D9,  gamma=ee/Emass,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^pulseE=.*!pulseE=9,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^agammax=.*!agammax=7150.*nm,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's!^agammay=.*!agammay=7150.*nm,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^ *sigt=.*/sigt=0.45*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^sige=.*/sige=0.0005,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^sigz=.*/sigz=0.05*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^nbunch=.*/nbunch=2820, reprate=5,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^d\([1,2]\)=.*/d\1=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^egamma=.*/egamma=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-if [ $DOBATCH == "BATCH" ]; then sbatch -A atlas:usatlas ./scripts/sbatch_batch.sh ./scripts/runRandCain_2D_logEcmRange.sh "$vid" "$comptonid"; else nohup ./scripts/runRandCain_2D_logEcmRange.sh "$vid" BW_BH_NPH3_x1000_po0p90_lpc+ > /dev/null 2>&1 & fi
-
-
-
-
-
-vid=v08051 ; comptonid=BW_BH_NPH3_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^bfieldext=.*/bfieldext=4,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^outputip=.*/outputip=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^wenhbeam=.*/wenhbeam=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^wenhpair=.*/wenhpair=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^wenhpp=.*/wenhpp=1.00,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's!^smeshval=.*!smeshval=sigz/3,!' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^offy=.*/offy=0.00*sigy,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^ifldbe=.*/ifldbe=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^ibealt=.*/ibealt=-1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^wscaler=.*/wscaler=10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^wscalel=.*/wscalel=10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^bdipole=.*/bdipole=0.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^eplotmax=.*/eplotmax=1000.,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^eplotmin=.*/eplotmin=0.,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^plotincp=.*/plotincp=-1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^nsigbb=.*/nsigbb=2,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^ansep=.*/ansep=2.00D10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's!^eesep=.*!eesep=10.0D9,  gammasep=eesep/Emass,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^sigzsep=.*/sigzsep=3.0*micron,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^dorigin=.*/dorigin=-66.0*nm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
-sed -i 's/^xnumber.*,/xnumber=4.83,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^dcp.*,/dcp=2.6*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^an=.*/an=4.D9/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^an=.*/an=4.D9,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^betax=.*/betax=1.5*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^betay=.*/betay=0.3*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's!^emitx=.*!emitx=2500.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
@@ -37255,7 +37379,7 @@ if [ $DOBATCH == "BATCH" ]; then sbatch -A atlas:usatlas ./scripts/sbatch_batch.
 
 
 
-vid=v08052 ; comptonid=BW_BH_NPH3_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
+vid=v08054 ; comptonid=BW_BH_NPH1_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^bfieldext=.*/bfieldext=4,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^outputip=.*/outputip=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^wenhbeam=.*/wenhbeam=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
@@ -37278,7 +37402,7 @@ sed -i 's/^sigzsep=.*/sigzsep=3.0*micron,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^dorigin=.*/dorigin=-66.0*nm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
 sed -i 's/^xnumber.*,/xnumber=4.83,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^dcp.*,/dcp=2.6*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^an=.*/an=4.D9/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^an=.*/an=4.D9,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^betax=.*/betax=1.5*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^betay=.*/betay=0.3*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's!^emitx=.*!emitx=2500.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
@@ -37288,7 +37412,7 @@ sed -i 's!^emitysep=.*!emitysep=120.0*nm/40./gammasep,!' out/"$jobdir"/Higgs4CP_
 sed -i 's/^cfbeamstr=.*/cfbeamstr=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^cfpair=.*/cfpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^incpair=.*/incpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
-sed -i 's/^nstepip=.*/nstepip=4000,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^nstepip=.*/nstepip=400,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^pushexternal=.*/pushexternal=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's!^ *thr=.*!thr=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's!^ *thl=.*!thl=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
@@ -37314,5 +37438,67 @@ sed -i 's/^d\([1,2]\)=.*/d\1=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 sed -i 's/^egamma=.*/egamma=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
 if [ $DOBATCH == "BATCH" ]; then sbatch -A atlas:usatlas ./scripts/sbatch_batch.sh ./scripts/runRandCain_2D_logEcmRange.sh "$vid" "$comptonid"; else nohup ./scripts/runRandCain_2D_logEcmRange.sh "$vid" BW_BH_NPH3_x1000_po0p90_lpc+ > /dev/null 2>&1 & fi
 
+
+
+
+
+vid=v08055 ; comptonid=BW_BH_NPH2_x1000_po0p90_lpc+; jobdir="$vid"_"$comptonid"; mkdir out/"$jobdir"; cp in/Higgs4CP_"$comptonid".i out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^bfieldext=.*/bfieldext=4,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^outputip=.*/outputip=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^wenhbeam=.*/wenhbeam=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^wenhpair=.*/wenhpair=1.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^wenhpp=.*/wenhpp=1.00,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's!^smeshval=.*!smeshval=sigz/3,!' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^offy=.*/offy=0.00*sigy,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^ifldbe=.*/ifldbe=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^ibealt=.*/ibealt=-1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^wscaler=.*/wscaler=10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^wscalel=.*/wscalel=10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^bdipole=.*/bdipole=0.0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^eplotmax=.*/eplotmax=1000.,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^eplotmin=.*/eplotmin=0.,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^plotincp=.*/plotincp=-1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^nsigbb=.*/nsigbb=2,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^ansep=.*/ansep=2.00D10,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's!^eesep=.*!eesep=10.0D9,  gammasep=eesep/Emass,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^sigzsep=.*/sigzsep=3.0*micron,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^dorigin=.*/dorigin=-66.0*nm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i 
+sed -i 's/^xnumber.*,/xnumber=4.83,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^dcp.*,/dcp=2.6*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^an=.*/an=4.D9,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^betax=.*/betax=1.5*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^betay=.*/betay=0.3*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^emitx=.*!emitx=2500.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^emity=.*!emity=30.*nm/gamma,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^emitxsep=.*!emitxsep=120.0*nm*40./gammasep,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^emitysep=.*!emitysep=120.0*nm/40./gammasep,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^cfbeamstr=.*/cfbeamstr=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^cfpair=.*/cfpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^incpair=.*/incpair=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^nstepip=.*/nstepip=400,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^pushexternal=.*/pushexternal=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^ *thr=.*!thr=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^ *thl=.*!thl=0.035/2,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^ *deltar=.*!deltar=0.00,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^ *deltal=.*!deltal=0.00,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^ *crabon=.*!crabon=1,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^ *laserthloff=.*!laserthloff=0.056,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^ *laserthroff=.*!laserthroff=0.056,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^ *laserthl=.*!laserthl=1.0*thr+laserthloff,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^ *laserthr=.*!laserthr=1.0*thl+laserthroff,!'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^ *SET.*spinleft=.*; !/SET MsgLevel=1000000,spinleft=0.9; !/'  out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/MVPH=.*, ML/MVPH=1600000, ML/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/NP=.*, AN/NP=64000, AN/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^ee=.*!ee=250.D9,  gamma=ee/Emass,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^pulseE=.*!pulseE=9,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^agammax=.*!agammax=7150.*nm,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's!^agammay=.*!agammay=7150.*nm,!' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^ *sigt=.*/sigt=0.45*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^sige=.*/sige=0.0005,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^sigz=.*/sigz=0.05*mm,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^nbunch=.*/nbunch=2820, reprate=5,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^d\([1,2]\)=.*/d\1=1,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+sed -i 's/^egamma=.*/egamma=0,/' out/"$jobdir"/Higgs4CP_"$jobdir".i
+if [ $DOBATCH == "BATCH" ]; then sbatch -A atlas:usatlas ./scripts/sbatch_batch.sh ./scripts/runRandCain_2D_logEcmRange.sh "$vid" "$comptonid"; else nohup ./scripts/runRandCain_2D_logEcmRange.sh "$vid" BW_BH_NPH3_x1000_po0p90_lpc+ > /dev/null 2>&1 & fi
 
 

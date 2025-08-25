@@ -12,6 +12,8 @@
 *.o
 *.so
 *.d
+*.mod
+*.exe
 /build/
 /lib/
 /bin/
@@ -50,6 +52,8 @@ scripts/ps2pdfRotate.sh
 scripts/rename_calc_Lumi_260GeV_349GeV.sh
 scripts/scale_v06395.271828.314159.sh
 scripts/scale_v0xxxx.271828.314159.sh
+out/
+
 
 
 
