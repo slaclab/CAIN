@@ -1,0 +1,55 @@
+
+# PDF files
+*.pdf
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+*~
+
+# Build files
+*.o
+*.so
+*.d
+/build/
+/lib/
+/bin/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE files (optional)
+.vscode/
+*.swp
+/backup/
+
+# Unique directories and files
+topdrawer/
+OideStudy/
+complexErrorFunction/
+documentation/
+root/
+scripts/Re__lumi/
+scripts/2nd_setup_qd0_power_external.sh
+*.txt
+calc*.sh
+v0*.sh
+all_top*.sh
+*prepare*.sh
+resume*.sh
+setup*.sh
+suspend*.sh
+sbatch*.sh
+scripts/allKinds.sh
+scripts/ini_plot_channels.sh
+scripts/noep_ini_plot_channels.sh
+scripts/produceUnpolarizedLumi.sh
+scripts/ps2pdfRotate.sh
+scripts/rename_calc_Lumi_260GeV_349GeV.sh
+scripts/scale_v06395.271828.314159.sh
+scripts/scale_v0xxxx.271828.314159.sh
+
+
+

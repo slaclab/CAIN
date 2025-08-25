@@ -10,17 +10,17 @@
 SET Rand=12303083;
  SET   photon=1, electron=2, positron=3, ntcut=2.5, pushcut=1.07,
    mm=1D-3, micron=1D-6, nm=1D-9, mu0=4*Pi*1D-7, mrad=1D-3,
-sige=0.0005,
+sige=0.0010,
 sigesep=0.005,
-ee=5000.D9,  gamma=ee/Emass,
+ee=62.8584D9,  gamma=ee/Emass,
 eesep=10.0D9,  gammasep=eesep/Emass,
 sigzsep=3.0*micron,
 ansep=2.00D10,
 an=0.63D10,
-sigz=5.0*micron,
+sigz=20.0*micron,
 !sigz=10*micron, 
 !sigz=30*micron, 
-dcp=0.015*mm,  ! dcp=CP-to-IP distance
+dcp=0.06*mm,  ! dcp=CP-to-IP distance
 betax=0.03*mm,
 betay=0.03*mm,
 alphax=dcp/betax,
@@ -29,7 +29,7 @@ emitx=120.0*nm/gamma,
 emity=120.0*nm/gamma,
 emitxsep=120.0*nm*40./gammasep,
 emitysep=120.0*nm/40./gammasep,
-nbunch=1, reprate=7725,
+nbunch=75, reprate=120,
 !
 sigxsep=Sqrt(emitxsep*betax), sigysep=Sqrt(emitysep*betay), 
 sigx=Sqrt(emitx*betax), sigy=Sqrt(emity*betay), 
@@ -43,16 +43,16 @@ bfieldext=5,
 ifldbe=0,
 rzfsgm=0.05,
 ibealt=-1,
-wenhbeam=0.01,
-wenhpair=0.0001,
-wenhpp=0.01,
+wenhbeam=1.0,
+wenhpair=1.0,
+wenhpp=1.00,
 pmaxbeam=0.8,
 pmaxpair=0.80,
-outputip=1,
+outputip=0,
 smeshval=sigz/3,
 Smesh=smeshval,
 thfieldext=0.,
-xnumber=1.0*79863.274,
+xnumber=1000.,
 laserwl=1.900745923e-17*ee/xnumber,
 lambar=laserwl/(2*Pi), omegal=Hbarc/lambar,
 incpair=1,
@@ -81,21 +81,21 @@ plotincp=-1,
 !agamma=43.52*nm*Sqrt(1000./xnumber),
 !agamma=75.378*nm,
 !agamma=33*nm,
-nstepip=16000,
+nstepip=300,
 d1=1,
 d2=1,
 agammax=21.21*nm,
 agammay=21.21*nm,
 rlx=4*Pi*agammax^2/laserwl/d1,
 rly=4*Pi*agammay^2/laserwl/d2,
-sigt=5.0*micron,
-pulseE=1.0*0.00000072,
+sigt=sigz,
+pulseE=0.72,
 nsigbb=2,
 nsigsep=2,
 noffxshadow=1.0,
 offt=2*nsigbb*(sigzsep+sigz)+2.*0.75*pushcut*(sigt+sigz),
-thr=0.000/2,
-thl=0.000/2,
+thr=0.014/2,
+thl=0.014/2,
 sud=dcp-0.5*offt,
 gu=-sud*(thr+thl),
 sigxdefl=sigx*Sqrt(1.+sud^2/betax^2),
@@ -458,28 +458,26 @@ HTITLE='Photon energy (GeV);', VTITLE='X (nm);',
   HSCALE=(0,1.01*xnumber*ee/(xnumber+1)/1e9), VSCALE=(-20*sigx/nm,20*sigx/nm),
   TITLE=' X vs photon Energy;';
 
-!PLOT SCAT, KIND=photon, COLOR='RED', MAXNP=10000, H=ArcCos(Ps/Sqrt(Px*Px+Py*Py+Ps*Ps)), V=En/1D3, 
-!        FILE='Plots.top', APPEND,
-!  HTITLE='Theta (mrad);', VTITLE='Photon energy (keV);',
-!  HSCALE=(-10.,10.), VSCALE=(0,1.01*xnumber*ee/(xnumber+1)/1e3), 
-!  TITLE=' photon Energy vs Theta;';
-
-!PLOT SCAT, KIND=photon, COLOR='RED', MAXNP=10000, H=ArcCos(T/Sqrt(X*X+Y*Y+T*T)), V=En/1D3, 
-!  PLOT SCAT, KIND=photon, COLOR='RED', MAXNP=10000, H=Sgn(X)*1D3*ArcTan(Sqrt(X*X+Y*Y)/T), V=En/1D3, 
-!  PLOT SCAT, KIND=photon, COLOR='RED', MAXNP=10000, H=2D5*Sgn(Ps)*(1-Abs(Ps)/En), V=En/1D3, 
-  PLOT SCAT, KIND=photon, COLOR='RED', MAXNP=1000000, H=1D3*ArcTan(Sqrt(Px*Px+Py*Py)/Ps), V=En/1D3, 
+PLOT SCAT, KIND=photon, COLOR='RED', MAXNP=10000, H=En/1D9, V=X/nm,
         FILE='Plots.top', APPEND,
-  HTITLE='Theta (mrad);', VTITLE='Photon energy (keV);',
-  HSCALE=(-10.,10.), VSCALE=(11,1.01*xnumber*ee/(xnumber+1)/1e3), 
-  TITLE=' photon Energy vs Theta;';
-
-  PLOT SCAT, KIND=photon,  SELECT=(Gen==2), COLOR='RED', MAXNP=1000000, H=1D3*ArcTan(Sqrt(Px*Px+Py*Py)/Ps), V=En/1D3, 
-        FILE='Plots.top', APPEND,
-  HTITLE='Theta (mrad);', VTITLE='Photon energy (keV);',
-  HSCALE=(-10.,10.), VSCALE=(11,1.01*xnumber*ee/(xnumber+1)/1e3), 
-  TITLE=' Primary Photon Energy vs Theta;';
+HTITLE='Photon energy (GeV);', VTITLE='X (nm);',
+  HSCALE=(0,1.01*xnumber*ee/(xnumber+1)/1e9), VSCALE=(-5*sigx/nm,5*sigx/nm),
+  TITLE=' X vs photon Energy v2;';
 
  ENDIF;
 
+   IF NParticle(3,3)>0.5;
+
+
+ PLOT  HIST, KIND=positron, RIGHT, SELECT=(Gen==3), H=En/1D9, HSCALE=(0,1.01*xnumber*ee/(xnumber+1)/1e9,500),
+        FILE='Plots.top', APPEND,
+       TITLE='Right-Going Primary Positron Energy Spectrum after CP;',
+        HTITLE='E0G1 (GeV); XGX      ;'  ;
+ PLOT  HIST, LEFT,KIND=positron, SELECT=(Gen==3),H=En/1D9, HSCALE=(0,1.01*xnumber*ee/(xnumber+1)/1e9,500),
+        FILE='Plots.top', APPEND,
+       TITLE='Left-Going Primary Positron Energy Spectrum after CP;',
+        HTITLE='E0G1 (GeV); XGX      ;'  ;
+
+ ENDIF;
 
  STOP;
