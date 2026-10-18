@@ -16,10 +16,12 @@ ee=62.8584D9,  gamma=ee/Emass,
 eesep=10.0D9,  gammasep=eesep/Emass,
 sigzsep=3.0*micron,
 ansep=2.00D10,
+a0=0.3,
 an=0.63D10,
 sigz=20.0*micron,
 !sigz=10*micron, 
 !sigz=30*micron, 
+sigt=sigz,
 dcp=0.06*mm,  ! dcp=CP-to-IP distance
 betax=0.03*mm,
 betay=0.03*mm,
@@ -88,7 +90,6 @@ agammax=21.21*nm,
 agammay=21.21*nm,
 rlx=4*Pi*agammax^2/laserwl/d1,
 rly=4*Pi*agammay^2/laserwl/d2,
-sigt=sigz,
 pulseE=0.72,
 nsigbb=2,
 nsigsep=2,
@@ -233,7 +234,7 @@ SET pushendcp=nsigbb*(sigzsep+sigz)+0.5*offt-dcp;
 SET pushendip=-ntcutip*sigz;
 SET pushend=Min(pushendcp,pushendip);
 
-BBFIELD FLDBE=ifldbe, BEALT=ibealt, ZFSGM=rzfsgm, NX=nx, NY=ny, WX=(wxvalr,wxvall), R=rval, WXMAX=(wxvalr,wxvall);
+BBFIELD FLDBE=ifldbe, BEALT=ibealt, ZFSGM=rzfsgm, NX=nx, NY=ny, WX=(wxvalr,wxvall), R=rval, WXMAX=(6.4*wxvalr,6.4*wxvall);
 BEAM  RIGHT, KIND=electron, NP=64000, AN=ansep, E0=eesep, SIGE=sigesep,
  TXYS=(-2*dcp+offt,offxr,0,0),  GCUTT=ntcut, SLOPE=(thdr,0), CRAB=(crabthrsep,0),
  BETA=(betax,betay), EMIT=(emitxsep,emitysep), SIGT=sigzsep, SPIN=(0,0,0);

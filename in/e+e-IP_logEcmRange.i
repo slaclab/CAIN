@@ -172,194 +172,226 @@ ENDIF;
 EXTERNALFIELD S=(-3.5,3.5),B=(0,0,bfieldext);
 
 
+
 DRIFT EXTERNAL, T=0.5*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=0.5 cm R vs S;';
+  ENDIF;
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
         FILE='ElectronEnergy.top', APPEND,
         V=En/1D9, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2])/mm,  MAXNP=10000,
-        VSCALE=(0.001,emax/1e9), HSCALE=(1,1600),
+        VSCALE=(0.001,emax/1e9), HSCALE=(0.01,1600),
         TITLE='T=0.5 cm Electron Energy vs. Angle after IP;',
         VTITLE='E0e1 (GeV); X X      ;',
         HTITLE='Q0e1 (mrad);GX X       ;' ;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=0.5 cm X vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-0.5*1.4,0.5*1.4), VSCALE=(-0.7,0.7), TITLE=' T=0.5 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=0.5 cm Y vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-0.5*1.4,0.5*1.4), VSCALE=(-0.7,0.7), TITLE=' T=0.5 cm Y vs S;';
 
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', RIGHT, APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going T=0.5 cm X vs Y;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-0.5*1.4,0.5*1.4), VSCALE=(-0.7,0.7), TITLE=' Right-going T=0.5 cm X vs Y;';
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', LEFT, APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going T=0.5 cm X vs Y;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-0.5*1.4,0.5*1.4), VSCALE=(-0.7,0.7), TITLE=' Left-going T=0.5 cm X vs Y;';
 
 
 
 
 
 DRIFT EXTERNAL, T=1.0*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=1.0 cm R vs S;';
+  ENDIF;
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
         FILE='ElectronEnergy.top', APPEND,
         V=En/1D9, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2])/mm,  MAXNP=10000,
-        VSCALE=(0.001,emax/1e9), HSCALE=(1,1600),
+        VSCALE=(0.001,emax/1e9), HSCALE=(0.01,1600),
         TITLE='T=1.0 cm Electron Energy vs. Angle after IP;',
         VTITLE='E0e1 (GeV); X X      ;',
         HTITLE='Q0e1 (mrad);GX X       ;' ;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=1.0 cm X vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-1.0*1.4,1.0*1.4), VSCALE=(-2.,2.), TITLE=' T=1.0 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=1.0 cm Y vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-1.0*1.4,1.0*1.4), VSCALE=(-2.,2.), TITLE=' T=1.0 cm Y vs S;';
 
 
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', RIGHT, APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going T=1.0 cm X vs Y;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-1.0*1.4,1.0*1.4), VSCALE=(-2.,2.), TITLE=' Right-going T=1.0 cm X vs Y;';
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', LEFT, APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going T=1.0 cm X vs Y;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-1.0*1.4,1.0*1.4), VSCALE=(-2.,2.), TITLE=' Left-going T=1.0 cm X vs Y;';
 
 
 
 
 
 DRIFT EXTERNAL, T=1.5*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=1.5 cm R vs S;';
+  ENDIF;
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
         FILE='ElectronEnergy.top', APPEND,
         V=En/1D9, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2])/mm,  MAXNP=10000,
-        VSCALE=(0.001,emax/1e9), HSCALE=(1,1600),
+        VSCALE=(0.001,emax/1e9), HSCALE=(0.01,1600),
         TITLE='T=1.5 cm Electron Energy vs. Angle after IP;',
         VTITLE='E0e1 (GeV); X X      ;',
         HTITLE='Q0e1 (mrad);GX X       ;' ;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=1.5 cm X vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-1.5*1.4,1.5*1.4), VSCALE=(-2.5,2.5), TITLE=' T=1.5 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=1.5 cm Y vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-1.5*1.4,1.5*1.4), VSCALE=(-2.5,2.5), TITLE=' T=1.5 cm Y vs S;';
 
 
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', RIGHT, APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going T=1.5 cm X vs Y;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-1.5*1.4,1.5*1.4), VSCALE=(-2.5,2.5), TITLE=' Right-going T=1.5 cm X vs Y;';
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', LEFT, APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going T=1.5 cm X vs Y;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-1.5*1.4,1.5*1.4), VSCALE=(-2.5,2.5), TITLE=' Left-going T=1.5 cm X vs Y;';
 
 
 
 
 
 DRIFT EXTERNAL, T=2.0*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=2.0 cm R vs S;';
+  ENDIF;
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
         FILE='ElectronEnergy.top', APPEND,
         V=En/1D9, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2])/mm,  MAXNP=10000,
-        VSCALE=(0.001,emax/1e9), HSCALE=(1,1600),
+        VSCALE=(0.001,emax/1e9), HSCALE=(0.01,1600),
         TITLE='T=2.0 cm Electron Energy vs. Angle after IP;',
         VTITLE='E0e1 (GeV); X X      ;',
         HTITLE='Q0e1 (mrad);GX X       ;' ;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=2.0 cm X vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-2.0*1.4,2.0*1.4), VSCALE=(-2.5,2.5), TITLE=' T=2.0 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=2.0 cm Y vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-2.0*1.4,2.0*1.4), VSCALE=(-2.5,2.5), TITLE=' T=2.0 cm Y vs S;';
 
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', RIGHT, APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going T=2.0 cm X vs Y;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-2.0*1.4,2.0*1.4), VSCALE=(-2.5,2.5), TITLE=' Right-going T=2.0 cm X vs Y;';
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', LEFT, APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going T=2.0 cm X vs Y;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-2.0*1.4,2.0*1.4), VSCALE=(-2.5,2.5), TITLE=' Left-going T=2.0 cm X vs Y;';
 
 
 
 
 
 DRIFT EXTERNAL, T=2.5*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=2.5 cm R vs S;';
+  ENDIF;
+
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
         FILE='ElectronEnergy.top', APPEND,
         V=En/1D9, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2])/mm,  MAXNP=10000,
-        VSCALE=(0.001,emax/1e9), HSCALE=(1,1600),
+        VSCALE=(0.001,emax/1e9), HSCALE=(0.01,1600),
         TITLE='T=2.5 cm Electron Energy vs. Angle after IP;',
         VTITLE='E0e1 (GeV); X X      ;',
         HTITLE='Q0e1 (mrad);GX X       ;' ;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=2.5 cm X vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-2.5*1.4,2.5*1.4), VSCALE=(-3.0,3.0), TITLE=' T=2.5 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=2.5 cm Y vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-2.5*1.4,2.5*1.4), VSCALE=(-3.0,3.0), TITLE=' T=2.5 cm Y vs S;';
 
 
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', RIGHT, APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going T=2.5 cm X vs Y;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-2.5*1.4,2.5*1.4), VSCALE=(-3.0,3.0), TITLE=' Right-going T=2.5 cm X vs Y;';
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', LEFT, APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going T=2.5 cm X vs Y;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-2.5*1.4,2.5*1.4), VSCALE=(-3.0,3.0), TITLE=' Left-going T=2.5 cm X vs Y;';
 
 
 
@@ -367,13 +399,18 @@ SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
 
 DRIFT EXTERNAL, T=3.0*cm;
   IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=3.0 cm R vs S;';
+
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', RIGHT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going Incp T=3.0 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-3.0*1.4,3.0*1.4), VSCALE=(-3.5,3.5), TITLE=' Right-going Incp T=3.0 cm X vs Y;';
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', LEFT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going Incp T=3.0 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-3.0*1.4,3.0*1.4), VSCALE=(-3.5,3.5), TITLE=' Left-going Incp T=3.0 cm X vs Y;';
 
  PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
   FILE='IncPair.top', RIGHT, APPEND,
@@ -389,35 +426,35 @@ ENDIF;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=3 cm X vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-3.0*1.4,3.0*1.4), VSCALE=(-3.5,3.5), TITLE=' T=3 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' T=3 cm Y vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-3.0*1.4,3.0*1.4), VSCALE=(-3.5,3.5), TITLE=' T=3 cm Y vs S;';
 
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', RIGHT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going T=3.0 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-3.0*1.4,3.0*1.4), VSCALE=(-3.5,3.5), TITLE=' Right-going T=3.0 cm X vs Y;';
 PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', LEFT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going T=3.0 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-3.0*1.4,3.0*1.4), VSCALE=(-3.5,3.5), TITLE=' Left-going T=3.0 cm X vs Y;';
 PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,5), VSCALE=(.000001,130), TITLE=' Charged T=3.0 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,5), VSCALE=(.000001,100), TITLE=' Charged T=3.0 cm Energy vs R;';
 
 PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Photons T=3.0 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Photons T=3.0 cm Energy vs R;';
 
 
 PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
@@ -434,18 +471,73 @@ PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), 
 PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
 
 
+DRIFT EXTERNAL, T=3.5*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=3.5 cm R vs S;';
+  ENDIF;
+
+
+DRIFT EXTERNAL, T=4.0*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=4.0 cm R vs S;';
+  ENDIF;
+
+
+DRIFT EXTERNAL, T=4.5*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=4.5 cm R vs S;';
+  ENDIF;
+
+
+DRIFT EXTERNAL, T=5.0*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=5.0 cm R vs S;';
+  ENDIF;
+
+
+DRIFT EXTERNAL, T=5.5*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=5.5 cm R vs S;';
+  ENDIF;
+
+
+
+DRIFT EXTERNAL, T=6.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=6.00 cm R vs S;';
+ENDIF;
+
 
 
 
 DRIFT EXTERNAL, T=6.25*cm;
   IF incpair > 0;
+
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', RIGHT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going Incp T=6.25 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-6.25*1.4,6.25*1.4), VSCALE=(-4.0,4.0), TITLE=' Right-going Incp T=6.25 cm X vs Y;';
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', LEFT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going Incp T=6.25 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-6.25*1.4,6.25*1.4), VSCALE=(-4.0,4.0), TITLE=' Left-going Incp T=6.25 cm X vs Y;';
 
  PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
   FILE='IncPair.top', RIGHT, APPEND,
@@ -459,54 +551,53 @@ PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, 
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', RIGHT, APPEND,
- HTITLE='R (cm);', VTITLE='E(GeV);', HSCALE=(0,6), VSCALE=(.000001,130), TITLE=' Right-going Incp T=6.25 cm E vs R;';
+ HTITLE='R (cm);', VTITLE='E(GeV);', HSCALE=(0,6), VSCALE=(.000001,100), TITLE=' Right-going Incp T=6.25 cm E vs R;';
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', LEFT, APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,6), VSCALE=(.000001,130), TITLE=' Left-going Incp T=6.25 cm E vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,6), VSCALE=(.000001,100), TITLE=' Left-going Incp T=6.25 cm E vs R;';
 
 
 ENDIF;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-10,10), VSCALE=(-20,20), TITLE=' T=6.25 cm X vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-6.25*1.4,6.25*1.4), VSCALE=(-4.0,4.0), TITLE=' T=6.25 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
-  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-10,10), VSCALE=(-20,20), TITLE=' T=6.25 cm Y vs S;';
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-6.25*1.4,6.25*1.4), VSCALE=(-4.0,4.0), TITLE=' T=6.25 cm Y vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', RIGHT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going T=6.25 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-6.25*1.4,6.25*1.4), VSCALE=(-4.0,4.0), TITLE=' Right-going T=6.25 cm X vs Y;';
 PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', LEFT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going T=6.25 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-6.25*1.4,6.25*1.4), VSCALE=(-4.0,4.0), TITLE=' Left-going T=6.25 cm X vs Y;';
 PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', RIGHT, APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,6), VSCALE=(.000001,130), TITLE=' Right-going Charged T=6.25 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,6), VSCALE=(.000001,100), TITLE=' Right-going Charged T=6.25 cm Energy vs R;';
 
 PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', RIGHT, APPEND,
- HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,6), VSCALE=(.000001,130), TITLE=' Right-going Photons T=6.25 cm Energy vs R;';
-
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,6), VSCALE=(.000001,100), TITLE=' Right-going Photons T=6.25 cm Energy vs R;';
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', LEFT, APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,6), VSCALE=(.000001,130), TITLE=' Left-going Charged T=6.25 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,6), VSCALE=(.000001,100), TITLE=' Left-going Charged T=6.25 cm Energy vs R;';
 
 PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', LEFT, APPEND,
- HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,6), VSCALE=(.000001,130), TITLE=' Left-going Photons T=6.25 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,6), VSCALE=(.000001,100), TITLE=' Left-going Photons T=6.25 cm Energy vs R;';
 
 
 PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
@@ -525,16 +616,85 @@ PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
 
 
 
+DRIFT EXTERNAL, T=6.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=6.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=7.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=7.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=7.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=7.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=8.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=8.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=8.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=8.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=9.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=9.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=9.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=9.50 cm R vs S;';
+ENDIF;
+
+
+
 
 DRIFT EXTERNAL, T=10.00*cm;
   IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=10.00 cm R vs S;';
+
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', RIGHT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going Incp T=10 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-10*1.4,10*1.4), VSCALE=(-20,20), TITLE=' Right-going Incp T=10 cm X vs Y;';
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', LEFT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going Incp T=10 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-10*1.4,10*1.4), VSCALE=(-20,20), TITLE=' Left-going Incp T=10 cm X vs Y;';
 
  PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
   FILE='IncPair.top', RIGHT, APPEND,
@@ -549,24 +709,24 @@ ENDIF;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-15,15), VSCALE=(-20,20), TITLE=' T=10 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-15,15), VSCALE=(-20,20), TITLE=' T=10 cm Y vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', RIGHT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going T=10 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-10*1.4,10*1.4), VSCALE=(-20,20), TITLE=' Right-going T=10 cm X vs Y;';
 PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', LEFT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going T=10 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-10*1.4,10*1.4), VSCALE=(-20,20), TITLE=' Left-going T=10 cm X vs Y;';
 PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
@@ -585,15 +745,196 @@ PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
 
 
 
+
+
+DRIFT EXTERNAL, T=10.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=10.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=11.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=11.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=11.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=11.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=12.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=12.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=12.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=12.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=13.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=13.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=13.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=13.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=14.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=14.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=14.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=14.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=15.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=15.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=15.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=15.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=16.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=16.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=16.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=16.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=17.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=17.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=17.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=17.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=18.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=18.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=18.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=18.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=19.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=19.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=19.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=19.50 cm R vs S;';
+ENDIF;
+
+
+
+
+
 DRIFT EXTERNAL, T=20*cm;
   IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=20.00 cm R vs S;';
+
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', RIGHT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going Incp T=20 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20*1.4,20*1.4), VSCALE=(-20,20), TITLE=' Right-going Incp T=20 cm X vs Y;';
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', LEFT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going Incp T=20 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20*1.4,20*1.4), VSCALE=(-20,20), TITLE=' Left-going Incp T=20 cm X vs Y;';
 
  PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
   FILE='IncPair.top', RIGHT, APPEND,
@@ -608,34 +949,34 @@ ENDIF;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-30,30), VSCALE=(-20,20), TITLE=' T=20 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-30,30), VSCALE=(-20,20), TITLE=' T=20 cm Y vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', RIGHT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going T=20 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20*1.4,20*1.4), VSCALE=(-20,20), TITLE=' Right-going T=20 cm X vs Y;';
 PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='BackgroundPlots.top', LEFT, APPEND,
-  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going T=20 cm X vs Y;';
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20*1.4,20*1.4), VSCALE=(-20,20), TITLE=' Left-going T=20 cm X vs Y;';
 PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Charged T=20 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Charged T=20 cm Energy vs R;';
 
 PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Photons T=20 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Photons T=20 cm Energy vs R;';
 
 
 PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
@@ -652,6 +993,185 @@ PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), 
         HTITLE='R  (cm);', VTITLE=' Nparticles;';
 PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
 
+
+
+DRIFT EXTERNAL, T=20.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=20.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=21.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=21.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=21.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=21.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=22.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=22.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=22.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=22.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=23.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=23.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=23.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=23.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=24.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=24.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=24.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=24.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=25.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=25.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=25.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=25.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=26.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=26.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=26.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=26.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=27.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=27.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=27.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=27.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=28.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=28.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=28.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=28.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=29.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=29.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=29.50*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=29.50 cm R vs S;';
+ENDIF;
+
+DRIFT EXTERNAL, T=30.00*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=30.00 cm R vs S;';
+ENDIF;
 
 
 
@@ -680,13 +1200,13 @@ ENDIF;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-60,60), VSCALE=(-20,20), TITLE=' T=40 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-60,60), VSCALE=(-20,20), TITLE=' T=40 cm Y vs S;';
 
 
@@ -703,11 +1223,11 @@ PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Charged T=40 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Charged T=40 cm Energy vs R;';
 
 PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Photons T=40 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Photons T=40 cm Energy vs R;';
 
 
 PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
@@ -750,13 +1270,13 @@ ENDIF;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-80,80), VSCALE=(-20,20), TITLE=' T=60 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-80,80), VSCALE=(-20,20), TITLE=' T=60 cm Y vs S;';
 
 
@@ -773,11 +1293,11 @@ PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Charged T=60 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Charged T=60 cm Energy vs R;';
 
 PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Photons T=60 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Photons T=60 cm Energy vs R;';
 
 
 PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
@@ -821,13 +1341,13 @@ ENDIF;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-100,100), VSCALE=(-20,20), TITLE=' T=80 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-100,100), VSCALE=(-20,20), TITLE=' T=80 cm Y vs S;';
 
 
@@ -844,11 +1364,11 @@ PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Charged T=80 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Charged T=80 cm Energy vs R;';
 
 PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Photons T=80 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Photons T=80 cm Energy vs R;';
 
 
 PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
@@ -864,6 +1384,315 @@ PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), 
   TITLE='Radius Charged (Blue)  and  Photons (Red) Left-going T=80 cm;',
         HTITLE='R  (cm);', VTITLE=' Nparticles;';
 PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
+
+
+
+
+
+
+
+DRIFT EXTERNAL, T=100*cm;
+  IF incpair > 0;
+PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
+  FILE='IncPair.top', RIGHT, APPEND,
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going Incp T=100 cm X vs Y;';
+
+PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
+  FILE='IncPair.top', LEFT, APPEND,
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going Incp T=100 cm X vs Y;';
+
+ PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
+  FILE='IncPair.top', RIGHT, APPEND,
+  TITLE='Radius Right-going Incp T=100 cm;',
+        HTITLE='R  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
+  FILE='IncPair.top', LEFT, APPEND,
+  TITLE='Radius Left-going Incp T=100 cm;',
+        HTITLE='R  (cm);', VTITLE=' Nparticles;';
+
+PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
+  FILE='BgndPlotsChgPtvsR.top', RIGHT, APPEND,
+ HTITLE='R (cm);', VTITLE='E(GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Right-going Incp T=100 cm E vs R;';
+
+PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
+  FILE='BgndPlotsChgPtvsR.top', LEFT, APPEND,
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Left-going Incp T=100 cm E vs R;';
+
+
+
+
+ENDIF;
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
+  FILE='BackgroundPlots.top', APPEND, 
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-300,300), VSCALE=(-20,20), TITLE=' T=100 cm X vs S;';
+
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
+  FILE='BackgroundPlots.top', APPEND, 
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-300,300), VSCALE=(-20,20), TITLE=' T=100 cm Y vs S;';
+
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
+  FILE='BackgroundPlots.top', RIGHT, APPEND,
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-300,300), VSCALE=(-20,20), TITLE=' Right-going T=100 cm X vs Y;';
+PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
+  FILE='BackgroundPlots.top', LEFT, APPEND,
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-300,300), VSCALE=(-20,20), TITLE=' Left-going T=100 cm X vs Y;';
+PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
+
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
+  FILE='BgndPlotsChgPtvsR.top', APPEND,
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Charged T=100 cm Energy vs R;';
+
+PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
+  FILE='BgndPlotsPhPtvsR.top', APPEND,
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Photons T=100 cm Energy vs R;';
+
+
+PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  TITLE='Radius Charged (Blue)  and  Photons (Red) Right-going T=100 cm;',
+        HTITLE='R  (cm);', VTITLE=' Nparticles;';
+PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
+
+
+
+PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  TITLE='Radius Charged (Blue)  and  Photons (Red) Left-going T=100 cm;',
+        HTITLE='R  (cm);', VTITLE=' Nparticles;';
+PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
+
+
+
+PLOT  HIST, KIND=1, H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='RED', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Photon (Red)  Right-going T=100 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Right-going T=100 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Right-going T=100 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Energy (GeV);';
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Left-going T=100 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Left-going T=100 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Energy (GeV);';
+
+
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Right-going T=100 cm;',
+  HTITLE='X  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Right-going T=100 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Left-going T=100 cm;',
+  HTITLE='X  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Left-going T=100 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
+
+
+
+
+
+
+DRIFT EXTERNAL, T=150*cm;
+  IF incpair > 0;
+PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
+  FILE='IncPair.top', RIGHT, APPEND,
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Right-going Incp T=150 cm X vs Y;';
+
+PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
+  FILE='IncPair.top', LEFT, APPEND,
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20,20), VSCALE=(-20,20), TITLE=' Left-going Incp T=150 cm X vs Y;';
+
+ PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
+  FILE='IncPair.top', RIGHT, APPEND,
+  TITLE='Radius Right-going Incp T=150 cm;',
+        HTITLE='R  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
+  FILE='IncPair.top', LEFT, APPEND,
+  TITLE='Radius Left-going Incp T=150 cm;',
+        HTITLE='R  (cm);', VTITLE=' Nparticles;';
+
+PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
+  FILE='BgndPlotsChgPtvsR.top', RIGHT, APPEND,
+ HTITLE='R (cm);', VTITLE='E(GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Right-going Incp T=150 cm E vs R;';
+
+PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
+  FILE='BgndPlotsChgPtvsR.top', LEFT, APPEND,
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Left-going Incp T=150 cm E vs R;';
+
+
+
+
+ENDIF;
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
+  FILE='BackgroundPlots.top', APPEND, 
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-300,300), VSCALE=(-20,20), TITLE=' T=150 cm X vs S;';
+
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
+  FILE='BackgroundPlots.top', APPEND, 
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-300,300), VSCALE=(-20,20), TITLE=' T=150 cm Y vs S;';
+
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
+  FILE='BackgroundPlots.top', RIGHT, APPEND,
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-300,300), VSCALE=(-20,20), TITLE=' Right-going T=150 cm X vs Y;';
+PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
+  FILE='BackgroundPlots.top', LEFT, APPEND,
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-300,300), VSCALE=(-20,20), TITLE=' Left-going T=150 cm X vs Y;';
+PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
+
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
+  FILE='BgndPlotsChgPtvsR.top', APPEND,
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Charged T=150 cm Energy vs R;';
+
+PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
+  FILE='BgndPlotsPhPtvsR.top', APPEND,
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Photons T=150 cm Energy vs R;';
+
+
+PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  TITLE='Radius Charged (Blue)  and  Photons (Red) Right-going T=150 cm;',
+        HTITLE='R  (cm);', VTITLE=' Nparticles;';
+PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
+
+
+
+PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  TITLE='Radius Charged (Blue)  and  Photons (Red) Left-going T=150 cm;',
+        HTITLE='R  (cm);', VTITLE=' Nparticles;';
+PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
+
+
+
+
+PLOT  HIST, KIND=1, H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='RED', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Photon (Red)  Right-going T=150 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Right-going T=150 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Right-going T=150 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Energy (GeV);';
+
+
+PLOT  HIST, KIND=1, H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='RED', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Photon (Red)  Left-going T=150 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Left-going T=150 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Left-going T=150 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Energy (GeV);';
+
+
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Right-going T=150 cm;',
+  HTITLE='X  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Right-going T=150 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Left-going T=150 cm;',
+  HTITLE='X  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Left-going T=150 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
+
+
+
 
 
 
@@ -892,11 +1721,11 @@ PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, 
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', RIGHT, APPEND,
- HTITLE='R (cm);', VTITLE='E(GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Right-going Incp T=250 cm E vs R;';
+ HTITLE='R (cm);', VTITLE='E(GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Right-going Incp T=250 cm E vs R;';
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', LEFT, APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Left-going Incp T=250 cm E vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Left-going Incp T=250 cm E vs R;';
 
 
 
@@ -905,13 +1734,13 @@ ENDIF;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-300,300), VSCALE=(-20,20), TITLE=' T=250 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-300,300), VSCALE=(-20,20), TITLE=' T=250 cm Y vs S;';
 
 
@@ -928,11 +1757,11 @@ PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Charged T=250 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Charged T=250 cm Energy vs R;';
 
 PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Photons T=250 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Photons T=250 cm Energy vs R;';
 
 
 PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
@@ -948,6 +1777,71 @@ PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), 
   TITLE='Radius Charged (Blue)  and  Photons (Red) Left-going T=250 cm;',
         HTITLE='R  (cm);', VTITLE=' Nparticles;';
 PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
+
+
+PLOT  HIST, KIND=1, H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='RED', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Photon (Red)  Right-going T=250 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+
+
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Right-going T=250 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Right-going T=250 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Energy (GeV);';
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Left-going T=250 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Left-going T=250 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Energy (GeV);';
+
+
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Right-going T=250 cm;',
+  HTITLE='X  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Right-going T=250 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Left-going T=250 cm;',
+  HTITLE='X  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Left-going T=250 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
 
 
 
@@ -976,11 +1870,11 @@ PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, 
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', RIGHT, APPEND,
- HTITLE='R (cm);', VTITLE='E(GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Right-going Incp T=300 cm E vs R;';
+ HTITLE='R (cm);', VTITLE='E(GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Right-going Incp T=300 cm E vs R;';
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', LEFT, APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Left-going Incp T=300 cm E vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Left-going Incp T=300 cm E vs R;';
 
 
 
@@ -989,13 +1883,13 @@ ENDIF;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-350,350), VSCALE=(-20,20), TITLE=' T=300 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-350,350), VSCALE=(-20,20), TITLE=' T=300 cm Y vs S;';
 
 
@@ -1012,11 +1906,11 @@ PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Charged T=300 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Charged T=300 cm Energy vs R;';
 
 PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Photons T=300 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Photons T=300 cm Energy vs R;';
 
 
 PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
@@ -1032,6 +1926,71 @@ PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), 
   TITLE='Radius Charged (Blue)  and  Photons (Red) Left-going T=300 cm;',
         HTITLE='R  (cm);', VTITLE=' Nparticles;';
 PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
+
+
+PLOT  HIST, KIND=1, H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='RED', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Photon (Red)  Right-going T=300 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+
+
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Right-going T=300 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Right-going T=300 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Energy (GeV);';
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Left-going T=300 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Left-going T=300 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Energy (GeV);';
+
+
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Right-going T=300 cm;',
+  HTITLE='X  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Right-going T=300 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Left-going T=300 cm;',
+  HTITLE='X  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Left-going T=300 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
 
 
 
@@ -1060,11 +2019,11 @@ PLOT  HIST, INCP, H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, 
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', RIGHT, APPEND,
- HTITLE='R (cm);', VTITLE='E(GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Right-going Incp T=350 cm E vs R;';
+ HTITLE='R (cm);', VTITLE='E(GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Right-going Incp T=350 cm E vs R;';
 
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=100000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', LEFT, APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Left-going Incp T=350 cm E vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Left-going Incp T=350 cm E vs R;';
 
 
 
@@ -1073,13 +2032,13 @@ ENDIF;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-400,400), VSCALE=(-20,20), TITLE=' T=350 cm X vs S;';
 
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
   FILE='BackgroundPlots.top', APPEND, 
-SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && Incp == plotincp),
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-400,400), VSCALE=(-20,20), TITLE=' T=350 cm Y vs S;';
 
 
@@ -1096,11 +2055,11 @@ PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Charged T=350 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Charged T=350 cm Energy vs R;';
 
 PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', APPEND,
- HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,130), TITLE=' Photons T=350 cm Energy vs R;';
+ HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Photons T=350 cm Energy vs R;';
 
 
 PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), VLOG, COLOR='BLUE', 
@@ -1120,6 +2079,13 @@ PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
 
 
 
+PLOT  HIST, KIND=1, H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='RED', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Photon (Red)  Right-going T=350 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+
 
 
 
@@ -1175,6 +2141,95 @@ PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE',
   SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
   TITLE='Y Charged (Blue)  Left-going T=350 cm;',
   HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
+
+EXTERNALFIELD B=(Sin(thfieldext),bdipole,bfieldext*Cos(thfieldext));
+DRIFT EXTERNAL, RIGHT, T=450*cm;
+
+EXTERNALFIELD B=(Sin(thfieldext),-bdipole,bfieldext*Cos(thfieldext));
+DRIFT EXTERNAL, LEFT, T=450*cm;
+
+
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=X/cm,
+  FILE='BackgroundPlots.top', APPEND, 
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='X (cm);', HSCALE=(-500,500), VSCALE=(-40,40), TITLE=' T=450 cm X vs S;';
+
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Y/cm,
+  FILE='BackgroundPlots.top', APPEND, 
+SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='Y (cm);', HSCALE=(-500,500), VSCALE=(-40,40), TITLE=' T=450 cm Y vs S;';
+
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
+  FILE='BackgroundPlots.top', RIGHT, APPEND,
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-40,40), VSCALE=(-40,40), TITLE=' Right-going T=450 cm X vs Y;';
+PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
+
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
+  FILE='BackgroundPlots.top', LEFT, APPEND,
+  HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-40,40), VSCALE=(-40,40), TITLE=' Left-going T=450 cm X vs Y;';
+PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
+
+
+
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Right-going T=450 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Right-going T=450 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Energy (GeV);';
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Left-going T=450 cm;',
+  HTITLE='X  (cm);', VTITLE=' Energy (GeV);';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, V=(En/1D9), HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Left-going T=450 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Energy (GeV);';
+
+
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Right-going T=450 cm;',
+  HTITLE='X  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', RIGHT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Right-going T=450 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
+
+PLOT  HIST, KIND=(2,3), H=X/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='X Charged (Blue)  Left-going T=450 cm;',
+  HTITLE='X  (cm);', VTITLE=' Nparticles;';
+
+PLOT  HIST, KIND=(2,3), H=Y/cm, HSCALE=(-20,20,200), VLOG, COLOR='BLUE', 
+  FILE='BackgroundPlotsRvsS.top', LEFT, APPEND,
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  TITLE='Y Charged (Blue)  Left-going T=450 cm;',
+  HTITLE='Y  (cm);', VTITLE=' Nparticles;';
+
 
 
 
@@ -1304,6 +2359,12 @@ PLOT  SCAT, KIND=electron,LEFT,VLOG, HLOG,
   TITLE='Electron Energy vs cos(theta) after IP;',
         VTITLE='E0e1 (GeV); X X      ;',HTITLE='cos(theta);' ;
 
+ PLOT  HIST, KIND=1, H=Ps/Sqrt[Px^2+Py^2+Ps^2], HSCALE=(-1,1,200), VSCALE=(1,1E11), VLOG, COLOR='RED', 
+  FILE='PhotonEnergy.top', APPEND,
+  TITLE='Photon Flux ;',
+  HTITLE='cos(theta);', VTITLE=' Nphotons / 0.01;';
+
+
  PLOT  SCAT, KIND=photon,VLOG,
   FILE='PhotonEnergy.top', APPEND,
    V=En/1D9, H=Ps/Sqrt[Px^2+Py^2+Ps^2], MAXNP=400000,
@@ -1335,7 +2396,6 @@ PLOT  HIST, KIND=electron,VLOG,
 H=Sqrt[(Px^2+Py^2)]/1E9,HSCALE=(0.0,0.2),
           TITLE='Electron Pt Spectrum;',
           HTITLE='P0t1  (GeV); X X       ;';
-
 
 
 PLOT LUMINOSITY, VLOG, PERBIN, KIND=(electron,positron), FILE='e+e-Lumi.top';

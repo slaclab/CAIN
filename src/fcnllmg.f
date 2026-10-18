@@ -35,7 +35,7 @@ c
       if(it.eq.126.and.mpis.eq.7.and.mpll.eq.1) then
          write(msgfl,102) it,mpis,mpixy,mpll,mpkk,
      &        nvar,sig,rrr,var,mpikur,mpilam,dlnfda
- 102     format(' fcnllmg it,is= ',i5,i3
+ 102     format(' fcnllmg it,is= ',i5,i4
      &        ' ixy= ',i3,' l= ',i3,' k= ',i3,
      &        ' nvar= ',i3,
      &        ' sig= '2(1pe11.3),

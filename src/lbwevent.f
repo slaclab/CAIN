@@ -1,4 +1,5 @@
-      SUBROUTINE LBWEVENT(N,DT,WGT1,PE2,SPE2,PP2,SPP2,LENHBW,IRTN)
+      SUBROUTINE LBWEVENT(N,DT,WGT1,PE2,SPE2,PP2,SPP2,LENHBW,
+     %                    KEEPN,IRTN)
 C     Add particles after laser-BreitWheeler event
 C     New particles are appended at the end of the list.
 C     The ID of existing particles do not change.
@@ -10,12 +11,15 @@ C     WGT1      event weight  (0<=WGT1<=1)
 C     PE2(0:3)  
 C     SPE2(1:3) 
 C     LENHBW    LENHANCE parameter (1,2,3). See CAIN manual
+C     KEEPN=0 : parent is a real photon -> consumed (original BW behavior)
+C     KEEPN=1 : parent survives with recoil momentum already applied
+C     by the caller (Bethe-Heitler: e- gamma -> e- e+ e-)
 C     Output
 C     IRTN      100: too many new particles in one time step.
 
       USE BEAMCM
       IMPLICIT NONE
-      INTEGER N,LENHBW,IRTN
+      INTEGER N,LENHBW,KEEPN,IRTN
       REAL(8) DT,WGT1,PE2(0:3),SPE2(1:3),PP2(0:3),SPP2(3)
       INCLUDE 'include/ctrlcm.h'
       INTEGER I,LBBF,GEN2,IS2
@@ -52,8 +56,10 @@ C     IRTN      100: too many new particles in one time step.
          CALL ADDONE(0,3,GEN2,'    ',IS2,WGT(N),
      %        TXYS2,PP2,SPP2,LBBF,FLD1,IRTN)
          IF(IRTN.NE.0) GOTO 920
-         LOST(N)=1
-         WGT(N)=0
+         IF(KEEPN.EQ.0) THEN
+            LOST(N)=1
+            WGT(N)=0
+         ENDIF
       ELSE
          WGT2=WGT(N)*WGT1
          IF(LENHBW.LE.1) THEN
@@ -71,9 +77,11 @@ C     IRTN      100: too many new particles in one time step.
             CALL ADDONE(0,3,GEN2,'    ',IS2,WGT2,
      %           TXYS2,PP2,SPP2,LBBF,FLD1,IRTN)
             IF(IRTN.NE.0) GOTO 920
-	    IF(RANDCAIN().LE.WGT1) THEN
-               LOST(N)=1
-               WGT(N)=0
+            IF(KEEPN.EQ.0) THEN
+               IF(RANDCAIN().LE.WGT1) THEN
+                  LOST(N)=1
+                  WGT(N)=0
+               ENDIF
 	    ENDIF
          ELSE
 	    IF(RANDCAIN().LE.WGT1) THEN

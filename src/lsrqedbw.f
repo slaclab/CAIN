@@ -92,6 +92,7 @@ c     %        NPH1,PE2(1),PP2(1),SPE2,SPP2,emsg)
               PE2(0)=SQRT(MASS(2)**2+PE2(1)**2+PE2(2)**2+PE2(3)**2)
               PP2(0)=SQRT(MASS(2)**2+PP2(1)**2+PP2(2)**2+PP2(3)**2)
               WGT1=1
+	      print *, " lsrqedbw ep(0,n)=" ,ep(0,n)
             ENDIF
           ELSE
             CALL NLBWGN(EP(0,N),SPIN(2,N),OMG,EV(1,3),STKSLS(2,LSR),
@@ -112,7 +113,7 @@ c     %        NPH1,PE2(1),PP2(1),SPE2,SPP2,emsg)
 	      GOTO 100
 	    ENDIF
           IF(NPH1.GT.0) THEN
-            CALL LBWEVENT(N,DT,WGT1,PE2,SPE2,PP2,SPP2,LENHBW,IRTN)
+            CALL LBWEVENT(N,DT,WGT1,PE2,SPE2,PP2,SPP2,LENHBW,0,IRTN)
 	      IF(IRTN.NE.0) GOTO 920
 	    ENDIF
 200	    T2=T2+DT

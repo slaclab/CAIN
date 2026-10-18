@@ -86,6 +86,7 @@ C  will be affected by this change.
 	      GOTO 100
 	    ENDIF
           IF(NPH1.GT.0) THEN
+	     print *, " lsrqedcp ep(0,n)=",ep(0,n)
 	      CALL LCPEVENT(N,DT,WGT1,PE2,SPE2,PG2,STK2,LENHCP,IRTN)
 	      IF(IRTN.NE.0) GOTO 920
 	    ENDIF

@@ -178,7 +178,7 @@ C     exclude those created at time>T.
             if(mpnn(l,k).gt.nwal) then
                write(msgfl,104) it,is,l,k,mpnn(l,k),
      &              nwal
- 104           format(' it,is= ',i5,i3,' l= ',i3,' k= ',i3,
+ 104           format(' it,is= ',i5,i4,' l= ',i3,' k= ',i3,
      &              ' mpnn= ',i10,
      &              ' is greater than nwal= ',i10,
      &              ' program will now stop ')
@@ -193,7 +193,7 @@ C     exclude those created at time>T.
      &           wchg,
      &           wchgt(l,k),
      &           pxyuse,bbq1(1:2,l,k),bbq2(1:2,l,k)       
- 123        format(' it,is= ',i5,i3,' l= ',i3,' k= ',i3,' n= ',i10,
+ 123        format(' it,is= ',i5,i4,' l= ',i3,' k= ',i3,' n= ',i10,
      &           ' mpnn= ',i10,' gen= ',i4,
      &           ' wgt= ',(1pe11.3),       
      &           ' ep(0)= ',(1pe11.3),       
@@ -317,7 +317,7 @@ c     &        wchgt(l,1),mpnn(l,1),
 c     &    bbvar(1,l,2),bbvar(2,l,2),
 c     &        wchgt(l,2),mpnn(l,2),
 c     &        fbeval(l),fbemax(l),fbemin(l)
- 101     format(' it,is= ',i5,i3,' l= ',i3,' t= ',(1pe11.3),
+ 101     format(' it,is= ',i5,i4,' l= ',i3,' t= ',(1pe11.3),
      &        ' np= ',i8,' emzero= ',l3,
      &        ' ngtmx= ',i8,' wgtmx= ',(1pe11.3),
      &        ' e- x,yv= ',2(1pe11.3),
@@ -332,7 +332,7 @@ c     &        bbavg(1:2,l,1),
 c     &        wchgt(l,2),mpnn(l,2),
 c     &        bbavg0(1:2,l,2),
 c     &        bbavg(1:2,l,2)
- 102     format(' it,is= ',i5,i3,' l= ',i3,' t= ',(1pe11.3),
+ 102     format(' it,is= ',i5,i4,' l= ',i3,' t= ',(1pe11.3),
      &        ' e- wchg,mpnn= ',(1pe11.3),i6,
      &        ' e- x,yavg0= ',2(1pe11.3),
      &        ' e- x,yavg= ',2(1pe11.3),
@@ -352,7 +352,7 @@ c    &              wchgt(l,2),mpnn(l,2),
 c    &              bbavga(1:2,l,2,i),
 c    &              bbvara(1:2,l,2,i),
 c    &              bbrrra(1:2,l,2,i)
- 103           format(' it,is= ',i5,i3,' l= ',i3,' i= ',i3,
+ 103           format(' it,is= ',i5,i4,' l= ',i3,' i= ',i3,
      &              ' e- wchg,mpnn= ',(1pe11.3),i6,
      &              ' e- x,yavga= ',2(1pe11.3),
      &              ' e- x,yvara= ',2(1pe11.3),

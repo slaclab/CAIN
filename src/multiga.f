@@ -72,7 +72,7 @@ cccccccccend   calculate aa
 c               write(msgfl,102) it,is,mpixy,mpll,mpkk,
 c     &              mpikur,mpilam,mu,sig0,sig,rrr,dlnfda,
 c     &              mpnn(mpll,mpkk),info
-c 102           format('  after hybrd it,is= ',i5,i3,
+c 102           format('  after hybrd it,is= ',i5,i4,
 c     &              ' ixy= ',i3,' l= ',i3,' k= ',i3,
 c     &              ' kur,lam= ',2(1pe11.3),
 c     &              ' mu= ',(1pe11.3),

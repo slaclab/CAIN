@@ -17,7 +17,7 @@ C
       IF(IRTN.NE.0) GOTO 1000
 C       (IRTN=1: bb-field need not be calculated)
 c      write(msgfl,103) it,is,ss(1),ss(2),0.5*sum(ss),t
- 103  format(' bbfld about to call bbbin  it,is= ',i5,i3
+ 103  format(' bbfld about to call bbbin  it,is= ',i5,i4
      &    ' ss= ',2(1pd11.3),' <ss>= ',(1pd11.3),' t= ',(1pd11.3))
       CALL BBBIN(T,IS,ss)
       CALL BBFKER(NXY,BBDXY,XYMIN,NMOM,LBBEL,BBR00,BBEL,BBU00,IRTN)

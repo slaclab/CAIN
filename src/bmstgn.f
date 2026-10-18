@@ -99,7 +99,7 @@ C
      &          ep(3),ep(0), dt,sqrt(txys(1)**2+txys(2)**2),
      &         txys(1), txys(2), upsiln,
      &         ft1,fu0,fld(1:2),prob0
- 101  format(' b2 n= ',i10,' kind(n)= ',i10,' it,is= ',i5,i3,
+ 101  format(' b2 n= ',i10,' kind(n)= ',i10,' it,is= ',i5,i4,
      &         ' pz= ',1pd10.3, ' En= ',1pd10.3, ' dt= ',1pd10.3,
      &         ' r= ', 1pd10.3,
      &         ' x= ', 1pd10.3, ' y= ', 1pd10.3,

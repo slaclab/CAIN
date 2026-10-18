@@ -3,37 +3,14 @@
 set -e    # exit script on first error
 
 
-cd $CA
 
-
-# Usage example:  ./rune+e-_logEcmRange.sh v00507 
-JOBID=$1
-
-JOBDIR="$JOBID"_e+e-
-
-
-
-
-rm -fR out/"$JOBDIR"
-
-mkdir -p out/"$JOBDIR"
-
-exec > $CA/out/"$JOBDIR"/runCain_"$JOBDIR".txt
+exec > postCain.txt
 exec 2>&1
 
 
 
 
-echo " JOBID= " $JOBID   " JOBDIR= " $JOBDIR
-
-
-
-
-cd $CA/out/"$JOBDIR"
-cp ../../in/e+e-IP_logEcmRange.i  e+e-IP_"$JOBDIR".i
-sed -i "s!xxxxxxxx!$JOBID!"  e+e-IP_"$JOBDIR".i
-../../exec/cain.exe < e+e-IP_"$JOBDIR".i > log_e+e-IP_"$JOBDIR".txt 2>&1
-cd $CA/out/"$JOBDIR"
+$CA/exec/cain.exe < postRande+e-+logEcmRange.sh> logpost_e+e-.txt 2>&1
 
 mv e+e-Lumi.top e+e-Lumi_"$JOBDIR".top
 td e+e-Lumi_"$JOBDIR".top POSTSCRIPT
@@ -68,11 +45,18 @@ mv PhotonEnergy.top PhotonEnergy_"$JOBDIR".top
 td PhotonEnergy_"$JOBDIR".top POSTSCRIPT
 $CA/ps2pdfRotate.sh PhotonEnergy_"$JOBDIR"
 
-mv IncPair.top IncPair_"$JOBDIR".top
-td IncPair_"$JOBDIR".top POSTSCRIPT
-$CA/ps2pdfRotate.sh IncPair_"$JOBDIR"
 
 
+if [ $INCPAIR -ne 0 ]
+then
+    mv IncPair.top IncPair_"$JOBDIR".top
+    td IncPair_"$JOBDIR".top POSTSCRIPT
+    $CA/ps2pdfRotate.sh IncPair_"$JOBDIR"
+
+    mv IncPairRvsS.top IncPairRvsS_"$JOBDIR".top
+    td IncPairRvsS_"$JOBDIR".top POSTSCRIPT
+    $CA/ps2pdfRotate.sh IncPairRvsS_"$JOBDIR"
+fi
 
 
 

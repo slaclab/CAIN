@@ -22,7 +22,10 @@ C    IDVPH(n) (n=1,NVPH)  Parent particle ID of the virtual photon.
 C      INCLUDE 'include/beamcm.h'
       INCLUDE 'include/ctrlcm.h'
       INCLUDE 'include/cnstcm.h'
-      INTEGER N,LSR,LR,ISPNBW,NDIV,IRTN1,LV,IV,K,N2
+	INTEGER N,LSR,LR,ISPNBW,NDIV,IRTN1,LV,IV,K,N2
+	INTEGER N_BH/0/
+	INTEGER NREJBH/0/
+	INTEGER NVPHMX/0/
       REAL*8 TXYS1(0:3),PD,PD0,EV(3,3),PE2(0:3),PP2(0:3),
      %   HE2,HP2,PROB,WGT1,T2,DT,SPE2(3),SPP2(3),GVEC(3,3),
      %   OMG,ABSPE,ABSPP,PMAXBW1,PMAX1,PDMAX,EPNEW(0:3)
@@ -33,7 +36,10 @@ C      INCLUDE 'include/beamcm.h'
 	INTEGER EMSG
       REAL*8 SPINVPH(3)/0,0,0/
 	INTEGER NDBG/0/
+	SAVE N_BH
+	SAVE NREJBH
 	SAVE NDBG
+	SAVE NVPHMX
 
 C   When artificially enhanced event rate is used, the generator creates an event
 C   with event weight WGT1 (0<WGT1<=1).
@@ -55,7 +61,10 @@ c      print *, " lsrqedbh nlsr,nphbh= ", nlsr,nphbh
       ISPNBW=0
       PMAXBW1=MIN(1D0,PMAXBW)
       CALL VPHBFL(-1,IRTN1,MSGFL)
-c      print *, " lsrqedbh after vphbfl irtn1,nvph= ", irtn1,nvph
+      if(nvph.gt.nvphmx) then
+	 nvphmx=nvph
+         print *," lsrqedbh after vphbfl irtn1,nvph= ", irtn1,nvph
+      endif
       IF(IRTN1.NE.0) GOTO 940
       IF(NVPH.EQ.0) GOTO 1000
       DO LSR=1,NLSR
@@ -111,29 +120,33 @@ c     %        NPH1,PE2(1),PP2(1),SPE2,SPP2,emsg)
 c23456789012345678901234567890123456789012345678901234567890123456789012
 c       10        20        30        40        50        60        70      
 	       IF(NPH1.GE.1) THEN
-		  PE2(0)=SQRT(MASS(2)**2+PE2(1)**2+PE2(2)**2+PE2(3)**2)
-		  PP2(0)=SQRT(MASS(2)**2+PP2(1)**2+PP2(2)**2+PP2(3)**2)
-		  WGT1=1
-		  epnew=ep(:,n2)-pe2-pp2
-		  pmag0=sqrt(epnew(1)**2+epnew(2)**2+epnew(3)**2)
-		  pmag1=epnew(0)**2-mass(2)**2
-		  if(pmag1.lt.0.) then
-		     pmag1=0.
-		     print *,
-     %                  " lsrqedph warning epnew(0)**2-mass(2)**2 < 0"
-		  else
-		     pmag1=sqrt(pmag1)
-		  endif
-		  epnew(1:3)=epnew(1:3)*pmag1/pmag0
-		  testm0=sqrt(ep(0,n2)**2
-     %                 -ep(1,n2)**2-ep(2,n2)**2-ep(1,n2)**2)
-		  testm1=sqrt(epnew(0)**2
-     %                 -epnew(1)**2-epnew(2)**2-epnew(3)**2)
-c		  write(msgfl,843) " lsrqedbh ",
-c     %             " ep   = ", ep(:,n2)," testm0= ",testm0		  
-c		  write(msgfl,843) " lsrqedbh ",
-c     %              " epnew= ", epnew," testm1= ",testm1
-c 843		  format(1x,2a,4d14.6,a,d14.6)
+	          PE2(0)=SQRT(MASS(2)**2+PE2(1)**2+PE2(2)**2+PE2(3)**2)
+	          PP2(0)=SQRT(MASS(2)**2+PP2(1)**2+PP2(2)**2+PP2(3)**2)
+	          epnew=ep(:,n2)-pe2-pp2
+	          pmag0=sqrt(epnew(1)**2+epnew(2)**2+epnew(3)**2)
+C  Reject if recoil electron cannot be put on shell (EPA y->1 tail:
+C  virtual photon took ~all of parent energy; region unphysical for
+C  tracked recoil, negligible flux). Also reject degenerate pmag0.
+		  N_BH=N_BH+1
+c	          IF(EPNEW(0).LE.MASS(2)*1.001 .OR. PMAG0.LE.0D0) THEN
+	          IF(EPNEW(0).LE.MASS(2)*1.000 .OR. PMAG0.LE.0D0) THEN
+	           NREJBH=NREJBH+1
+	           print *," lsrqedbh nrejbh,n_bh,n2,ep0,evph,epair= ",
+     %               NREJBH,N_BH,N2,EP(0,N2),EPVPH(0,IV),PE2(0)+PP2(0)
+	           GOTO 200
+	          ENDIF
+	          WGT1=1
+	          pmag1=sqrt(epnew(0)**2-mass(2)**2)
+	          epnew(1:3)=epnew(1:3)*pmag1/pmag0
+	       if(epnew(0).le.mass(2)) then
+	       print *, "  lsrqedbh epnew(0).le.mass(2) "
+               print *, " lsrqedbh ep(0,n2),epnew(0),pe2(0),pp2(0),=",
+     %         		ep(0,n2),epnew(0),pe2(0),pp2(0)
+               print *, " lsrqedbh n2, iv, EPVPH(0,IV),mass(2)= ",n2,
+     %        	    iv, EPVPH(0,IV),mass(2)
+	       print *, " lsrqedbh program will now stop"
+	       stop
+	       endif
 		  ep(:,n2)=epnew
 	       ENDIF
 	       ELSE
@@ -144,7 +157,7 @@ c 843		  format(1x,2a,4d14.6,a,d14.6)
 		  GOTO 100
 	       ENDIF
 	       IF(NPH1.GT.0) THEN
-		  CALL LBWEVENT(N2,DT,WGT1,PE2,SPE2,PP2,SPP2,LENHBW,IRTN)
+		  CALL LBWEVENT(N2,DT,WGT1,PE2,SPE2,PP2,SPP2,LENHBW,1,IRTN)
 		  IF(IRTN.NE.0) GOTO 920
 c   adjust energy of electron that radiates virtual photon
 	       ENDIF

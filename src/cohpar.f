@@ -3,9 +3,12 @@
       IMPLICIT NONE
       INTEGER IRTN
       REAL*8 T1
+      real*8 probmax/-1.d20/
+      save probmax
       INCLUDE 'include/ctrlcm.h'
 C      INCLUDE 'include/beamcm.h'
       INCLUDE 'include/cfqedcm.h'
+      INCLUDE 'include/pushcm.h'
       INTEGER MPH
       PARAMETER (MPH=5)
       REAL*8 EPEP(0:3,2),TXYSEP(0:3,2),SPINEP(3,2),PROB,WGT1,
@@ -49,15 +52,26 @@ C
         DT=T1-TXYS(0,N)
         NDIV=1
         IDIV=1
-        LPH=0          
+        LPH=0
 240     CALL COHPGN(EP(0,N),TXYS(0,N),FT1,DT,PMAXCO,WENHCO,
-     %    LPH1,LPAIR,EPEP,TXYSEP,ISPIN1,EV,STOKES,SPINEP,CHI,PROB,IRTN)
+     %     LPH1,LPAIR,EPEP,TXYSEP,ISPIN1,EV,STOKES,SPINEP,CHI,PROB,IRTN)
+        if(prob.gt.probmax) then
+           probmax=prob
+           write(msgfl,101) it,probmax,pmaxco
+ 101      format(' cohpar it= ',i5,' prob,pmaxco= ',2(1pe11.3))
+        endif
         IF(IRTN.NE.0) THEN
-	    IF(NDIV.NE.1) GOTO 900
-	    NDIV=INT(PROB/PMAXCO)+1
-	    DT=DT/NDIV
+	    IF(IDIV.NE.1) GOTO 900          ! substeps already consumed: real trouble
+	    IF(NDIV.GT.1048576) GOTO 900    ! runaway guard
+	    IF(PROB.LT.0.999999D0) THEN
+C          invert saturation: want W*DT/NDIV < -ln(1-PMAXCO)
+	       NDIV=NDIV*(INT(-LOG(1D0-PROB)/(-LOG(1D0-PMAXCO)))+1)
+	    ELSE
+	       NDIV=NDIV*16                 ! PROB fully saturated: escalate blind
+	    ENDIF
+	    DT=(T1-TXYS(0,N))/NDIV
 	    GOTO 240
-	  ENDIF
+        ENDIF
         PMMCO=MAX(PMMCO,PROB)
         IF(LPH1.EQ.1) LPH=1
         IF(LPAIR.GE.1) THEN

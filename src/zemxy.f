@@ -34,7 +34,7 @@ c
      &           qtf,wa1,wa2,wa3,wa4) 
 c      write(msgfl,102) it,is,mpll,pxy0,
 c     &     pxy,fxy,info
-c 102  format('  after hybrd it,is= ',i5,i3,' l= ',i3,
+c 102  format('  after hybrd it,is= ',i5,i4,' l= ',i3,
 c     &     ' pxy0= ',2(1pe11.3),
 c     &     ' pxy= ',2(1pe11.3),
 c     &     ' fxy= ',2(1pe11.3),

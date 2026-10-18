@@ -24,7 +24,10 @@ SET tmin=-ntcutip*sigz, tmax=ntcutip*sigz;
 ! SET wmin=2.*egmax*0.5,wgmax=2*egmax,wbin=50;
 ! SET wmin=2.*egmax*0.8,wgmax=2*egmax,wbin=50;
  SET wmin=2.*egmax*0.95,wgmax=2*egmax,wbin=50;
-SET wpltmx=Max(150.d9,wmax);
+SET wpltmx=Max(150.d9,wmax*xnumber/(1.+xnumber));
+IF wmax < 120.d9;
+  SET wpltmx=wmax;
+ENDIF;
 !!
 LUMINOSITY  KIND=(photon,photon), W=(0.,wpltmx,1500), HELICITY,
   E1=(0.,75d9,75), E2=(0.,75d9,75), 
@@ -117,6 +120,7 @@ PRINT CPUTIME, LONG;
 !!
 IF outputip = 1;
  WRITE BEAM, KIND=(photon,electron,positron), FILE='outputip.dat';
+ STORE FILE='higgsIP.txt';
 ENDIF;
 
 ! plots
@@ -124,6 +128,12 @@ ENDIF;
 EXTERNALFIELD B=(Sin(thfieldext),0,bfieldext*Cos(thfieldext));
 
 DRIFT EXTERNAL, T=0.005*cm;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=0.005 cm R vs S;';
+  ENDIF;
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
@@ -193,6 +203,15 @@ SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == ploti
 
 
 DRIFT EXTERNAL, T=0.5*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_0.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=0.5 cm R vs S;';
+ ENDIF;
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
@@ -231,6 +250,15 @@ SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == ploti
 
 
 DRIFT EXTERNAL, T=1.0*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_1.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=1.0 cm R vs S;';
+  ENDIF;
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
@@ -270,6 +298,15 @@ SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == ploti
 
 
 DRIFT EXTERNAL, T=1.5*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_1.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=1.5 cm R vs S;';
+  ENDIF;
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
@@ -309,6 +346,15 @@ SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == ploti
 
 
 DRIFT EXTERNAL, T=2.0*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_2.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=2.0 cm R vs S;';
+  ENDIF;
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
@@ -347,6 +393,16 @@ SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == ploti
 
 
 DRIFT EXTERNAL, T=2.5*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_2.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=2.5 cm R vs S;';
+  ENDIF;
+
 
 
 PLOT  SCAT, KIND=electron,VLOG, HLOG,
@@ -386,7 +442,15 @@ SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == ploti
 
 
 DRIFT EXTERNAL, T=3.0*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_3.00cm.dat';
+     ENDIF;
   IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=3.0 cm R vs S;';
+
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', RIGHT, APPEND,
   HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-3.0*1.4,3.0*1.4), VSCALE=(-3.5,3.5), TITLE=' Right-going Incp T=3.0 cm X vs Y;';
@@ -454,11 +518,84 @@ PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), 
 PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
 
 
+DRIFT EXTERNAL, T=3.5*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_3.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=3.5 cm R vs S;';
+  ENDIF;
+
+
+DRIFT EXTERNAL, T=4.0*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_4.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=4.0 cm R vs S;';
+  ENDIF;
+
+
+DRIFT EXTERNAL, T=4.5*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_4.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=4.5 cm R vs S;';
+  ENDIF;
+
+
+DRIFT EXTERNAL, T=5.0*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_5.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=5.0 cm R vs S;';
+  ENDIF;
+
+
+DRIFT EXTERNAL, T=5.5*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_5.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=5.5 cm R vs S;';
+  ENDIF;
+
+
+
+DRIFT EXTERNAL, T=6.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_6.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=6.00 cm R vs S;';
+ENDIF;
+
 
 
 
 DRIFT EXTERNAL, T=6.25*cm;
   IF incpair > 0;
+
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', RIGHT, APPEND,
   HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-6.25*1.4,6.25*1.4), VSCALE=(-4.0,4.0), TITLE=' Right-going Incp T=6.25 cm X vs Y;';
@@ -519,7 +656,6 @@ PLOT SCAT, KIND=1, COLOR='RED', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsPhPtvsR.top', RIGHT, APPEND,
  HTITLE='R (cm);', VTITLE='En (GeV);', HSCALE=(0,6), VSCALE=(.000001,100), TITLE=' Right-going Photons T=6.25 cm Energy vs R;';
 
-
 PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', LEFT, APPEND,
  HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,6), VSCALE=(.000001,100), TITLE=' Left-going Charged T=6.25 cm Energy vs R;';
@@ -545,9 +681,102 @@ PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
 
 
 
+DRIFT EXTERNAL, T=6.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_6.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=6.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=7.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_7.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=7.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=7.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_7.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=7.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=8.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_8.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=8.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=8.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_8.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=8.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=9.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_9.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=9.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=9.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_9.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=9.50 cm R vs S;';
+ENDIF;
+
+
+
 
 DRIFT EXTERNAL, T=10.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_10.00cm.dat';
+     ENDIF;
   IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=10.00 cm R vs S;';
+
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', RIGHT, APPEND,
   HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-10*1.4,10*1.4), VSCALE=(-20,20), TITLE=' Right-going Incp T=10 cm X vs Y;';
@@ -605,8 +834,249 @@ PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
 
 
 
-DRIFT EXTERNAL, T=20*cm;
+
+
+DRIFT EXTERNAL, T=10.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_10.50cm.dat';
+     ENDIF;
   IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=10.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=11.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_11.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=11.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=11.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_11.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=11.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=12.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_12.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=12.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=12.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_12.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=12.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=13.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_13.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=13.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=13.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_13.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=13.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=14.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_14.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=14.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=14.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_14.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=14.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=15.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_15.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=15.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=15.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_15.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=15.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=16.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_16.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=16.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=16.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_16.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=16.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=17.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_17.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=17.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=17.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_17.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=17.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=18.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_18.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=18.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=18.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_18.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=18.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=19.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_19.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=19.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=19.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_19.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=19.50 cm R vs S;';
+ENDIF;
+
+
+
+
+
+DRIFT EXTERNAL, T=20*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_20.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=20.00 cm R vs S;';
+
 PLOT SCAT, INCP, COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
   FILE='IncPair.top', RIGHT, APPEND,
   HTITLE='X (cm);', VTITLE='Y (cm);', HSCALE=(-20*1.4,20*1.4), VSCALE=(-20,20), TITLE=' Right-going Incp T=20 cm X vs Y;';
@@ -672,6 +1142,245 @@ PLOT  HIST, KIND=(2,3), H=Sqrt[X^2+Y^2]/cm, HSCALE=(0,20,100), VSCALE=(1,2E10), 
         HTITLE='R  (cm);', VTITLE=' Nparticles;';
 PLOT HIST, NONEWPAGE, KIND=1, COLOR='RED';
 
+
+
+DRIFT EXTERNAL, T=20.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_20.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=20.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=21.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_21.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=21.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=21.50*cm; 
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_21.50cm.dat';
+     ENDIF;
+ IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=21.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=22.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_22.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=22.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=22.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_22.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=22.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=23.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_23.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=23.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=23.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_23.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=23.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=24.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_24.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=24.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=24.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_24.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=24.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=25.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_25.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=25.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=25.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_25.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=25.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=26.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_26.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=26.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=26.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_26.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=26.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=27.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_27.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=27.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=27.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_27.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=27.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=28.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_28.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=28.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=28.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_28.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=28.50 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=29.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_29.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=29.00 cm R vs S;';
+ENDIF;
+
+
+DRIFT EXTERNAL, T=29.50*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_29.50cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=29.50 cm R vs S;';
+ENDIF;
+
+DRIFT EXTERNAL, T=30.00*cm;
+     IF outputip = 1;
+        WRITE BEAM, KIND=(electron,positron), FILE='outputip_30.00cm.dat';
+     ENDIF;
+  IF incpair > 0;
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=S/cm, V=Sqrt[X^2+Y^2]/cm,
+  FILE='IncPairRvsS.top', APPEND, 
+  SELECT=(En/1D9 < eplotmax && En/1D9 > eplotmin && (plotincp < 0 || Incp == plotincp)),
+  HTITLE='S (cm);', VTITLE='R (cm);', HSCALE=(-30,30), VSCALE=(-2.9,2.9), TITLE=' T=30.00 cm R vs S;';
+ENDIF;
 
 
 
@@ -1096,7 +1805,7 @@ PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=X/cm, V=Y/cm,
 PLOT SCAT, NONEWPAGE, KIND=1, COLOR='RED', MAXNP=10000;
 
 
-PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=10000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
+PLOT SCAT, KIND=(2,3), COLOR='BLUE', MAXNP=400000, H=Sqrt[X^2+Y^2]/cm, V=En/1E9, VLOG,
   FILE='BgndPlotsChgPtvsR.top', APPEND,
  HTITLE='R (cm);', VTITLE='E (GeV);', HSCALE=(0,20), VSCALE=(.000001,100), TITLE=' Charged T=150 cm Energy vs R;';
 
@@ -1765,7 +2474,23 @@ PLOT  SCAT, INCP,RIGHT,  MAXNP=60000,
         TITLE='Right-going Incp Y vs X at T=0;',
         HTITLE='X (nm);      ;',
         VTITLE='Y (nm);      ;' ;
-!
+
+PLOT  SCAT, INCP,RIGHT,VLOG, HLOG,
+        FILE='IncPair.top', APPEND,
+        V=Sqrt[Px^2+Py^2]/1D6, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2]),
+        VSCALE=(1e-4,1e4), HSCALE=(1e-6,1.5),
+        TITLE='Right-going Incp pT vs. Angle after IP;',
+        VTITLE='p0T1 [MeV]; X X      ;',
+        HTITLE='Q0e1 [rad];GX X       ;' ;
+
+PLOT  SCAT, INCP,LEFT,VLOG, HLOG,
+        FILE='IncPair.top', APPEND,
+        V=Sqrt[Px^2+Py^2]/1D6, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2]),
+  VSCALE=(1e-4,1e4), HSCALE=(1e-6,1.5),
+        TITLE='Left-going Incp pT vs. Angle after IP;',
+        VTITLE='p0T1 [MeV]; X X      ;',
+        HTITLE='Q0e1 [rad];GX X       ;' ;
+
 PLOT  SCAT, INCP,RIGHT,VLOG, HLOG,
         FILE='IncPair.top', APPEND,
         V=En/1D9, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2])/mm,  MAXNP=400000,
@@ -1836,21 +2561,43 @@ PLOT  SCAT, KIND=electron,RIGHT,  MAXNP=60000,
         HTITLE='X (nm);      ;',
         VTITLE='Y (nm);      ;' ;
 !
-PLOT  SCAT, KIND=electron,RIGHT,VLOG, HLOG,
+PLOT  SCAT, KIND=(2,3),RIGHT,VLOG, HLOG,
         FILE='ElectronEnergy.top', APPEND,
+        SELECT=(plotincp < 0 || Incp == plotincp),
         V=En/1D9, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2])/mm,  MAXNP=400000,
         VSCALE=(0.001,emax/1e9), HSCALE=(1,1500),
-        TITLE='Right-going Electron Energy vs. Angle after IP;',
+        TITLE='Right-going Charged Energy vs. Angle after IP;',
         VTITLE='E0e1 (GeV); X X      ;',
         HTITLE='Q0e1 (mrad);GX X       ;' ;
 
-PLOT  SCAT, KIND=electron,LEFT,VLOG, HLOG,
+PLOT  SCAT, KIND=(2,3) ,RIGHT,VLOG, HLOG,
         FILE='ElectronEnergy.top', APPEND,
+        SELECT=(plotincp < 0 || Incp == plotincp),
+        V=Sqrt[Px^2+Py^2]/1D6, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2]),  MAXNP=400000,
+        VSCALE=(1e-4,1e4), HSCALE=(1e-6,1.5),
+        TITLE='Right-going Charged pT vs. Angle after IP;',
+        VTITLE='p0T1 [MeV]; X X      ;',
+        HTITLE='Q0e1 [rad];GX X       ;' ;
+
+
+PLOT  SCAT, KIND=(2,3),LEFT,VLOG, HLOG,
+        FILE='ElectronEnergy.top', APPEND,
+        SELECT=(plotincp < 0 || Incp == plotincp),
         V=En/1D9, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2])/mm,  MAXNP=400000,
         VSCALE=(0.001,emax/1e9), HSCALE=(1,1500),
-        TITLE='Left-going Electron Energy vs. Angle after IP;',
+        TITLE='Left-going Charged Energy vs. Angle after IP;',
         VTITLE='E0e1 (GeV); X X      ;',
         HTITLE='Q0e1 (mrad);GX X       ;' ;
+
+PLOT  SCAT, KIND=(2,3) ,LEFT,VLOG, HLOG,
+        FILE='ElectronEnergy.top', APPEND,
+        SELECT=(plotincp < 0 || Incp == plotincp),
+        V=Sqrt[Px^2+Py^2]/1D6, H=ArcTan(Sqrt[(Px^2+Py^2)/Ps^2]),  MAXNP=400000,
+        VSCALE=(1e-4,1e4), HSCALE=(1e-6,1.5),
+        TITLE='Left-going Charged pT vs. Angle after IP;',
+        VTITLE='p0T1 [MeV]; X X      ;',
+        HTITLE='Q0e1 [rad];GX X       ;' ;
+
 
  PLOT  SCAT, KIND=electron,VLOG, 
   FILE='ElectronEnergy.top', APPEND,

@@ -64,6 +64,7 @@ C
       ELSE
          SGN=-1
       ENDIF
+      fxyalt=0
       xyu=xys
       if(abs(wchgt(l2,1)).gt.abs(wchgt(l2,2))) then
          kdom=1
@@ -92,7 +93,6 @@ C
          mpll=3-l
          call fcnemxy(2,xyu,fxy,iflag)
       elseif(fldbe.gt.3) then
-         fxy=0
          fxyele=0
          fxypos=0
          do i=1,nmulga
@@ -100,8 +100,8 @@ C
      &           bbavga(:,:,:,i),bbvara(:,:,:,i))
             fxyele=fxyele+bbrrra(1:2,3-l,1,i)*fuvele
             fxypos=fxypos+bbrrra(1:2,3-l,2,i)*fuvpos
-            fxy=fxy+fxyele+fxypos
          enddo
+         fxy=fxyele+fxypos
       else
          fxy=0
       endif
@@ -120,57 +120,57 @@ C
 
       
       
-      if(fldbe.eq.0) then
-         if(bealt.eq.1.or.(bealt.eq.3
-     &        .and.abs(bbdxy(2,3-l)-bbdxy(1,3-l)).gt.1.e-20)) then
-            call bekck(l,xyu(1:2),fxyele,fxypos,fround,bbavg,bbvar)
-            fxyalt=fxyele+fxypos
-            if(ncall.lt.1000) then
-               write(msgfl,331) it,is,l2,
-     &              fxyele,    
-     &              fxypos,
-     &              fxyalt
- 331           format(' bbkick0 it,is= ',i5,i3,' l2= ',i3,
-     &              ' fxyele= ',2(1pe11.3),
-     &              ' fxypos= ',2(1pe11.3),
-     &              ' fxyalt= ',2(1pe11.3))
+      if(bealt.ge.0) then 
+         if(fldbe.eq.0) then
+            if(bealt.eq.1.or.(bealt.eq.3
+     &           .and.abs(bbdxy(2,3-l)-bbdxy(1,3-l)).gt.1.e-20)) then
+               call bekck(l,xyu(1:2),fxyele,fxypos,fround,bbavg,bbvar)
+               fxyalt=fxyele+fxypos
+c               if(ncall.lt.1000) then
+c                  write(msgfl,331) it,is,l2,
+c     &                 fxyele,    
+c     &                 fxypos,
+c     &                 fxyalt
+c 331              format(' bbkick0 it,is= ',i5,i4,' l2= ',i3,
+c     &                 ' fxyele= ',2(1pe11.3),
+c     &                 ' fxypos= ',2(1pe11.3),
+c     &                 ' fxyalt= ',2(1pe11.3))
+c               endif
+            elseif(bealt.gt.3) then
+               fxyele=0
+               fxypos=0
+               do i=1,nmulga
+                  call bekck(l,xyu(1:2),fuvele,fuvpos,fround,
+     &                 bbavga(:,:,:,i),bbvara(:,:,:,i))
+                  fxyele=fxyele+bbrrra(1:2,3-l,1,i)*fuvele
+                  fxypos=fxypos+bbrrra(1:2,3-l,2,i)*fuvpos
+c                  if(ncall.lt.1000) then
+c                     write(msgfl,333) it,is,l2,i,
+c     &                    bbrrra(1:2,3-l,1,i),
+c     &                    bbrrra(1:2,3-l,2,i),
+c     &                    fxyele,    
+c     &                    fxypos,
+c     &                    fxyele+fxypos
+c 333                 format(' bbkick0 it,is= ',i5,i4,' l2= ',i3,' i= ',i3
+c     &                    ' bbrrra(1:2,3-l,1,i)= ',2(1pe11.3),
+c     &                    ' bbrrra(1:2,3-l,2,i)= ',2(1pe11.3),
+c     &                    ' fxyele= ',2(1pe11.3),
+c     &                    ' fxypos= ',2(1pe11.3),
+c     &                    ' fxyalt= ',2(1pe11.3))
+c                  endif
+               enddo
+               fxyalt=fxyele+fxypos
+            elseif(bealt.eq.2.or.bealt.eq.3) then
+               mpll=3-l
+               call fcnemxy(2,xyu,fxyalt,iflag)
             endif
-         elseif(bealt.gt.3) then
-            fxyalt=0
+         elseif(bealt.eq.0) then
+            call bbkck(l,1,xyu,fxyalt,nout,nxyd(1),nxyd(2),bbqd,0,iout)
             fxyele=0
             fxypos=0
-            do i=1,nmulga
-               call bekck(l,xyu(1:2),fuvele,fuvpos,fround,
-     &              bbavga(:,:,:,i),bbvara(:,:,:,i))
-               fxyele=fxyele+bbrrra(1:2,3-l,1,i)*fuvele
-               fxypos=fxypos+bbrrra(1:2,3-l,2,i)*fuvpos
-               fxyalt=fxyalt+fxyele+fxypos
-               if(ncall.lt.1000) then
-                  write(msgfl,333) it,is,l2,i,
-     &                 bbrrra(1:2,3-l,1,i),
-     &                 bbrrra(1:2,3-l,2,i),
-     &                 fxyele,    
-     &                 fxypos,
-     &                 fxyalt
- 333              format(' bbkick0 it,is= ',i5,i3,' l2= ',i3,' i= ',i3
-     &                 ' bbrrra(1:2,3-l,1,i)= ',2(1pe11.3),
-     &                 ' bbrrra(1:2,3-l,2,i)= ',2(1pe11.3),
-     &                 ' fxyele= ',2(1pe11.3),
-     &                 ' fxypos= ',2(1pe11.3),
-     &                 ' fxyalt= ',2(1pe11.3))
-               endif
-            enddo
-         elseif(bealt.eq.2.or.bealt.eq.3) then
-            mpll=3-l
-            call fcnemxy(2,xyu,fxyalt,iflag)
          endif
-      elseif(bealt.eq.0) then
-         call bbkck(l,1,xyu,fxyalt,nout,nxyd(1),nxyd(2),bbqd,0,iout)
-         fxyele=0
-         fxypos=0
       endif
-      fldalt(1)=fac0*fxyalt(1)
-      fldalt(2)=fac0*fxyalt(2)
+      fldalt=fac0*fxyalt
       altabs=sqrt(sum(fldalt**2))
       
       if(outchg.or.(fldabs.gt.1.e5.and.fldabs.gt.fldmax(l2,kdom))) then
@@ -194,12 +194,12 @@ C
      &        sqrt(dr2ele/vr2ele),
      &        sqrt(dr2pos/vr2pos),
      &        fldabs,maxdet
- 101     format(' bbkick0 it,is= ',i5,i3,' l2= ',i3,
+ 101     format(' bbkick0 it,is= ',i5,i4,' l2= ',i3,
      &        ' k= ',i3,    
      &        ' e- bbxvar,bbyvar= ',2(1pe11.3),
-     &        ' e- mpnn,wchgt= ',i5,(1pe11.3),
+     &        ' e- mpnn,wchgt= ',i7,(1pe11.3),
      &        ' e+ bbxvar,bbyvar= ',2(1pe11.3),
-     &        ' e+ mpnn,wchgt= ',i5,(1pe11.3),
+     &        ' e+ mpnn,wchgt= ',i7,(1pe11.3),
      &        ' nsigele= ',(1pe11.3),
      &        ' nsigpos= ',(1pe11.3),
      &        ' fldabs= ',(1pe11.3),
@@ -208,12 +208,12 @@ C
          write(msgfl,103) it,is,l2,kdom,
      &        fld(1:2,1),fldalt,
      &        fldabs,altabs,    
-     &        fldabs/altabs,    
+     &        fldabs/max(altabs,1d-300),    
      &        sqrt(dr2ele/vr2ele),
      &        sqrt(dr2pos/vr2pos),
      &        fldele,fldpos,    
      &        maxdet
- 103     format(' bbkick0 it,is= ',i5,i3,' l2= ',i3,
+ 103     format(' bbkick0 it,is= ',i5,i4,' l2= ',i3,
      &        ' k= ',i3,    
      &        ' fld(:,1)= ',2(1pe11.3),
      &        ' fldalt= ',2(1pe11.3),
@@ -229,17 +229,17 @@ C
       FF(1)=CHARGE(KIN)*(FLD(1,1)-EP(3)/EP(0)*FLD(2,2))
       FF(2)=CHARGE(KIN)*(FLD(2,1)+EP(3)/EP(0)*FLD(1,2))
       FF(3)=CHARGE(KIN)*(EP(1)*FLD(2,2)-EP(2)*FLD(1,2))/EP(0)
-      if(abs(ep(0)-8.224e8).lt.0.002e8.and.ep(3).lt.0.)
-     &     write(msgfl,149) it,is,l2,kin,
-     &     charge(kin),fld(1:2,1),fld(1:2,2),
-     &     ep(0),ep(1:3),ff(1:2)
- 149  format(' bbkick0 it,is= ',i5,i3,' l2= ',i3,
-     &     ' kin= ',i3,    
-     &     ' charge= ',(1pe11.3),
-     &     ' fld(:,1)= ',2(1pe11.3),
-     &     ' fld(:,2)= ',2(1pe11.3),
-     &     ' ep(0)= ',(1pe11.3),
-     &     ' ep(1:3)= ',3(1pe11.3),
-     &     ' ff= ',2(1pe11.3))
+c      if(abs(ep(0)-8.224e8).lt.0.002e8.and.ep(3).lt.0.)
+c     &     write(msgfl,149) it,is,l2,kin,
+c     &     charge(kin),fld(1:2,1),fld(1:2,2),
+c     &     ep(0),ep(1:3),ff(1:2)
+c 149  format(' bbkick0 it,is= ',i5,i4,' l2= ',i3,
+c     &     ' kin= ',i3,    
+c     &     ' charge= ',(1pe11.3),
+c     &     ' fld(:,1)= ',2(1pe11.3),
+c     &     ' fld(:,2)= ',2(1pe11.3),
+c     &     ' ep(0)= ',(1pe11.3),
+c     &     ' ep(1:3)= ',3(1pe11.3),
+c     &     ' ff= ',2(1pe11.3))
       RETURN
       END

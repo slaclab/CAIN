@@ -53,7 +53,11 @@ scripts/rename_calc_Lumi_260GeV_349GeV.sh
 scripts/scale_v06395.271828.314159.sh
 scripts/scale_v0xxxx.271828.314159.sh
 out/
-
+out
+*_[0-9][0-9]*[a-zA-Z][a-zA-Z]*202[1-6]
+*.top
+out_SLAC/
+scripts/Re__lumi
 
 
 

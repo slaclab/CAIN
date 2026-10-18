@@ -42,7 +42,7 @@ c     &           varchk,bbvar(mpixy,mpll,mpkk),
 c     &           mpikur,mpilam,
 c     &           delt,
 c     &           mpnn(mpll,mpkk),nzbin
-c 102        format(' initsig it,is= ',i5,i3,
+c 102        format(' initsig it,is= ',i5,i4,
 c     &           ' ixy= ',i3,' l= ',i3,' k= ',i3,
 c     &           ' muchk,mu= ',2(1pe11.3),
 c     &           ' varchk,var= ',2(1pe11.3),

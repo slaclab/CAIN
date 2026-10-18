@@ -331,25 +331,25 @@ PRINT it, Time/1e-3, NParticle(3,1), FORMAT=(F6.0,'-th time step   t=',F7.2,' mm
 SET vscalexmin=Min(-72*Sqrt(1+dcp^2/betax^2)-Max(thr,thl)*1e5,-Sgn(dorigin)*3.0*(Max(Abs(offxr),Abs(offxl))+capsigxdefl)/nm);
 SET vscalexmax=Max(72*Sqrt(1+dcp^2/betax^2)+Max(thr,thl)*1e5,Sgn(dorigin)*3.0*(Max(Abs(offxr),Abs(offxl))+capsigxdefl)/nm);
 !SET vscalexmax=72*Sqrt(1+dcp^2/betax^2);
-PLOT SCAT, KIND=2, COLOR='BLUE', MAXNP=10000, H=S/micron, V=X/nm,
+PLOT SCAT, KIND=2, COLOR='BLUE', MAXNP=2600, H=S/micron, V=X/nm,
 HTITLE='S (micron);', VTITLE='X (nm);',
   HSCALE=(-2*dcp/micron,2*dcp/micron), VSCALE=(vscalexmin,vscalexmax),
 TITLE='t='+$FtoA(Time/1e-3,'(F10.5)')+'mm;',
 FILE='ComptonPlots.top', APPEND;
    IF NParticle(3,1)>0.5;
-      PLOT SCAT, NONEWPAGE, KIND=photon, COLOR='RED', MAXNP=100000;
+      PLOT SCAT, NONEWPAGE, KIND=photon, COLOR='RED', MAXNP=26000;
    ENDIF;
 
 
 SET vscaleymin=-72*Sqrt(1+dcp^2/betay^2);
 SET vscaleymax=72*Sqrt(1+dcp^2/betay^2);
-PLOT SCAT, KIND=2, COLOR='BLUE', MAXNP=10000, H=S/micron, V=Y/nm,
+PLOT SCAT, KIND=2, COLOR='BLUE', MAXNP=2600, H=S/micron, V=Y/nm,
 HTITLE='S (micron);', VTITLE='Y (nm);',
   HSCALE=(-2*dcp/micron,2*dcp/micron), VSCALE=(vscaleymin,vscaleymax),
 TITLE='t='+$FtoA(Time/1e-3,'(F10.5)')+'mm;',
 FILE='ComptonPlots2.top', APPEND;
    IF NParticle(3,1)>0.5;
-      PLOT SCAT, NONEWPAGE, KIND=photon, COLOR='RED', MAXNP=100000;
+      PLOT SCAT, NONEWPAGE, KIND=photon, COLOR='RED', MAXNP=26000;
    ENDIF;
 
 
